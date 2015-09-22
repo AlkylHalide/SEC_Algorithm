@@ -1,0 +1,2 @@
+COMPONENT=SECReceiveC
+include $(MAKERULES)

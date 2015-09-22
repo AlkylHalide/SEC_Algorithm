@@ -1,0 +1,2 @@
+COMPONENT=SECSendC
+include $(MAKERULES)
