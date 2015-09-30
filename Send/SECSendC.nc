@@ -28,7 +28,7 @@ implementation {
   SECSendP.AMControl -> ActiveMessageC;
   SECSendP.Leds -> LedsC;
   SECSendP.AMSend -> AMSenderC;
-  //SECSendP.Receive -> AMReceiverC;
+  SECSendP.Receive -> AMReceiverC;
   SECSendP.PacketAcknowledgements -> ActiveMessageC;
   SECSendP.Timer0 -> Timer0;
   SECSendP.Packet -> AMSenderC;

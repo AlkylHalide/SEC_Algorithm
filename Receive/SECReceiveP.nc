@@ -31,17 +31,17 @@ module SECReceiveP {
 
 implementation {
   
-  /**  AltIndex for the ABP protocol **/
-  uint16_t AltIndex = 0;
+  /**  Variable to keep track of the last delivered alternating index in the ABP protocol **/
+  uint16_t LastDeliveredAltIndex = 0;
 
   /** Label variable **/
-  uint16_t msgLbl = 0;
+  uint16_t recLbl = 0;
 
   /** Message to transmit */
   message_t ackMsg;
   
   /***************** Prototypes ****************/
-  // task void send();
+  task void send();
   
   /***************** Boot Events ****************/
   event void Boot.booted() {
@@ -58,50 +58,54 @@ implementation {
   
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    SECMsg* btrMsg = (SECMsg*)payload;
+    SECMsg* inMsg = (SECMsg*)payload;
     printf("AltIndex: \n");
-    printf("%d\n", btrMsg->ai);
+    printf("%d\n", inMsg->ai);
     printf("Label: \n");
-    printf("%d\n", btrMsg->lbl);
+    printf("%d\n", inMsg->lbl);
+    recLbl = inMsg->lbl;
+    printf("Data: \n");
+    printf("%d\n", inMsg->dat);
     printfflush();
+
+    if (inMsg->lbl == 11) {
+    } else {
+      LastDeliveredAltIndex = inMsg->ai;
+    }
+
+    post send();
+
+    //TODO: Add incoming SECMsg to packet_set[]
     
-    call Leds.led2Toggle();
     return msg;
   }
   
   /***************** AMSend Events ****************/
   event void AMSend.sendDone(message_t *msg, error_t error) {
-    if(call PacketAcknowledgements.wasAcked(msg)) {
-      call Leds.led1Toggle();
-      call Leds.led0Off();
-    } else {
-      call Leds.led0Toggle();
-      call Leds.led1Off();
-    }
-    
-    if(DELAY_BETWEEN_MESSAGES > 0) {
-      call Timer0.startOneShot(DELAY_BETWEEN_MESSAGES);
-    } else {
-      //post send();
-    }
+    // if(DELAY_BETWEEN_MESSAGES > 0) {
+    //   call Timer0.startOneShot(DELAY_BETWEEN_MESSAGES);
+    // } else {
+    //   post send();
+    // }
   }
   
   /***************** Timer Events ****************/
   event void Timer0.fired() {
-    // SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
-    // btrMsg->ai = AltIndex;
-    // btrMsg->lbl = ++msgLbl;
-    // post send();
+    //post send();
   }
   
   /***************** Tasks ****************/
-  // task void send() {
-  //   call PacketAcknowledgements.requestAck(&myMsg);
-  //   // if(call AMSend.send(1, &myMsg, 0) != SUCCESS) {
-  //   //   post send();
-  //   // }
-  //   if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
-  //     post send();
-  //   }
-  // }
+  task void send() {
+    ACKMsg* outMsg = (ACKMsg*)(call Packet.getPayload(&ackMsg, sizeof(ACKMsg)));
+    outMsg->ldai = LastDeliveredAltIndex;
+    outMsg->lbl = recLbl;
+
+    // TODO: AM_BROADCAST_ADDR is niet correct denk ik,
+    // ACK messages moeten enkel teruggestuurd worden naar
+    // de bron van originele incoming message
+
+    if(call AMSend.send(AM_BROADCAST_ADDR, &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
+      post send();
+    }
+  }
 }
