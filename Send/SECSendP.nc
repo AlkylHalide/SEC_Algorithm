@@ -75,15 +75,6 @@ implementation {
   
   /***************** Receive Events ****************/
   // event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-  //   //printf("TEST\n");
-  //   //printf("%p\n", &payload);
-  //   //printfflush();
-
-  //   // if (len == sizeof(SECMsg)) {
-  //   //   SECMsg* btrMsg = (SECMsg*)payload;
-  //   //   setLeds(btrMsg->counter);
-  //   // }
-
   //   SECMsg* btrMsg = (SECMsg*)payload;
   //   printf("AltIndex: \n");
   //   printf("%d\n", btrMsg->ai);
