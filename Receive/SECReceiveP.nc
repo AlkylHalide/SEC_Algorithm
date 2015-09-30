@@ -38,7 +38,7 @@ implementation {
   uint16_t msgLbl = 0;
 
   /** Message to transmit */
-  message_t myMsg;
+  message_t ackMsg;
   
   /***************** Prototypes ****************/
   // task void send();

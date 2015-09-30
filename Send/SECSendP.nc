@@ -48,11 +48,22 @@ implementation {
   //   }
   // }
   
-  /**  AltIndex for the ABP protocol **/
+  /** Define capacity **/
+  uint8_t const capacity = 10;
+
+  /** Array to hold the ACK messages **/
+  // The size of the array needs to be capacity+1,
+  // but we can't assign a variable to the size of an array.
+  uint16_t ACK_set[11];
+
+  /** AltIndex for the ABP protocol **/
   uint16_t AltIndex = 0;
 
   /** Label variable **/
   uint16_t msgLbl = 0;
+
+  /** Message/data variable **/
+  char m[] = "I have arrived";
 
   /** Message to transmit */
   message_t myMsg;
@@ -110,6 +121,7 @@ implementation {
     SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
     btrMsg->ai = AltIndex;
     btrMsg->lbl = ++msgLbl;
+    //btrMsg->dat = m;
     post send();
   }
   
