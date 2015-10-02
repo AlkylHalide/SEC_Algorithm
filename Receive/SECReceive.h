@@ -1,3 +1,15 @@
+// Evert Boelaert
+// S²E²C algorithm
+
+// Sender mote broadcasts packets <Ai, lbl, dat>
+// Receiver receives packets and puts them into arrays packet_set[] according to NMote ID.
+// Receiver then acknowledges packets by sending ACK <ldai, lbl> messages back to Sender.
+
+// Ai = Alternating Index
+// lbl = Label
+// dat = data (message)
+// ldai = Last Delivered Alternating Index
+
 #ifndef SECRECEIVE_H
 #define SECRECEIVE_H
 

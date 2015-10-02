@@ -1,17 +1,14 @@
-/**
- * Test for radio acknowledgements
- * Program all motes up with ID 1
- *   Led0 = Missed an ack
- *   Led1 = Got an ack
- *   Led2 = Sent a message
- * @author David Moss
- */
- 
-/**
-Haakjes <> versus quotes "" bij #include
---> Haakjes = zoeken in standaard directories (standaar libraries)
---> Quotes = zoeken in projectfolder
-**/
+// Evert Boelaert
+// S²E²C algorithm
+
+// Sender mote broadcasts packets <Ai, lbl, dat>
+// Receiver receives packets and puts them into arrays packet_set[] according to NMote ID.
+// Receiver then acknowledges packets by sending ACK <ldai, lbl> messages back to Sender.
+
+// Ai = Alternating Index
+// lbl = Label
+// dat = data (message)
+// ldai = Last Delivered Alternating Index
 
 #include <printf.h>
 #include "SECSend.h"
@@ -86,11 +83,8 @@ implementation {
       msgLbl = 0;
       ++AltIndex;
       AltIndex %= 3;
-      if (i < 10) {
-        ++i;
-      } else {
-        i = 0;
-      }
+      
+      i = i<9?++i:0;
     }
     
     return msg;
@@ -98,16 +92,6 @@ implementation {
   
   /***************** AMSend Events ****************/
   event void AMSend.sendDone(message_t *msg, error_t error) {
-    // if(call PacketAcknowledgements.wasAcked(msg)) {
-    //   printf("ACKED\n");
-    //   printfflush();
-    //   call Leds.led1Toggle();
-    //   call Leds.led0Off();
-    // } else {
-    //   call Leds.led0Toggle();
-    //   call Leds.led1Off();
-    // }
-    
     if(DELAY_BETWEEN_MESSAGES > 0) {
       call Timer0.startOneShot(DELAY_BETWEEN_MESSAGES);
     } else {
@@ -122,12 +106,11 @@ implementation {
   
   /***************** Tasks ****************/
   task void send() {
-    // call PacketAcknowledgements.requestAck(&myMsg);
-
     SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
     btrMsg->ai = AltIndex;
     btrMsg->lbl = msgLbl;
     btrMsg->dat = m[i];
+    btrMsg->nodeid = TOS_NODE_ID;
 
     if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
       post send();

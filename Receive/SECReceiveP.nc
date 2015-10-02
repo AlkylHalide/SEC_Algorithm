@@ -1,17 +1,14 @@
-/**
- * Test for radio acknowledgements
- * Program all motes up with ID 1
- *   Led0 = Missed an ack
- *   Led1 = Got an ack
- *   Led2 = Sent a message
- * @author David Moss
- */
- 
-/**
-Haakjes <> versus quotes "" bij #include
---> Haakjes = zoeken in standaard directories (standaar libraries)
---> Quotes = zoeken in projectfolder
-**/
+// Evert Boelaert
+// S²E²C algorithm
+
+// Sender mote broadcasts packets <Ai, lbl, dat>
+// Receiver receives packets and puts them into arrays packet_set[] according to NMote ID.
+// Receiver then acknowledges packets by sending ACK <ldai, lbl> messages back to Sender.
+
+// Ai = Alternating Index
+// lbl = Label
+// dat = data (message)
+// ldai = Last Delivered Alternating Index
 
 #include <printf.h>
 #include "SECReceive.h"
@@ -22,6 +19,7 @@ module SECReceiveP {
     interface SplitControl as AMControl;
     interface AMSend;
     interface Packet;
+    interface AMPacket;
     interface Receive;
     interface Leds;
     interface PacketAcknowledgements;
@@ -39,6 +37,9 @@ implementation {
 
   /** Message to transmit */
   message_t ackMsg;
+
+  /** Variable to store the source address of the incoming packet **/
+  uint16_t src = 0;
   
   /***************** Prototypes ****************/
   task void send();
@@ -50,7 +51,6 @@ implementation {
 
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
-    //post send();
   }
   
   event void AMControl.stopDone(error_t error) {
@@ -59,6 +59,11 @@ implementation {
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
     SECMsg* inMsg = (SECMsg*)payload;
+
+    // src = call AMPacket.source(inMsg);
+    // printf("Adres: \n");
+    // printf("%d\n", src);
+
     printf("AltIndex: \n");
     printf("%d\n", inMsg->ai);
     printf("Label: \n");
@@ -68,10 +73,8 @@ implementation {
     printf("%d\n", inMsg->dat);
     printfflush();
 
-    if (inMsg->lbl == 11) {
-    } else {
+    if (inMsg->lbl == 11)
       LastDeliveredAltIndex = inMsg->ai;
-    }
 
     post send();
 
@@ -82,16 +85,10 @@ implementation {
   
   /***************** AMSend Events ****************/
   event void AMSend.sendDone(message_t *msg, error_t error) {
-    // if(DELAY_BETWEEN_MESSAGES > 0) {
-    //   call Timer0.startOneShot(DELAY_BETWEEN_MESSAGES);
-    // } else {
-    //   post send();
-    // }
   }
   
   /***************** Timer Events ****************/
   event void Timer0.fired() {
-    //post send();
   }
   
   /***************** Tasks ****************/
