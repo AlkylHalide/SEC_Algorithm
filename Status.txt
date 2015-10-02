@@ -1,0 +1,19 @@
+---TODO/STATUS---
+
+/*** 1/10 Cooja test ***/
+SUCCESS:
+-> TX ratio down to 50%: Sender keeps sending same packet until ACK comes in
+
+BUGS/ISSUES:
+#1 LastDeliveredIndex loopt gelijk met AltIndex; moet normaal gezien 1 achter lopen (AltIndex=0 --> ldai=2)
+#2 Data loopt normaal gezien m[] array af van 9->0. Na 0 moet terug 9 komen enz. Na 0 komt echter eerst 18 (dafuq?) en dan pas 9 opnieuw.
+#3 Meerdere motes in een netwerk geeft problemen: Msg en ACK worden gebroadcast, dus 1 mote krijgt ACKS/Msgs binnen van meerdere bronnen --> dus packet_set[] en ACK_Set[] bevatten op den duur paketten van gemengde bronnen = niet goed.
+
+UPDATE
+Solved #1
+Solved #2
+
+/*** 2/10 ***/
+TODO:
+- Solve bug#3: add node_id
+- Add arrays packet_set[] en ACK_Set[]
