@@ -39,8 +39,10 @@ implementation {
   /** Array to hold the ACK messages **/
   // The size of the array needs to be capacity+1,
   // but we can't assign a variable to the size of an array.
-  uint16_t ACK_set[11];
-  // message_t ACK_set[];
+  struct ACKMsg ACK_set[11];
+  // We also define a loop variable to go through the array
+  uint8_t j = 0;
+  // uint16_t ACK_set[11];
 
   /** AltIndex for the ABP protocol **/
   uint16_t AltIndex = 0;
@@ -82,7 +84,13 @@ implementation {
     printf("%d\n", inMsg->nodeid);
     printfflush();
 
-    //TODO: Add incoming packet to ACK_SET
+    // Add incoming packet to ACK_SET
+    ACK_set[j].ldai = inMsg->ldai;
+    ACK_set[j].lbl = inMsg->lbl;
+    ACK_set[j].nodeid = inMsg->nodeid;
+
+    ++;
+    j %= 11;
 
     if (msgLbl < 11) {
       ++msgLbl;

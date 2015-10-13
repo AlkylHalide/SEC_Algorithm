@@ -48,3 +48,7 @@ UPDATE:
 in tinyos-main/tos/system/unittest EINDELIJK gevonden waarnaar ik op zoek was:
 UNIT-testing architectuur voor simpele unit-tests in TinyOS, zonder framework zoals TUnit dat 
 hardware nodig heeft. Nog niet zeker dat het werkt uiteraard, will keep updated.
+
+TODO:
+- Send.h en Receiver.h kunnen generalised worden in de hoofdmap SEC volgens mij
+- S/R beiden variabele capacity nodig, dus define deze misschien best in bovenstaande algemene .h file

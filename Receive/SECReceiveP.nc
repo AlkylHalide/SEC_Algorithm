@@ -37,6 +37,15 @@ implementation {
   /** Label variable **/
   uint16_t recLbl = 0;
 
+  /** Define capacity variable **/
+  uint16_t capacity = 10;
+  
+  // Packet_set array length should be 2*capacity+1
+  uint16_t array_length = 21;
+
+  /** Array to contain all the received packages **/
+  struct packet_set[]
+
   /** Message to transmit */
   message_t ackMsg;
 
