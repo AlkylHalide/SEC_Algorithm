@@ -34,6 +34,5 @@ implementation {
   SECReceiveP.Receive -> AMReceiverC;
   SECReceiveP.PacketAcknowledgements -> ActiveMessageC;
   SECReceiveP.Timer0 -> Timer0;
-  SECReceiveP.Packet -> AMSenderC;
-  SECReceiveP.AMPacket -> AMSenderC;
+  SECReceiveP.Packet -> AMSenderC;      
 }

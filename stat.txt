@@ -1,0 +1,50 @@
+---TODO/STATUS---
+
+/*** 1/10 Cooja test ***/
+SUCCESS:
+-> TX ratio down to 50%: Sender keeps sending same packet until ACK comes in
+
+BUGS/ISSUES:
+#1 LastDeliveredIndex loopt gelijk met AltIndex; moet normaal gezien 1 achter lopen (AltIndex=0 --> ldai=2)
+#2 Data loopt normaal gezien m[] array af van 9->0. Na 0 moet terug 9 komen enz. Na 0 komt echter eerst 18 (dafuq?) en dan pas 9 opnieuw.
+#3 Meerdere motes in een netwerk geeft problemen: Msg en ACK worden gebroadcast, dus 1 mote krijgt ACKS/Msgs binnen van meerdere bronnen --> dus packet_set[] en ACK_Set[] bevatten op den duur paketten van gemengde bronnen = niet goed.
+
+UPDATE
+Solved #1
+Solved #2
+
+/*** 2/10 ***/
+TODO:
+- Solve bug#3: add node_id
+- Add arrays packet_set[] en ACK_Set[]
+
+/*** 13/10 ***/
+Vooropgezette deadline voor einde implementatie 11/10 niet gehaald
+Yesterday meeting with Elad Schiller, disappointed.
+He insists I need to work faster, as this is already week 7 of the implementation
+and I haven't done a single experiment yet.
+Time is running out.
+
+- Solve bug #3: node id --> raad vragen aan Olaf
+- Add arrays packet_set[] en ACK_Set[]
+- Cooja simulaties ergens opslagen
+- Algoritme (zowel part 1 als 2) moet per bit werken --> message m verdele in bits (functie packet_set)
+- Figure out unit-testing so Olaf can review my algorithm
+- New deadline COMPLETE algorithm: Woensdagavond 14/10
+- Schedule meeting with Olaf
+
+SHORT-TERM PLANNING:
+1) Finish complete algorithm for only two motes: 1S/1R
+	A) Implement arrays
+	B) Implement part two: encoding
+	C) (Optional) Implement unit-testing
+
+2) Meet with Olaf to discuss code
+	A) Opinion of algorithm, my way of coding, how he thinks I should approach it
+	B) Solution for multiple motes (>2): note_id, AM address, ...?
+	C) Unit-testing: is my way correct, has he got examples for me, ...?
+
+UPDATE:
+in tinyos-main/tos/system/unittest EINDELIJK gevonden waarnaar ik op zoek was:
+UNIT-testing architectuur voor simpele unit-tests in TinyOS, zonder framework zoals TUnit dat 
+hardware nodig heeft. Nog niet zeker dat het werkt uiteraard, will keep updated.

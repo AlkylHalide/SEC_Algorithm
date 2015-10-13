@@ -2,7 +2,7 @@
 // S²E²C algorithm
 
 // Sender mote broadcasts packets <Ai, lbl, dat>
-// Receiver receives packets and puts them into arrays packet_set[] according to NMote ID.
+// Receiver receives packets and puts them into array packet_set[] according to Mote ID.
 // Receiver then acknowledges packets by sending ACK <ldai, lbl> messages back to Sender.
 
 // Ai = Alternating Index
@@ -12,6 +12,8 @@
 
 #include <printf.h>
 #include "SECSend.h"
+
+//#define capacity 10
 
 module SECSendP {
   uses {
@@ -27,6 +29,9 @@ module SECSendP {
 }
 
 implementation {
+
+  /** Boolean to check if channel is busy **/
+  bool busy = FALSE;
 
   /** Define capacity **/
   uint8_t capacity = 10;
@@ -73,6 +78,8 @@ implementation {
     printf("%d\n", inMsg->ldai);
     printf("Label: \n");
     printf("%d\n", inMsg->lbl);
+    printf("Node ID: \n");
+    printf("%d\n", inMsg->nodeid);
     printfflush();
 
     //TODO: Add incoming packet to ACK_SET
@@ -84,7 +91,9 @@ implementation {
       ++AltIndex;
       AltIndex %= 3;
       
-      i = i<9?++i:0;
+      //i = i<9?++i:0;
+      ++i;
+      i %= 10;
     }
     
     return msg;
@@ -92,6 +101,7 @@ implementation {
   
   /***************** AMSend Events ****************/
   event void AMSend.sendDone(message_t *msg, error_t error) {
+    busy = FALSE;
     if(DELAY_BETWEEN_MESSAGES > 0) {
       call Timer0.startOneShot(DELAY_BETWEEN_MESSAGES);
     } else {
@@ -114,6 +124,8 @@ implementation {
 
     if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
       post send();
+    } else {
+      busy = TRUE;
     }
   }
 }

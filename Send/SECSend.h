@@ -27,6 +27,7 @@ typedef nx_struct SECMsg {
 typedef nx_struct ACKMsg {
 	nx_uint16_t ldai;
 	nx_uint16_t lbl;
+	nx_uint16_t nodeid;
 } ACKMsg;
 
 #endif

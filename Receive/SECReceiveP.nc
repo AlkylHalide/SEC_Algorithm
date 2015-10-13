@@ -2,7 +2,7 @@
 // S²E²C algorithm
 
 // Sender mote broadcasts packets <Ai, lbl, dat>
-// Receiver receives packets and puts them into arrays packet_set[] according to NMote ID.
+// Receiver receives packets and puts them into array packet_set[] according to Mote ID.
 // Receiver then acknowledges packets by sending ACK <ldai, lbl> messages back to Sender.
 
 // Ai = Alternating Index
@@ -19,7 +19,6 @@ module SECReceiveP {
     interface SplitControl as AMControl;
     interface AMSend;
     interface Packet;
-    interface AMPacket;
     interface Receive;
     interface Leds;
     interface PacketAcknowledgements;
@@ -29,8 +28,11 @@ module SECReceiveP {
 
 implementation {
   
+  /** Boolean to check if channel is busy **/
+  bool busy = FALSE;
+
   /**  Variable to keep track of the last delivered alternating index in the ABP protocol **/
-  uint16_t LastDeliveredAltIndex = 0;
+  uint16_t LastDeliveredAltIndex = 2;
 
   /** Label variable **/
   uint16_t recLbl = 0;
@@ -39,7 +41,7 @@ implementation {
   message_t ackMsg;
 
   /** Variable to store the source address of the incoming packet **/
-  uint16_t src = 0;
+  uint16_t inNodeID = 0;
   
   /***************** Prototypes ****************/
   task void send();
@@ -59,11 +61,7 @@ implementation {
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
     SECMsg* inMsg = (SECMsg*)payload;
-
-    // src = call AMPacket.source(inMsg);
-    // printf("Adres: \n");
-    // printf("%d\n", src);
-
+    
     printf("AltIndex: \n");
     printf("%d\n", inMsg->ai);
     printf("Label: \n");
@@ -71,6 +69,9 @@ implementation {
     recLbl = inMsg->lbl;
     printf("Data: \n");
     printf("%d\n", inMsg->dat);
+    printf("Node ID: \n");
+    printf("%d\n", inMsg->nodeid);
+    inNodeID = inMsg->nodeid;
     printfflush();
 
     if (inMsg->lbl == 11)
@@ -85,6 +86,7 @@ implementation {
   
   /***************** AMSend Events ****************/
   event void AMSend.sendDone(message_t *msg, error_t error) {
+    busy = FALSE;
   }
   
   /***************** Timer Events ****************/
@@ -96,13 +98,16 @@ implementation {
     ACKMsg* outMsg = (ACKMsg*)(call Packet.getPayload(&ackMsg, sizeof(ACKMsg)));
     outMsg->ldai = LastDeliveredAltIndex;
     outMsg->lbl = recLbl;
+    outMsg->nodeid = TOS_NODE_ID;
 
-    // TODO: AM_BROADCAST_ADDR is niet correct denk ik,
-    // ACK messages moeten enkel teruggestuurd worden naar
-    // de bron van originele incoming message
+    // TODO: zenden naar Node ID werkt blijkbaar niet, snap niet goed waarom.
+    // Sender broadcast alles, Receiver zou enkel ACK moeten sturen naar Sender waar inkomende
+    // message vandaan kwam.
 
-    if(call AMSend.send(AM_BROADCAST_ADDR, &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
+    if(call AMSend.send(inNodeID, &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
       post send();
+    } else {
+      busy = TRUE;
     }
   }
 }
