@@ -42,7 +42,6 @@ implementation {
   struct ACKMsg ACK_set[11];
   // We also define a loop variable to go through the array
   uint8_t j = 0;
-  // uint16_t ACK_set[11];
 
   /** AltIndex for the ABP protocol **/
   uint16_t AltIndex = 0;
@@ -71,6 +70,7 @@ implementation {
   }
   
   event void AMControl.stopDone(error_t error) {
+    // do nothing
   }
   
   /***************** Receive Events ****************/
@@ -85,13 +85,26 @@ implementation {
     printfflush();
 
     // Add incoming packet to ACK_SET
-    ACK_set[j].ldai = inMsg->ldai;
+    ACK_set[j].ldai = inMsg->ldai;  
     ACK_set[j].lbl = inMsg->lbl;
     ACK_set[j].nodeid = inMsg->nodeid;
 
-    ++;
+    // Increment the loop variable for the array
+    // The mod operation is necessary to keep the variable from going
+    // outside of the array bounds
+    ++j;
     j %= 11;
 
+    // Below is used a check for when we increment the Alternating Index
+    // and start transmitting a new message.
+    // As long as the incoming label number is smaller than 11,
+    // we keep incrementing it. From the moment it's 11, aka 11 (capacity+1)
+    // messages have been send, we put the label back at zero and increment
+    // the alternating index in modulo 3.
+
+    // TODO: this needs to change, sender sends (2*capacity + 1) packets
+    // What I need to do is change this check to one that checks if the last
+    // element of the ACK_set[] array is empty or not.
     if (msgLbl < 11) {
       ++msgLbl;
     } else {

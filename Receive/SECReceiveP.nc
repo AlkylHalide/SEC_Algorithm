@@ -41,10 +41,13 @@ implementation {
   uint16_t capacity = 10;
   
   // Packet_set array length should be 2*capacity+1
-  uint16_t array_length = 21;
+  // uint16_t array_length = 21;
 
   /** Array to contain all the received packages **/
-  struct packet_set[]
+  struct SECMsg packet_set[21];
+
+  // We also define a loop variable to go through the array
+  uint8_t j = 0;
 
   /** Message to transmit */
   message_t ackMsg;
@@ -62,9 +65,11 @@ implementation {
 
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
+    // do nothing
   }
   
   event void AMControl.stopDone(error_t error) {
+    // do nothing
   }
   
   /***************** Receive Events ****************/
@@ -83,12 +88,24 @@ implementation {
     inNodeID = inMsg->nodeid;
     printfflush();
 
+    //Add incoming packet to packet_set[]
+    packet_set[j].ai = inMsg->ai;
+    packet_set[j].lbl = inMsg->lbl;
+    packet_set[j].dat = inMsg->dat;
+    packet_set[j].nodeid = inMsg->nodeid;
+
+    // Increment the loop variable for the array
+    // The mod operation is necessary to keep the variable from going
+    // outside of the array bounds
+    ++j;
+    j %= 21;
+
+    // Net zoals bij Sender moet deze check vervangen worden door nagaan
+    // of laatste element packet_set gevuld is of niet (of zoiets toch).
     if (inMsg->lbl == 11)
       LastDeliveredAltIndex = inMsg->ai;
 
     post send();
-
-    //TODO: Add incoming SECMsg to packet_set[]
     
     return msg;
   }
