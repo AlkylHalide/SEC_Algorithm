@@ -39,7 +39,7 @@ implementation {
   /** Array to hold the ACK messages **/
   // The size of the array needs to be capacity+1,
   // but we can't assign a variable to the size of an array.
-  struct ACKMsg ACK_set[11];
+  nx_struct ACKMsg ACK_set[11];
   // We also define a loop variable to go through the array
   uint8_t j = 0;
 
@@ -66,7 +66,12 @@ implementation {
 
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
-    post send();
+    if (error == SUCCESS) {
+      // do nothing
+    }
+    else {
+      post send();
+    }
   }
   
   event void AMControl.stopDone(error_t error) {
@@ -75,49 +80,68 @@ implementation {
   
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    ACKMsg* inMsg = (ACKMsg*)payload;
-    printf("LastDeliveredAltIndex: \n");
-    printf("%d\n", inMsg->ldai);
-    printf("Label: \n");
-    printf("%d\n", inMsg->lbl);
-    printf("Node ID: \n");
-    printf("%d\n", inMsg->nodeid);
-    printfflush();
-
-    // Add incoming packet to ACK_SET
-    ACK_set[j].ldai = inMsg->ldai;  
-    ACK_set[j].lbl = inMsg->lbl;
-    ACK_set[j].nodeid = inMsg->nodeid;
-
-    // Increment the loop variable for the array
-    // The mod operation is necessary to keep the variable from going
-    // outside of the array bounds
-    ++j;
-    j %= 11;
-
-    // Below is used a check for when we increment the Alternating Index
-    // and start transmitting a new message.
-    // As long as the incoming label number is smaller than 11,
-    // we keep incrementing it. From the moment it's 11, aka 11 (capacity+1)
-    // messages have been send, we put the label back at zero and increment
-    // the alternating index in modulo 3.
-
-    // TODO: this needs to change, sender sends (2*capacity + 1) packets
-    // What I need to do is change this check to one that checks if the last
-    // element of the ACK_set[] array is empty or not.
-    if (msgLbl < 11) {
-      ++msgLbl;
-    } else {
-      msgLbl = 0;
-      ++AltIndex;
-      AltIndex %= 3;
-      
-      //i = i<9?++i:0;
-      ++i;
-      i %= 10;
-    }
     
-    return msg;
+    if (len != sizeof(ACKMsg)) {
+      return msg;
+    }
+    else {
+      ACKMsg* inMsg = (ACKMsg*)payload;
+      printf("LastDeliveredAltIndex: \n");
+      printf("%d\n", inMsg->ldai);
+      printf("Label: \n");
+      printf("%d\n", inMsg->lbl);
+      printf("Node ID: \n");
+      printf("%d\n", inMsg->nodeid);
+      printfflush();
+
+      // Add incoming packet to ACK_SET
+      ACK_set[j].ldai = inMsg->ldai;  
+      ACK_set[j].lbl = inMsg->lbl;
+      ACK_set[j].nodeid = inMsg->nodeid;
+
+      // Increment the loop variable for the array
+      // The mod operation is necessary to keep the variable from going
+      // outside of the array bounds
+      ++j;
+      j %= 11;
+
+      // Below is used a check for when we increment the Alternating Index
+      // and start transmitting a new message.
+      // As long as the incoming label number is smaller than 11,
+      // we keep incrementing it. From the moment it's 11, aka 11 (capacity+1)
+      // messages have been send, we put the label back at zero and increment
+      // the alternating index in modulo 3.
+
+      // TODO: this needs to change, sender sends (2*capacity + 1) packets
+      // What I need to do is change this check to one that checks if the last
+      // element of the ACK_set[] array is empty or not.
+      if (msgLbl < 11) {
+        ++msgLbl;
+      } else {
+        msgLbl = 0;
+        ++AltIndex;
+        AltIndex %= 3;
+        
+        //i = i<9?++i:0;
+        ++i;
+        i %= 10;
+      }
+
+      // if (ACK_set[11] == NULL) {
+      //   ++msgLbl;
+      // } else {
+      //   msgLbl = 0;
+      //   ++AltIndex;
+      //   AltIndex %= 3;
+      //   ACK_set[11] = { NULL };
+        
+      //   //i = i<9?++i:0;
+      //   ++i;
+      //   i %= 10;
+      // }
+      
+      return msg;
+    }
   }
   
   /***************** AMSend Events ****************/

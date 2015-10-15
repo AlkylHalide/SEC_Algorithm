@@ -44,7 +44,7 @@ implementation {
   // uint16_t array_length = 21;
 
   /** Array to contain all the received packages **/
-  struct SECMsg packet_set[21];
+  nx_struct SECMsg packet_set[21];
 
   // We also define a loop variable to go through the array
   uint8_t j = 0;
@@ -74,40 +74,50 @@ implementation {
   
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    SECMsg* inMsg = (SECMsg*)payload;
-    
-    printf("AltIndex: \n");
-    printf("%d\n", inMsg->ai);
-    printf("Label: \n");
-    printf("%d\n", inMsg->lbl);
-    recLbl = inMsg->lbl;
-    printf("Data: \n");
-    printf("%d\n", inMsg->dat);
-    printf("Node ID: \n");
-    printf("%d\n", inMsg->nodeid);
-    inNodeID = inMsg->nodeid;
-    printfflush();
+    if (len != sizeof(SECMsg)) {
+      return msg;
+    }
+    else {
+      SECMsg* inMsg = (SECMsg*)payload;
+      
+      printf("AltIndex: \n");
+      printf("%d\n", inMsg->ai);
+      printf("Label: \n");
+      printf("%d\n", inMsg->lbl);
+      recLbl = inMsg->lbl;
+      printf("Data: \n");
+      printf("%d\n", inMsg->dat);
+      printf("Node ID: \n");
+      printf("%d\n", inMsg->nodeid);
+      inNodeID = inMsg->nodeid;
+      printfflush();
 
-    //Add incoming packet to packet_set[]
-    packet_set[j].ai = inMsg->ai;
-    packet_set[j].lbl = inMsg->lbl;
-    packet_set[j].dat = inMsg->dat;
-    packet_set[j].nodeid = inMsg->nodeid;
+      //Add incoming packet to packet_set[]
+      packet_set[j].ai = inMsg->ai;
+      packet_set[j].lbl = inMsg->lbl;
+      packet_set[j].dat = inMsg->dat;
+      packet_set[j].nodeid = inMsg->nodeid;
 
-    // Increment the loop variable for the array
-    // The mod operation is necessary to keep the variable from going
-    // outside of the array bounds
-    ++j;
-    j %= 21;
+      // Increment the loop variable for the array
+      // The mod operation is necessary to keep the variable from going
+      // outside of the array bounds
+      ++j;
+      j %= 21;
 
-    // Net zoals bij Sender moet deze check vervangen worden door nagaan
-    // of laatste element packet_set gevuld is of niet (of zoiets toch).
-    if (inMsg->lbl == 11)
-      LastDeliveredAltIndex = inMsg->ai;
+      // Net zoals bij Sender moet deze check vervangen worden door nagaan
+      // of laatste element packet_set gevuld is of niet (of zoiets toch).
+      if (inMsg->lbl == 11)
+        LastDeliveredAltIndex = inMsg->ai;
 
-    post send();
-    
-    return msg;
+      // if (packet_set[21] != { NULL }) {
+      //   LastDeliveredAltIndex = inMsg->ai;
+      //   packet_set[21] = { NULL };
+      // }
+
+      post send();
+      
+      return msg;      
+    }
   }
   
   /***************** AMSend Events ****************/

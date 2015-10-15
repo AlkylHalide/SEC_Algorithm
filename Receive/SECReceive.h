@@ -24,14 +24,14 @@
 // did not match. Changing the nx_struct here to struct made it work.
 // I'm wondering if the platfrom independence still works now I've removed
 // the nx_prefix.
-typedef struct SECMsg {
+typedef nx_struct SECMsg {
 	nx_uint16_t ai;
 	nx_uint16_t lbl;
 	nx_uint16_t dat;
 	nx_uint16_t nodeid;
 } SECMsg;
 
-typedef struct ACKMsg {
+typedef nx_struct ACKMsg {
 	nx_uint16_t ldai;
 	nx_uint16_t lbl;
 	nx_uint16_t nodeid;
