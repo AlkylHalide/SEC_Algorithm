@@ -52,3 +52,25 @@ hardware nodig heeft. Nog niet zeker dat het werkt uiteraard, will keep updated.
 TODO:
 - Send.h en Receiver.h kunnen generalised worden in de hoofdmap SEC volgens mij
 - S/R beiden variabele capacity nodig, dus define deze misschien best in bovenstaande algemene .h file
+
+/*** 19/10 ***/
+Meeting with Elad
+- I told him the algorithm is completely done except for the Fetch() function. This was as a response to his question wether the advanced
+algorithm was finished or not. He proposes using a large file to send between motes and then diffing it on both ends (source-destination)
+to see if there are any differences
+- He is going to make some scenarios for me to test my algorithm in (experiments). In the meantime I should look at LibReplay
+- NEW DEADLINE: Monday 26/10 --> 6 days
+
+TODO:
+- Finish advanced algorithm
+	* Correct functioning of arrays packet_set[] and ACK_set[]								[TUE]
+	* AM_type for different messages														[TUE]
+	* Fetch() --> PC-serial communication or just reading large file? See what works.		[WED]
+	* Deliver()																				[WED]
+	* packet_set()																			[WED]
+	* Encode()																				[THU]
+	* Decode()																				[THU]
+- Test it using large file to transfer, then diff it at both ends							[FRI]
+- Unit-test the algorithm as completely as possible											[FRI]
+- Study LibReplay and see how it works														[SAT]
+- Clean up algorithm code																	[SUN]

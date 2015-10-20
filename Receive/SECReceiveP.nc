@@ -65,7 +65,12 @@ implementation {
 
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
-    // do nothing
+    if (error == SUCCESS) {
+      // do nothing
+    }
+    else {
+      packet_set[20].lbl = 0;
+    }
   }
   
   event void AMControl.stopDone(error_t error) {
@@ -106,13 +111,13 @@ implementation {
 
       // Net zoals bij Sender moet deze check vervangen worden door nagaan
       // of laatste element packet_set gevuld is of niet (of zoiets toch).
-      if (inMsg->lbl == 11)
-        LastDeliveredAltIndex = inMsg->ai;
-
-      // if (packet_set[21] != { NULL }) {
+      // if (inMsg->lbl == 21)
       //   LastDeliveredAltIndex = inMsg->ai;
-      //   packet_set[21] = { NULL };
-      // }
+
+      if (packet_set[20].lbl != 0 ) {
+        LastDeliveredAltIndex = inMsg->ai;
+        packet_set[20].lbl = 0;
+      }
 
       post send();
       

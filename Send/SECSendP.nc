@@ -70,6 +70,7 @@ implementation {
       // do nothing
     }
     else {
+      ACK_set[10].lbl = 0;
       post send();
     }
   }
@@ -115,30 +116,30 @@ implementation {
       // TODO: this needs to change, sender sends (2*capacity + 1) packets
       // What I need to do is change this check to one that checks if the last
       // element of the ACK_set[] array is empty or not.
-      if (msgLbl < 11) {
-        ++msgLbl;
-      } else {
-        msgLbl = 0;
-        ++AltIndex;
-        AltIndex %= 3;
-        
-        //i = i<9?++i:0;
-        ++i;
-        i %= 10;
-      }
-
-      // if (ACK_set[11] == NULL) {
+      // if (msgLbl < 11) {
       //   ++msgLbl;
       // } else {
       //   msgLbl = 0;
       //   ++AltIndex;
       //   AltIndex %= 3;
-      //   ACK_set[11] = { NULL };
         
       //   //i = i<9?++i:0;
       //   ++i;
       //   i %= 10;
       // }
+
+      if (ACK_set[10].lbl == 0) {
+        ++msgLbl;
+      } else {
+        msgLbl = 0;
+        ++AltIndex;
+        AltIndex %= 3;
+        ACK_set[10].lbl = 0;
+        
+        //i = i<9?++i:0;
+        ++i;
+        i %= 10;
+      }
       
       return msg;
     }
