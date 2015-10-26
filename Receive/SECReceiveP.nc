@@ -44,10 +44,10 @@ implementation {
   // uint16_t array_length = 21;
 
   /** Array to contain all the received packages **/
-  // nx_struct SECMsg packet_set[11];
+  nx_struct SECMsg packet_set[11];
 
   // We also define a loop variable to go through the array
-  // uint8_t j = 0;
+  uint8_t j = 0;
 
   /** Message to transmit */
   message_t ackMsg;
@@ -67,8 +67,9 @@ implementation {
   event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
       // This is an initialization for the last element of the packet_set array.
-      // Every iteration
-      // packet_set[10].lbl = 0;
+      // This is done so every iteration of the Receive.receive() function I can 
+      // check if the label of the last element of the array is empty or not.
+      packet_set[10].lbl = 0;
     }
     else {
       call AMControl.start();
@@ -99,27 +100,28 @@ implementation {
       inNodeID = inMsg->nodeid;
       printfflush();
 
-      //Add incoming packet to packet_set[]
-      // packet_set[j].ai = inMsg->ai;
-      // packet_set[j].lbl = inMsg->lbl;
-      // packet_set[j].dat = inMsg->dat;
-      // packet_set[j].nodeid = inMsg->nodeid;
+      // Add incoming packet to packet_set[]
+      packet_set[j].ai = inMsg->ai;
+      packet_set[j].lbl = inMsg->lbl;
+      packet_set[j].dat = inMsg->dat;
+      packet_set[j].nodeid = inMsg->nodeid;
 
       // Increment the loop variable for the array
       // The mod operation is necessary to keep the variable from going
       // outside of the array bounds
-      // ++j;
-      // j %= 21;
+      ++j;
+      j %= 11;
 
-      // Net zoals bij Sender moet deze check vervangen worden door nagaan
-      // of laatste element packet_set gevuld is of niet (of zoiets toch).
-      if (inMsg->lbl == 11)
-        LastDeliveredAltIndex = inMsg->ai;
-
-      // if (packet_set[20].lbl != 0 ) {
+      // Check to see if the lbl variable of the incoming packet is 11 or not.
+      // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
+      // NO: continue normal operation.
+      // if (inMsg->lbl == 11)
       //   LastDeliveredAltIndex = inMsg->ai;
-      //   packet_set[20].lbl = 0;
-      // }
+
+      if (packet_set[10].lbl != 0 ) {
+        LastDeliveredAltIndex = inMsg->ai;
+        packet_set[10].lbl = 0;
+      }
 
       post send();
       
