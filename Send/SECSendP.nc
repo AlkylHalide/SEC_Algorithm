@@ -37,15 +37,15 @@ implementation {
   /** Array to hold the ACK messages **/
   // The size of the array needs to be capacity+1,
   // but we can't assign a variable to the size of an array.
-  // nx_struct ACKMsg ACK_set[11];
+  nx_struct ACKMsg ACK_set[11];
   // We also define a loop variable to go through the array
-  // uint8_t j = 0;
+  uint8_t j = 0;
 
   /** AltIndex for the ABP protocol **/
   uint16_t AltIndex = 0;
 
   /** Label variable **/
-  uint16_t msgLbl = 0;
+  uint16_t msgLbl = 1;
 
   /** Message/data variable **/
   uint8_t i = 0;
@@ -65,7 +65,7 @@ implementation {
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
-      // ACK_set[10].lbl = 0;
+      ACK_set[10].lbl = 0;
       post send();
     }
     else {
@@ -79,7 +79,6 @@ implementation {
   
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    
     if (len != sizeof(ACKMsg)) {
       return msg;
     }
@@ -94,15 +93,15 @@ implementation {
       printfflush();
 
       // Add incoming packet to ACK_SET
-      // ACK_set[j].ldai = inMsg->ldai;  
-      // ACK_set[j].lbl = inMsg->lbl;
-      // ACK_set[j].nodeid = inMsg->nodeid;
+      ACK_set[j].ldai = inMsg->ldai;  
+      ACK_set[j].lbl = inMsg->lbl;
+      ACK_set[j].nodeid = inMsg->nodeid;
 
       // Increment the loop variable for the array
       // The mod operation is necessary to keep the variable from going
       // outside of the array bounds
-      // ++j;
-      // j %= 11;
+      ++j;
+      j %= 11;
 
       // Below is used a check for when we increment the Alternating Index
       // and start transmitting a new message.
@@ -114,30 +113,30 @@ implementation {
       // TODO: this needs to change, sender sends (2*capacity + 1) packets
       // What I need to do is change this check to one that checks if the last
       // element of the ACK_set[] array is empty or not.
-      if (msgLbl < 11) {
-        ++msgLbl;
-      } else {
-        msgLbl = 0;
-        ++AltIndex;
-        AltIndex %= 3;
-        
-        // i = i<9?++i:0;
-        ++i;
-        i %= 10;
-      }
-
-      // if (ACK_set[10].lbl == 0) {
+      // if (msgLbl < 11) {
       //   ++msgLbl;
       // } else {
       //   msgLbl = 0;
       //   ++AltIndex;
       //   AltIndex %= 3;
-      //   ACK_set[10].lbl = 0;
         
-      //   //i = i<9?++i:0;
+      //   // i = i<9?++i:0;
       //   ++i;
       //   i %= 10;
       // }
+
+      if (ACK_set[10].lbl == 0) {
+        ++msgLbl;
+      } else {
+        msgLbl = 1;
+        ++AltIndex;
+        AltIndex %= 3;
+        ACK_set[10].lbl = 0;
+        
+        //i = i<9?++i:0;
+        ++i;
+        i %= 10;
+      }
       
       return msg;
     }

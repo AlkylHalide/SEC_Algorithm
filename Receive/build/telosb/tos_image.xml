@@ -1,12 +1,12 @@
 <tos_image>
   <ident>
-    <uidhash>BF317A52L</uidhash>
+    <hostname>evert-PC</hostname>
+    <timestamp>562E201BL</timestamp>
+    <deluge_support>no</deluge_support>
     <username>evert</username>
     <platform>telosb</platform>
-    <deluge_support>no</deluge_support>
-    <hostname>evert-PC</hostname>
     <appname>SECReceiveC</appname>
-    <timestamp>562E0631L</timestamp>
+    <uidhash>6665406CL</uidhash>
     <userhash>8ED234E0L</userhash>
   </ident>
   <image format="ihex">
