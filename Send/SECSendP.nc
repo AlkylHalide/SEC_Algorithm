@@ -116,8 +116,6 @@ implementation {
         ++AltIndex;
         AltIndex %= 3;
         ACK_set[10].lbl = 0;
-        
-        //i = i<9?++i:0;
         ++i;
         i %= 10;
       } else {

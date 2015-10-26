@@ -39,7 +39,7 @@ implementation {
   uint16_t recLbl = 0;
 
   // Define capacity variable [NOT USED]
-  uint16_t capacity = 10;
+  // uint16_t capacity = 10;
   
   // Array to contain all the received packages
   // Packet_set array length should be 2*capacity+1
