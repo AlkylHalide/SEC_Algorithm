@@ -111,7 +111,7 @@ implementation {
 
       // Net zoals bij Sender moet deze check vervangen worden door nagaan
       // of laatste element packet_set gevuld is of niet (of zoiets toch).
-      if (inMsg->lbl == 21)
+      if (inMsg->lbl == 11)
         LastDeliveredAltIndex = inMsg->ai;
 
       // if (packet_set[20].lbl != 0 ) {
@@ -136,19 +136,21 @@ implementation {
   
   /***************** Tasks ****************/
   task void send() {
-    ACKMsg* outMsg = (ACKMsg*)(call Packet.getPayload(&ackMsg, sizeof(ACKMsg)));
-    outMsg->ldai = LastDeliveredAltIndex;
-    outMsg->lbl = recLbl;
-    outMsg->nodeid = TOS_NODE_ID;
+    if(!busy){
+      ACKMsg* outMsg = (ACKMsg*)(call Packet.getPayload(&ackMsg, sizeof(ACKMsg)));
+      outMsg->ldai = LastDeliveredAltIndex;
+      outMsg->lbl = recLbl;
+      outMsg->nodeid = TOS_NODE_ID;
 
-    // TODO: zenden naar Node ID werkt blijkbaar niet, snap niet goed waarom.
-    // Sender broadcast alles, Receiver zou enkel ACK moeten sturen naar Sender waar inkomende
-    // message vandaan kwam.
+      // TODO: zenden naar Node ID werkt blijkbaar niet, snap niet goed waarom.
+      // Sender broadcast alles, Receiver zou enkel ACK moeten sturen naar Sender waar inkomende
+      // message vandaan kwam.
 
-    if(call AMSend.send(inNodeID, &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
-      post send();
-    } else {
-      busy = TRUE;
+      if(call AMSend.send(inNodeID, &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
+        post send();
+      } else {
+        busy = TRUE;
+      }
     }
   }
 }
