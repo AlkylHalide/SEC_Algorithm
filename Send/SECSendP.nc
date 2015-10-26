@@ -29,7 +29,7 @@ module SECSendP {
 implementation {
 
   /** Boolean to check if channel is busy **/
-  // bool busy = FALSE;
+  bool busy = FALSE;
 
   /** Define capacity **/
   uint8_t capacity = 10;
@@ -145,7 +145,7 @@ implementation {
   
   /***************** AMSend Events ****************/
   event void AMSend.sendDone(message_t *msg, error_t error) {
-    // busy = FALSE;
+    busy = FALSE;
     if(DELAY_BETWEEN_MESSAGES > 0) {
       call Timer0.startOneShot(DELAY_BETWEEN_MESSAGES);
     } else {
@@ -160,17 +160,18 @@ implementation {
   
   /***************** Tasks ****************/
   task void send() {
-    SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
-    btrMsg->ai = AltIndex;
-    btrMsg->lbl = msgLbl;
-    btrMsg->dat = m[i];
-    btrMsg->nodeid = TOS_NODE_ID;
+    if(!busy){
+      SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
+      btrMsg->ai = AltIndex;
+      btrMsg->lbl = msgLbl;
+      btrMsg->dat = m[i];
+      btrMsg->nodeid = TOS_NODE_ID;
 
-    if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
-      post send();
+      if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
+        post send();
+      } else {
+        busy = TRUE;
+      }
     }
-    // } else {
-    //   busy = TRUE;
-    // }
   }
 }
