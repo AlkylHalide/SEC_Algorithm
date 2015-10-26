@@ -13,7 +13,7 @@
 #include <printf.h>
 #include "SECSend.h"
 
-//#define capacity 10
+// #define capacity 10
 
 module SECSendP {
   uses {
