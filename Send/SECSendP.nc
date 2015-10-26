@@ -125,9 +125,7 @@ implementation {
       //   i %= 10;
       // }
 
-      if (ACK_set[10].lbl == 0) {
-        ++msgLbl;
-      } else {
+      if (ACK_set[10].lbl != 0) {
         msgLbl = 1;
         ++AltIndex;
         AltIndex %= 3;
@@ -136,6 +134,8 @@ implementation {
         //i = i<9?++i:0;
         ++i;
         i %= 10;
+      } else {
+        ++msgLbl;
       }
       
       return msg;

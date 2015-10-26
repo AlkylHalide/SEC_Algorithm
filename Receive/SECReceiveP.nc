@@ -44,7 +44,7 @@ implementation {
   // uint16_t array_length = 21;
 
   /** Array to contain all the received packages **/
-  // nx_struct SECMsg packet_set[21];
+  // nx_struct SECMsg packet_set[11];
 
   // We also define a loop variable to go through the array
   // uint8_t j = 0;
@@ -66,10 +66,12 @@ implementation {
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
-      // do nothing
+      // This is an initialization for the last element of the packet_set array.
+      // Every iteration
+      // packet_set[10].lbl = 0;
     }
     else {
-      // packet_set[20].lbl = 0;
+      call AMControl.start();
     }
   }
   
