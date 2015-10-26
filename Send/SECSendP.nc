@@ -28,30 +28,31 @@ module SECSendP {
 
 implementation {
 
-  /** Boolean to check if channel is busy **/
+  /***************** Local variables ****************/
+  // Boolean to check if channel is busy
   bool busy = FALSE;
 
-  /** Define capacity **/
-  uint8_t capacity = 10;
+  // Define capacity [NOT USED]
+  // uint8_t capacity = 10;
 
-  /** Array to hold the ACK messages **/
-  // The size of the array needs to be capacity+1,
-  // but we can't assign a variable to the size of an array.
+  // Array to hold the ACK messages
+  // The size of the array is equal to capacity+1
   nx_struct ACKMsg ACK_set[11];
+  
   // We also define a loop variable to go through the array
   uint8_t j = 0;
 
-  /** AltIndex for the ABP protocol **/
+  // AltIndex for the ABP protocol
   uint16_t AltIndex = 0;
 
-  /** Label variable **/
+  // Label variable
   uint16_t msgLbl = 1;
 
-  /** Message/data variable **/
+  // Message/data variable
   uint8_t i = 0;
   uint16_t m[] = {9,8,7,6,5,4,3,2,1,0};
 
-  /** Message to transmit */
+  // Message to transmit
   message_t myMsg;
   
   /***************** Prototypes ****************/
@@ -103,27 +104,12 @@ implementation {
       ++j;
       j %= 11;
 
-      // Below is used a check for when we increment the Alternating Index
+      // Below is a check for when we increment the Alternating Index
       // and start transmitting a new message.
-      // As long as the incoming label number is smaller than 11,
-      // we keep incrementing it. From the moment it's 11, aka 11 (capacity+1)
+      // As long as the ACK_set array is not full (checked by seeing if the lbl at position 11 is 0 or not),
+      // we keep the label. From the moment it's full, aka 11 (capacity+1)
       // messages have been send, we put the label back at zero and increment
       // the alternating index in modulo 3.
-
-      // TODO: this needs to change, sender sends (2*capacity + 1) packets
-      // What I need to do is change this check to one that checks if the last
-      // element of the ACK_set[] array is empty or not.
-      // if (msgLbl < 11) {
-      //   ++msgLbl;
-      // } else {
-      //   msgLbl = 0;
-      //   ++AltIndex;
-      //   AltIndex %= 3;
-        
-      //   // i = i<9?++i:0;
-      //   ++i;
-      //   i %= 10;
-      // }
 
       if (ACK_set[10].lbl != 0) {
         msgLbl = 1;

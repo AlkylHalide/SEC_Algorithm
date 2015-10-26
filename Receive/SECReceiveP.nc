@@ -28,31 +28,30 @@ module SECReceiveP {
 
 implementation {
   
-  /** Boolean to check if channel is busy **/
+  /***************** Local variables ****************/
+  // Boolean to check if channel is busy
   bool busy = FALSE;
 
-  /**  Variable to keep track of the last delivered alternating index in the ABP protocol **/
+  // Variable to keep track of the last delivered alternating index in the ABP protocol
   uint16_t LastDeliveredAltIndex = 2;
 
-  /** Label variable **/
+  // Label variable
   uint16_t recLbl = 0;
 
-  /** Define capacity variable **/
+  // Define capacity variable [NOT USED]
   uint16_t capacity = 10;
   
+  // Array to contain all the received packages
   // Packet_set array length should be 2*capacity+1
-  // uint16_t array_length = 21;
-
-  /** Array to contain all the received packages **/
   nx_struct SECMsg packet_set[11];
 
-  // We also define a loop variable to go through the array
+  // Loop variable to go through the array
   uint8_t j = 0;
 
-  /** Message to transmit */
+  // Message to transmit
   message_t ackMsg;
 
-  /** Variable to store the source address of the incoming packet **/
+  // Variable to store the source address [Node ID] of the incoming packet
   uint16_t inNodeID = 0;
   
   /***************** Prototypes ****************/

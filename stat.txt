@@ -63,7 +63,7 @@ to see if there are any differences
 
 TODO:
 - Finish advanced algorithm
-	* Correct functioning of arrays packet_set[] and ACK_set[]								[TUE]
+	* Correct functioning of arrays packet_set[] and ACK_set[]								[TUE] --> DONE
 	* AM_type for different messages														[TUE]
 	* Fetch() --> PC-serial communication or just reading large file? See what works.		[THU]
 	* Deliver()																				[THU]
