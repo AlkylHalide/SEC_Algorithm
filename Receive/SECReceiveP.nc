@@ -2,7 +2,7 @@
 // S²E²C algorithm
 
 // Sender mote broadcasts packets <Ai, lbl, dat>
-// Receiver receives packets and puts them into array packet_set[] according to Mote ID.
+// Receiver receives packets and puts them into array packet_set[]
 // Receiver then acknowledges packets by sending ACK <ldai, lbl> messages back to Sender.
 
 // Ai = Alternating Index
@@ -44,10 +44,10 @@ implementation {
   // uint16_t array_length = 21;
 
   /** Array to contain all the received packages **/
-  nx_struct SECMsg packet_set[21];
+  // nx_struct SECMsg packet_set[21];
 
   // We also define a loop variable to go through the array
-  uint8_t j = 0;
+  // uint8_t j = 0;
 
   /** Message to transmit */
   message_t ackMsg;
@@ -69,7 +69,7 @@ implementation {
       // do nothing
     }
     else {
-      packet_set[20].lbl = 0;
+      // packet_set[20].lbl = 0;
     }
   }
   
@@ -98,26 +98,26 @@ implementation {
       printfflush();
 
       //Add incoming packet to packet_set[]
-      packet_set[j].ai = inMsg->ai;
-      packet_set[j].lbl = inMsg->lbl;
-      packet_set[j].dat = inMsg->dat;
-      packet_set[j].nodeid = inMsg->nodeid;
+      // packet_set[j].ai = inMsg->ai;
+      // packet_set[j].lbl = inMsg->lbl;
+      // packet_set[j].dat = inMsg->dat;
+      // packet_set[j].nodeid = inMsg->nodeid;
 
       // Increment the loop variable for the array
       // The mod operation is necessary to keep the variable from going
       // outside of the array bounds
-      ++j;
-      j %= 21;
+      // ++j;
+      // j %= 21;
 
       // Net zoals bij Sender moet deze check vervangen worden door nagaan
       // of laatste element packet_set gevuld is of niet (of zoiets toch).
-      // if (inMsg->lbl == 21)
-      //   LastDeliveredAltIndex = inMsg->ai;
-
-      if (packet_set[20].lbl != 0 ) {
+      if (inMsg->lbl == 21)
         LastDeliveredAltIndex = inMsg->ai;
-        packet_set[20].lbl = 0;
-      }
+
+      // if (packet_set[20].lbl != 0 ) {
+      //   LastDeliveredAltIndex = inMsg->ai;
+      //   packet_set[20].lbl = 0;
+      // }
 
       post send();
       
