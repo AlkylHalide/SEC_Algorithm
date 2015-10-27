@@ -50,8 +50,8 @@
 #include <stdio.h>
 #define mm  4           /* RS code over GF(2**4) - change to suit */
 #define nn  15          /* nn=2**mm -1   length of codeword */
-#define tt  3           /* number of errors that can be corrected */
-#define kk  9           /* kk = nn-2*tt  */
+#define tt  5           /* number of errors that can be corrected */
+#define kk  5           /* kk = nn-2*tt  */
 
 int pp [mm+1] = { 1, 1, 0, 0, 1} ; /* specify irreducible polynomial coeffts */
 int alpha_to [nn+1], index_of [nn+1], gg [nn-kk+1] ;
