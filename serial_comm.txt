@@ -1,0 +1,14 @@
+# How to setup serial communication with motes in Cooja
+
+1) Set up simulation, at least one mote needs to send data to the serial port
+
+2) Right-click mote, select "Mote tools for Sky X" --> "Serial Socket (SERVER)"
+
+3) Serial Socket (SERVER) windows pops up, adjust port if needed and select "Connect"
+	Let's say you set the port at 60002
+
+4) Open terminal and type following command:
+
+	java net.tinyos.tools.Listen -comm network@localhost:PORT_NUMBER
+
+	So in this case PORT_NUMBER needs to be changed to 60002

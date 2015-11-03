@@ -19,6 +19,7 @@ module SECSendP {
     interface SplitControl as AMControl;
     interface AMSend;
     interface Packet;
+    interface AMPacket;
     interface Receive;
     interface Leds;
     interface PacketAcknowledgements;
@@ -49,8 +50,9 @@ implementation {
   uint16_t msgLbl = 1;
 
   // Message/data variable
-  uint8_t i = 0;
-  uint16_t m[] = {9,8,7,6,5,4,3,2,1,0};
+  // uint8_t i = 0;
+  // uint16_t m[] = {9,8,7,6,5,4,3,2,1,0};
+  uint16_t counter = 0;
 
   // Message to transmit
   message_t myMsg;
@@ -80,18 +82,25 @@ implementation {
   
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    if (len != sizeof(ACKMsg)) {
+    // if (len != sizeof(ACKMsg)) {
+    //   return msg;
+    // }
+    
+    printf("%d\n", call AMPacket.type(msg));
+    printfflush();
+
+    if(call AMPacket.type(msg) != AM_ACKMSG) {
       return msg;
     }
     else {
       ACKMsg* inMsg = (ACKMsg*)payload;
-      printf("LastDeliveredAltIndex: \n");
-      printf("%d\n", inMsg->ldai);
-      printf("Label: \n");
-      printf("%d\n", inMsg->lbl);
-      printf("Node ID: \n");
-      printf("%d\n", inMsg->nodeid);
-      printfflush();
+      // printf("LastDeliveredAltIndex: \n");
+      // printf("%d\n", inMsg->ldai);
+      // printf("Label: \n");
+      // printf("%d\n", inMsg->lbl);
+      // printf("Node ID: \n");
+      // printf("%d\n", inMsg->nodeid);
+      // printfflush();
 
       // Add incoming packet to ACK_SET
       ACK_set[j].ldai = inMsg->ldai;  
@@ -116,8 +125,9 @@ implementation {
         ++AltIndex;
         AltIndex %= 3;
         ACK_set[10].lbl = 0;
-        ++i;
-        i %= 10;
+        // ++i;
+        // i %= 10;
+        ++counter;
       } else {
         ++msgLbl;
       }
@@ -145,10 +155,15 @@ implementation {
   task void send() {
     if(!busy){
       SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
+      // call AMPacket.setType(&myMsg, AM_SECMSG);
       btrMsg->ai = AltIndex;
       btrMsg->lbl = msgLbl;
-      btrMsg->dat = m[i];
+      //btrMsg->dat = m[i];
+      btrMsg->dat = counter;
       btrMsg->nodeid = TOS_NODE_ID;
+
+      printf("%d\n", call AMPacket.type(&myMsg));
+      printfflush();
 
       if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
         post send();

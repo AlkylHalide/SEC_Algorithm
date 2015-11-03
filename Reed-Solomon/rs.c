@@ -368,10 +368,10 @@ data[1] = 6 ;
 data[2] = 8 ;
 data[3] = 1 ;
 data[4] = 2 ;
-data[5] = 4 ;
-data[6] = 15 ;
-data[7] = 9 ;
-data[8] = 9 ;
+// data[5] = 4 ;
+// data[6] = 15 ;
+// data[7] = 9 ;
+// data[8] = 9 ;
 
 /* encode data[] to produce parity in bb[].  Data input and parity output
    is in polynomial form

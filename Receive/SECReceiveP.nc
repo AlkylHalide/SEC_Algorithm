@@ -19,6 +19,7 @@ module SECReceiveP {
     interface SplitControl as AMControl;
     interface AMSend;
     interface Packet;
+    interface AMPacket;
     interface Receive;
     interface Leds;
     interface PacketAcknowledgements;
@@ -53,6 +54,11 @@ implementation {
 
   // Variable to store the source address [Node ID] of the incoming packet
   uint16_t inNodeID = 0;
+
+  // On this receiver side we also add a counter value that runs equal to the counter
+  // at the sender side, which we receive as the data in the packets.
+  // By comparing both counters we can check if data gets corrupt during transfer or not.
+  uint16_t counter = 0;
   
   /***************** Prototypes ****************/
   task void send();
@@ -81,23 +87,42 @@ implementation {
   
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    if (len != sizeof(SECMsg)) {
+    // if (len != sizeof(SECMsg)) {
+    //   return msg;
+    // }
+
+    printf("%d\n", call AMPacket.type(msg));
+    printfflush();
+
+    if(call AMPacket.type(msg) != AM_SECMSG) {
       return msg;
     }
     else {
       SECMsg* inMsg = (SECMsg*)payload;
       
-      printf("AltIndex: \n");
-      printf("%d\n", inMsg->ai);
-      printf("Label: \n");
-      printf("%d\n", inMsg->lbl);
+      if(counter != counter){
+        printf("COUNTER VALUES NOT MATCHING\n");
+        printf("CounterRec: ");
+        printf("%d\n", inMsg->dat);
+        printf("CounterSend: ");
+        printf("%d\n", counter);
+        printfflush();
+      } else {
+        printf("COUNTER VALUES MATCH\n");
+        printfflush();
+      }
+
+      // printf("AltIndex: \n");
+      // printf("%d\n", inMsg->ai);
+      // printf("Label: \n");
+      // printf("%d\n", inMsg->lbl);
       recLbl = inMsg->lbl;
-      printf("Data: \n");
-      printf("%d\n", inMsg->dat);
-      printf("Node ID: \n");
-      printf("%d\n", inMsg->nodeid);
+      // printf("Data: \n");
+      //printf("%d\n", inMsg->dat);
+      // printf("Node ID: \n");
+      // printf("%d\n", inMsg->nodeid);
       inNodeID = inMsg->nodeid;
-      printfflush();
+      // printfflush();
 
       // Add incoming packet to packet_set[]
       packet_set[j].ai = inMsg->ai;
@@ -120,6 +145,7 @@ implementation {
       if (packet_set[10].lbl != 0 ) {
         LastDeliveredAltIndex = inMsg->ai;
         packet_set[10].lbl = 0;
+        ++counter;
       }
 
       post send();
@@ -141,9 +167,13 @@ implementation {
   task void send() {
     if(!busy){
       ACKMsg* outMsg = (ACKMsg*)(call Packet.getPayload(&ackMsg, sizeof(ACKMsg)));
+      // call AMPacket.setType(&ackMsg, AM_SECMSG);
       outMsg->ldai = LastDeliveredAltIndex;
       outMsg->lbl = recLbl;
       outMsg->nodeid = TOS_NODE_ID;
+
+      printf("%d\n", call AMPacket.type(&ackMsg));
+      printfflush();
 
       // TODO: zenden naar Node ID werkt blijkbaar niet, snap niet goed waarom.
       // Sender broadcast alles, Receiver zou enkel ACK moeten sturen naar Sender waar inkomende
