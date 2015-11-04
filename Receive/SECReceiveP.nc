@@ -39,8 +39,7 @@ implementation {
   // Label variable
   uint16_t recLbl = 0;
 
-  // Define capacity variable [NOT USED]
-  // uint16_t capacity = 10;
+  // CAPACITY is defined as 10
   
   // Array to contain all the received packages
   // Packet_set array length should be 2*capacity+1
@@ -87,10 +86,6 @@ implementation {
   
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    // if (len != sizeof(SECMsg)) {
-    //   return msg;
-    // }
-
     printf("%d\n", call AMPacket.type(msg));
     printfflush();
 

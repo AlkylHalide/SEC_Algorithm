@@ -79,10 +79,6 @@ implementation {
   
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    // if (len != sizeof(ACKMsg)) {
-    //   return msg;
-    // }
-    
     printf("%d\n", call AMPacket.type(msg));
     printfflush();
 
