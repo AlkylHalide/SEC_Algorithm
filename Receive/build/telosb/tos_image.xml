@@ -1,13 +1,13 @@
 <tos_image>
   <ident>
-    <appname>SECReceiveC</appname>
-    <deluge_support>no</deluge_support>
     <userhash>8ED234E0L</userhash>
-    <timestamp>5639ECC9L</timestamp>
-    <uidhash>8CD56DAEL</uidhash>
-    <hostname>evert-PC</hostname>
+    <uidhash>2396276DL</uidhash>
     <platform>telosb</platform>
+    <hostname>evert-PC</hostname>
+    <deluge_support>no</deluge_support>
     <username>evert</username>
+    <appname>SECReceiveC</appname>
+    <timestamp>563A0693L</timestamp>
   </ident>
   <image format="ihex">
 :104000005542200135D0085A8245E8143140003924
