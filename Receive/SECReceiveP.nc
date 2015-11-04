@@ -112,17 +112,17 @@ implementation {
         printfflush();
       }
 
-      // printf("AltIndex: \n");
-      // printf("%d\n", inMsg->ai);
-      // printf("Label: \n");
-      // printf("%d\n", inMsg->lbl);
+      printf("AltIndex: \n");
+      printf("%d\n", inMsg->ai);
+      printf("Label: \n");
+      printf("%d\n", inMsg->lbl);
       recLbl = inMsg->lbl;
-      // printf("Data: \n");
-      //printf("%d\n", inMsg->dat);
-      // printf("Node ID: \n");
-      // printf("%d\n", inMsg->nodeid);
+      printf("Data: \n");
+      printf("%d\n", inMsg->dat);
+      printf("Node ID: \n");
+      printf("%d\n", inMsg->nodeid);
       inNodeID = inMsg->nodeid;
-      // printfflush();
+      printfflush();
 
       // Add incoming packet to packet_set[]
       packet_set[j].ai = inMsg->ai;
@@ -130,17 +130,14 @@ implementation {
       packet_set[j].dat = inMsg->dat;
       packet_set[j].nodeid = inMsg->nodeid;
 
-      // Increment the loop variable for the array
-      // The mod operation is necessary to keep the variable from going
-      // outside of the array bounds
+      // Increment the loop variable for the ACK_set array in modulo 11
+      // to keep the variable from going outside of array bounds
       ++j;
       j %= 11;
 
       // Check to see if the lbl variable of the incoming packet is 11 or not.
       // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
       // NO: continue normal operation.
-      // if (inMsg->lbl == 11)
-      //   LastDeliveredAltIndex = inMsg->ai;
 
       if (packet_set[10].lbl != 0 ) {
         LastDeliveredAltIndex = inMsg->ai;
@@ -167,7 +164,6 @@ implementation {
   task void send() {
     if(!busy){
       ACKMsg* outMsg = (ACKMsg*)(call Packet.getPayload(&ackMsg, sizeof(ACKMsg)));
-      // call AMPacket.setType(&ackMsg, AM_SECMSG);
       outMsg->ldai = LastDeliveredAltIndex;
       outMsg->lbl = recLbl;
       outMsg->nodeid = TOS_NODE_ID;

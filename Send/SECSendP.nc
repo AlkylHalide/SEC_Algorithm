@@ -33,8 +33,7 @@ implementation {
   // Boolean to check if channel is busy
   bool busy = FALSE;
 
-  // Define capacity [NOT USED]
-  // uint8_t capacity = 10;
+  // CAPACITY is defined as 10
 
   // Array to hold the ACK messages
   // The size of the array is equal to capacity+1
@@ -49,9 +48,7 @@ implementation {
   // Label variable
   uint16_t msgLbl = 1;
 
-  // Message/data variable
-  // uint8_t i = 0;
-  // uint16_t m[] = {9,8,7,6,5,4,3,2,1,0};
+  // Message/data variable as a counter
   uint16_t counter = 0;
 
   // Message to transmit
@@ -94,22 +91,21 @@ implementation {
     }
     else {
       ACKMsg* inMsg = (ACKMsg*)payload;
-      // printf("LastDeliveredAltIndex: \n");
-      // printf("%d\n", inMsg->ldai);
-      // printf("Label: \n");
-      // printf("%d\n", inMsg->lbl);
-      // printf("Node ID: \n");
-      // printf("%d\n", inMsg->nodeid);
-      // printfflush();
+      printf("LastDeliveredAltIndex: \n");
+      printf("%d\n", inMsg->ldai);
+      printf("Label: \n");
+      printf("%d\n", inMsg->lbl);
+      printf("Node ID: \n");
+      printf("%d\n", inMsg->nodeid);
+      printfflush();
 
       // Add incoming packet to ACK_SET
       ACK_set[j].ldai = inMsg->ldai;  
       ACK_set[j].lbl = inMsg->lbl;
       ACK_set[j].nodeid = inMsg->nodeid;
 
-      // Increment the loop variable for the array
-      // The mod operation is necessary to keep the variable from going
-      // outside of the array bounds
+      // Increment the loop variable for the ACK_set array in modulo 11
+      // to keep the variable from going outside of array bounds
       ++j;
       j %= 11;
 
@@ -120,15 +116,22 @@ implementation {
       // messages have been send, we put the label back at zero and increment
       // the alternating index in modulo 3.
 
+      // If array is filled with 'capacity' packets:
       if (ACK_set[10].lbl != 0) {
+        // Put variable msgLbl back to 1 (starting point)
         msgLbl = 1;
+        
+        // Increment the Alternating Index in modulo 3
         ++AltIndex;
         AltIndex %= 3;
+
+        // The last element of the acknowledgement packet array is used as the check
         ACK_set[10].lbl = 0;
-        // ++i;
-        // i %= 10;
+
+        // Increment the counter
         ++counter;
       } else {
+        // If the ACK_set array isn't full yet, we just increment the label
         ++msgLbl;
       }
       
@@ -155,10 +158,8 @@ implementation {
   task void send() {
     if(!busy){
       SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
-      // call AMPacket.setType(&myMsg, AM_SECMSG);
       btrMsg->ai = AltIndex;
       btrMsg->lbl = msgLbl;
-      //btrMsg->dat = m[i];
       btrMsg->dat = counter;
       btrMsg->nodeid = TOS_NODE_ID;
 

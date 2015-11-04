@@ -22,8 +22,6 @@ implementation {
       PrintfC,
       SerialStartC,  
       ActiveMessageC,
-      // new AMSenderC(128),
-      // new AMReceiverC(128),
       new AMSenderC(AM_SECMSG),
       new AMReceiverC(AM_ACKMSG),
       new TimerMilliC() as Timer0,
