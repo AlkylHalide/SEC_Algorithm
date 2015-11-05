@@ -33,10 +33,12 @@ implementation {
   // Boolean to check if channel is busy
   bool busy = FALSE;
 
-  // CAPACITY is defined as 10
+  // define capacity
+  uint16_t capacity = 10;
 
   // Array to hold the ACK messages
   // The size of the array is equal to capacity+1
+  // This needs to be set manually: no dynamic array definition possible
   nx_struct ACKMsg ACK_set[11];
   
   // We also define a loop variable to go through the array
@@ -65,7 +67,7 @@ implementation {
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
-      ACK_set[10].lbl = 0;
+      ACK_set[capacity].lbl = 0;
       post send();
     }
     else {
@@ -79,21 +81,22 @@ implementation {
   
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    printf("%d\n", call AMPacket.type(msg));
-    printfflush();
+    // printf("%d\n", call AMPacket.type(msg));
+    // printfflush();
 
     if(call AMPacket.type(msg) != AM_ACKMSG) {
       return msg;
     }
     else {
       ACKMsg* inMsg = (ACKMsg*)payload;
-      printf("LastDeliveredAltIndex: \n");
-      printf("%d\n", inMsg->ldai);
-      printf("Label: \n");
-      printf("%d\n", inMsg->lbl);
-      printf("Node ID: \n");
-      printf("%d\n", inMsg->nodeid);
-      printfflush();
+      
+      // printf("LastDeliveredAltIndex: \n");
+      // printf("%d\n", inMsg->ldai);
+      // printf("Label: \n");
+      // printf("%d\n", inMsg->lbl);
+      // printf("Node ID: \n");
+      // printf("%d\n", inMsg->nodeid);
+      // printfflush();
 
       // Add incoming packet to ACK_SET
       ACK_set[j].ldai = inMsg->ldai;  
@@ -103,7 +106,7 @@ implementation {
       // Increment the loop variable for the ACK_set array in modulo 11
       // to keep the variable from going outside of array bounds
       ++j;
-      j %= 11;
+      j %= (capacity+1);
 
       // Below is a check for when we increment the Alternating Index
       // and start transmitting a new message.
@@ -113,7 +116,11 @@ implementation {
       // the alternating index in modulo 3.
 
       // If array is filled with 'capacity' packets:
-      if (ACK_set[10].lbl != 0) {
+      if (ACK_set[capacity].lbl != 0) {
+
+        // printf("%d\n", ACK_set[capacity].lbl);
+        // printfflush();
+
         // Put variable msgLbl back to 1 (starting point)
         msgLbl = 1;
         
@@ -122,10 +129,11 @@ implementation {
         AltIndex %= 3;
 
         // The last element of the acknowledgement packet array is used as the check
-        ACK_set[10].lbl = 0;
+        ACK_set[capacity].lbl = 0;
 
         // Increment the counter
         ++counter;
+        
       } else {
         // If the ACK_set array isn't full yet, we just increment the label
         ++msgLbl;
@@ -159,8 +167,8 @@ implementation {
       btrMsg->dat = counter;
       btrMsg->nodeid = TOS_NODE_ID;
 
-      printf("%d\n", call AMPacket.type(&myMsg));
-      printfflush();
+      // printf("%d\n", call AMPacket.type(&myMsg));
+      // printfflush();
 
       if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
         post send();

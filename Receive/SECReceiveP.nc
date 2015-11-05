@@ -40,6 +40,7 @@ implementation {
   uint16_t recLbl = 0;
 
   // CAPACITY is defined as 10
+  uint16_t capacity = 10;
   
   // Array to contain all the received packages
   // Packet_set array length should be 2*capacity+1
@@ -73,7 +74,7 @@ implementation {
       // This is an initialization for the last element of the packet_set array.
       // This is done so every iteration of the Receive.receive() function I can 
       // check if the label of the last element of the array is empty or not.
-      packet_set[10].lbl = 0;
+      packet_set[capacity].lbl = 0;
     }
     else {
       call AMControl.start();
@@ -86,8 +87,8 @@ implementation {
   
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    printf("%d\n", call AMPacket.type(msg));
-    printfflush();
+    // printf("%d\n", call AMPacket.type(msg));
+    // printfflush();
 
     if(call AMPacket.type(msg) != AM_SECMSG) {
       return msg;
@@ -95,29 +96,30 @@ implementation {
     else {
       SECMsg* inMsg = (SECMsg*)payload;
       
-      if(counter != counter){
-        printf("COUNTER VALUES NOT MATCHING\n");
-        printf("CounterRec: ");
-        printf("%d\n", inMsg->dat);
-        printf("CounterSend: ");
-        printf("%d\n", counter);
-        printfflush();
-      } else {
-        printf("COUNTER VALUES MATCH\n");
-        printfflush();
-      }
+      // if(counter != counter){
+      //   printf("COUNTER VALUES NOT MATCHING\n");
+      //   printf("CounterRec: ");
+      //   printf("%d\n", inMsg->dat);
+      //   printf("CounterSend: ");
+      //   printf("%d\n", counter);
+      //   printfflush();
+      // } else {
+      //   printf("COUNTER VALUES MATCH\n");
+      //   printfflush();
+      // }
 
-      printf("AltIndex: \n");
-      printf("%d\n", inMsg->ai);
-      printf("Label: \n");
-      printf("%d\n", inMsg->lbl);
+      // printf("AltIndex: \n");
+      // printf("%d\n", inMsg->ai);
+      // printf("Label: \n");
+      // printf("%d\n", inMsg->lbl);
+      // printf("Data: \n");
+      // printf("%d\n", inMsg->dat);
+      // printf("Node ID: \n");
+      // printf("%d\n", inMsg->nodeid);
+      // printfflush();
+
       recLbl = inMsg->lbl;
-      printf("Data: \n");
-      printf("%d\n", inMsg->dat);
-      printf("Node ID: \n");
-      printf("%d\n", inMsg->nodeid);
       inNodeID = inMsg->nodeid;
-      printfflush();
 
       // Add incoming packet to packet_set[]
       packet_set[j].ai = inMsg->ai;
@@ -128,16 +130,19 @@ implementation {
       // Increment the loop variable for the ACK_set array in modulo 11
       // to keep the variable from going outside of array bounds
       ++j;
-      j %= 11;
+      j %= (capacity+1);
 
       // Check to see if the lbl variable of the incoming packet is 11 or not.
       // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
       // NO: continue normal operation.
 
-      if (packet_set[10].lbl != 0 ) {
+      if (packet_set[capacity].lbl != 0 ) {
+        // printf("%d\n", packet_set[capacity].lbl);
+        // printfflush();
+        printf("%d\n", packet_set[capacity].dat);
+        printfflush();
         LastDeliveredAltIndex = inMsg->ai;
-        packet_set[10].lbl = 0;
-        ++counter;
+        packet_set[capacity].lbl = 0;
       }
 
       post send();
@@ -163,8 +168,8 @@ implementation {
       outMsg->lbl = recLbl;
       outMsg->nodeid = TOS_NODE_ID;
 
-      printf("%d\n", call AMPacket.type(&ackMsg));
-      printfflush();
+      // printf("%d\n", call AMPacket.type(&ackMsg));
+      // printfflush();
 
       // TODO: zenden naar Node ID werkt blijkbaar niet, snap niet goed waarom.
       // Sender broadcast alles, Receiver zou enkel ACK moeten sturen naar Sender waar inkomende
