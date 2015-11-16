@@ -88,36 +88,12 @@ implementation {
   
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    // printf("%d\n", call AMPacket.type(msg));
-    // printfflush();
 
     if(call AMPacket.type(msg) != AM_SECMSG) {
       return msg;
     }
     else {
       SECMsg* inMsg = (SECMsg*)payload;
-      
-      // if(inMsg->dat != counter){
-      //   printf("COUNTER VALUES NOT MATCHING\n");
-      //   printf("CounterRec: ");
-      //   printf("%d\n", inMsg->dat);
-      //   printf("CounterSend: ");
-      //   printf("%d\n", counter);
-      //   printfflush();
-      // } else {
-      //   printf("COUNTER VALUES MATCH\n");
-      //   printfflush();
-      // }
-
-      // printf("AltIndex: \n");
-      // printf("%d\n", inMsg->ai);
-      // printf("Label: \n");
-      // printf("%d\n", inMsg->lbl);
-      // printf("Data: \n");
-      // printf("%d\n", inMsg->dat);
-      // printf("Node ID: \n");
-      // printf("%d\n", inMsg->nodeid);
-      // printfflush();
 
       ldai = inMsg->ai;
       recLbl = inMsg->lbl;
@@ -135,18 +111,10 @@ implementation {
       packet_set[j].dat = inMsg->dat;
       packet_set[j].nodeid = inMsg->nodeid;
 
-      // Increment the loop variable for the ACK_set array in modulo 11
-      // to keep the variable from going outside of array bounds
-      // ++j;
-      // j %= (capacity+1);
-
       // Check to see if the lbl variable of the incoming packet is 11 or not.
       // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
       // NO: continue normal operation.
-
       if (packet_set[capacity].lbl != 0 ) {
-        // printf("%d\n", packet_set[capacity].lbl);
-        // printfflush();
         printf("%d\n", packet_set[capacity].dat);
         printfflush();
         LastDeliveredAltIndex = inMsg->ai;
@@ -180,7 +148,7 @@ implementation {
       // TODO: zenden naar Node ID werkt blijkbaar niet, snap niet goed waarom.
       // Sender broadcast alles, Receiver zou enkel ACK moeten sturen naar Sender waar inkomende
       // message vandaan kwam.
-
+      // UPDATE 16/11: Kan waarschijnlijk opgelost worden met Routing Algorithm
       if(call AMSend.send(inNodeID, &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
         post send();
       } else {

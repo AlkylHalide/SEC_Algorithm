@@ -53,11 +53,18 @@ implementation {
   // Message/data variable as a counter
   uint16_t counter = 0;
 
+  // a pointer to an int for the messages array
+  uint16_t *p;
+  uint8_t i = 0;
+
   // Message to transmit
   message_t myMsg;
   
   /***************** Prototypes ****************/
   task void send();
+
+  // function declaration
+  uint16_t * fetch(int pl);
   
   /***************** Boot Events ****************/
   event void Boot.booted() {
@@ -81,32 +88,22 @@ implementation {
   
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    // printf("%d\n", call AMPacket.type(msg));
-    // printfflush();
 
     if(call AMPacket.type(msg) != AM_ACKMSG) {
       return msg;
     }
     else {
       ACKMsg* inMsg = (ACKMsg*)payload;
-      
-      // printf("LastDeliveredAltIndex: \n");
-      // printf("%d\n", inMsg->ldai);
-      // printf("Label: \n");
-      // printf("%d\n", inMsg->lbl);
-      // printf("Node ID: \n");
-      // printf("%d\n", inMsg->nodeid);
-      // printfflush();
 
-      // Add incoming packet to ACK_SET
-      ACK_set[j].ldai = inMsg->ldai;  
-      ACK_set[j].lbl = inMsg->lbl;
-      ACK_set[j].nodeid = inMsg->nodeid;
-
-      // Increment the loop variable for the ACK_set array in modulo 11
-      // to keep the variable from going outside of array bounds
-      ++j;
-      j %= (capacity+1);
+      // Check if LastDeliveredIndex is equal to the current Alternating Index and
+      // check if label lies in [1 11] interval
+      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < 12)) {
+        // Add incoming packet to ACK_set
+        j = inMsg->lbl - 1;
+        ACK_set[j].ldai = inMsg->ldai;  
+        ACK_set[j].lbl = inMsg->lbl;
+        ACK_set[j].nodeid = inMsg->nodeid;
+      }
 
       // Below is a check for when we increment the Alternating Index
       // and start transmitting a new message.
@@ -116,10 +113,7 @@ implementation {
       // the alternating index in modulo 3.
 
       // If array is filled with 'capacity' packets:
-      if (ACK_set[capacity].lbl != 0) {
-
-        // printf("%d\n", ACK_set[capacity].lbl);
-        // printfflush();
+      if ((ACK_set[capacity].lbl != 0) && (ACK_set[capacity].ldai == AltIndex)) {
 
         // Put variable msgLbl back to 1 (starting point)
         msgLbl = 1;
@@ -128,11 +122,18 @@ implementation {
         ++AltIndex;
         AltIndex %= 3;
 
-        // The last element of the acknowledgement packet array is used as the check
-        ACK_set[capacity].lbl = 0;
+        // Clear the ACK_set array
+        memset(ACK_set, 0, sizeof(ACK_set));
 
-        // Increment the counter
-        ++counter;
+        // Increment the counter (for pl copies of the same data)
+        //++counter;
+
+        // Get a new messages array
+        p = fetch(capacity + 1);
+
+        for ( i = 0; i < (capacity + 1); i++ ) {
+          printf( "*(p + %d) : %d\n", i, *(p + i));
+        }
         
       } else {
         // If the ACK_set array isn't full yet, we just increment the label
@@ -167,14 +168,24 @@ implementation {
       btrMsg->dat = counter;
       btrMsg->nodeid = TOS_NODE_ID;
 
-      // printf("%d\n", call AMPacket.type(&myMsg));
-      // printfflush();
-
       if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
         post send();
       } else {
         busy = TRUE;
       }
     }
+  }
+
+  // function returning messages array
+  uint16_t * fetch(int pl) {    
+    static uint16_t messages[11];
+
+    for ( i = 0; i < pl; ++i) {
+      messages[i] = counter;
+      // Increment the counter (for pl amount of messages sent instead of copies of the same message)
+      ++counter;
+    }
+
+    return messages;
   }
 }

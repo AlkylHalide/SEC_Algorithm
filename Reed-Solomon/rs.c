@@ -48,10 +48,15 @@
 
 #include <math.h>
 #include <stdio.h>
+// #define mm  4           /* RS code over GF(2**4) - change to suit */
+// #define nn  15           nn=2**mm -1   length of codeword 
+// #define tt  5           /* number of errors that can be corrected */
+// #define kk  5           /* kk = nn-2*tt  */
+
 #define mm  4           /* RS code over GF(2**4) - change to suit */
 #define nn  15          /* nn=2**mm -1   length of codeword */
-#define tt  5           /* number of errors that can be corrected */
-#define kk  5           /* kk = nn-2*tt  */
+#define tt  3           /* number of errors that can be corrected */
+#define kk  9           /* kk = nn-2*tt  */
 
 int pp [mm+1] = { 1, 1, 0, 0, 1} ; /* specify irreducible polynomial coeffts */
 int alpha_to [nn+1], index_of [nn+1], gg [nn-kk+1] ;
@@ -180,7 +185,7 @@ void decode_rs()
     {
 /* compute the error location polynomial via the Berlekamp iterative algorithm,
    following the terminology of Lin and Costello :   d[u] is the 'mu'th
-   discrepancy, where u='mu'+1 and 'mu' (the Greek letter!) is the step number
+   discrepancy, where u='mu'+1 and 'mu' (the Greek letter!) is the step numbser
    ranging from -1 to 2*tt (see L&C),  l[u] is the
    degree of the elp at that step, and u_l[u] is the difference between the
    step number and the degree of the elp.
@@ -363,15 +368,15 @@ main()
 for  (i=0; i<kk; i++)   data[i] = 0 ;
 
 /* for example, say we transmit the following message (nothing special!) */
-data[0] = 8 ;
-data[1] = 6 ;
-data[2] = 8 ;
+data[0] = 19 ;
+data[1] = 23 ;
+data[2] = 29 ;
 data[3] = 1 ;
-data[4] = 2 ;
-// data[5] = 4 ;
-// data[6] = 15 ;
-// data[7] = 9 ;
-// data[8] = 9 ;
+data[4] = 6 ;
+data[5] = 26 ;
+data[6] = 3 ;
+data[7] = 21 ;
+data[8] = 12 ;
 
 /* encode data[] to produce parity in bb[].  Data input and parity output
    is in polynomial form
