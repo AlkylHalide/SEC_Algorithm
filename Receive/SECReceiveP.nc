@@ -35,6 +35,7 @@ implementation {
 
   // Variable to keep track of the last delivered alternating index in the ABP protocol
   uint16_t LastDeliveredAltIndex = 2;
+  uint8_t ldai = 0;
 
   // Label variable
   uint16_t recLbl = 0;
@@ -46,7 +47,7 @@ implementation {
   // Packet_set array length should be 2*capacity+1
   nx_struct SECMsg packet_set[11];
 
-  // Loop variable to go through the array
+  // Variable for the array index for incoming packets
   uint8_t j = 0;
 
   // Message to transmit
@@ -96,7 +97,7 @@ implementation {
     else {
       SECMsg* inMsg = (SECMsg*)payload;
       
-      // if(counter != counter){
+      // if(inMsg->dat != counter){
       //   printf("COUNTER VALUES NOT MATCHING\n");
       //   printf("CounterRec: ");
       //   printf("%d\n", inMsg->dat);
@@ -118,10 +119,17 @@ implementation {
       // printf("%d\n", inMsg->nodeid);
       // printfflush();
 
+      ldai = inMsg->ai;
       recLbl = inMsg->lbl;
       inNodeID = inMsg->nodeid;
 
       // Add incoming packet to packet_set[]
+      // The packets in the receiving packet_set[] array should always be in order
+      // This means replacing, inserting and appending packets at the right point in the array
+      // according to their label value. This is solved very easily by making the array loop variable 'j'
+      // equal to the label of the incoming message, minus 1 (because labels start at 1 where the array
+      // index starts at 0).
+      j = inMsg->lbl - 1;
       packet_set[j].ai = inMsg->ai;
       packet_set[j].lbl = inMsg->lbl;
       packet_set[j].dat = inMsg->dat;
@@ -129,8 +137,8 @@ implementation {
 
       // Increment the loop variable for the ACK_set array in modulo 11
       // to keep the variable from going outside of array bounds
-      ++j;
-      j %= (capacity+1);
+      // ++j;
+      // j %= (capacity+1);
 
       // Check to see if the lbl variable of the incoming packet is 11 or not.
       // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
@@ -158,18 +166,16 @@ implementation {
   
   /***************** Timer Events ****************/
   event void Timer0.fired() {
+    post send();
   }
   
   /***************** Tasks ****************/
   task void send() {
     if(!busy){
       ACKMsg* outMsg = (ACKMsg*)(call Packet.getPayload(&ackMsg, sizeof(ACKMsg)));
-      outMsg->ldai = LastDeliveredAltIndex;
+      outMsg->ldai = ldai;
       outMsg->lbl = recLbl;
       outMsg->nodeid = TOS_NODE_ID;
-
-      // printf("%d\n", call AMPacket.type(&ackMsg));
-      // printfflush();
 
       // TODO: zenden naar Node ID werkt blijkbaar niet, snap niet goed waarom.
       // Sender broadcast alles, Receiver zou enkel ACK moeten sturen naar Sender waar inkomende
