@@ -131,9 +131,11 @@ implementation {
         // Get a new messages array
         p = fetch(capacity + 1);
 
-        for ( i = 0; i < (capacity + 1); i++ ) {
-          printf( "*(p + %d) : %d\n", i, *(p + i));
-        }
+        i = 0;
+
+        // for ( i = 0; i < (capacity + 1); i++ ) {
+        //   printf( "*(p + %d) : %d\n", i, *(p + i));
+        // }
         
       } else {
         // If the ACK_set array isn't full yet, we just increment the label
@@ -152,6 +154,7 @@ implementation {
     } else {
       post send();
     }
+    ++i;
   }
   
   /***************** Timer Events ****************/
@@ -165,7 +168,7 @@ implementation {
       SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
       btrMsg->ai = AltIndex;
       btrMsg->lbl = msgLbl;
-      btrMsg->dat = counter;
+      btrMsg->dat = *(p + i);
       btrMsg->nodeid = TOS_NODE_ID;
 
       if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {

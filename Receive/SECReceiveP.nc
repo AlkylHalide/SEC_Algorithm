@@ -60,6 +60,8 @@ implementation {
   // at the sender side, which we receive as the data in the packets.
   // By comparing both counters we can check if data gets corrupt during transfer or not.
   uint16_t counter = 0;
+
+  uint8_t i = 0;
   
   /***************** Prototypes ****************/
   task void send();
@@ -115,8 +117,11 @@ implementation {
       // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
       // NO: continue normal operation.
       if (packet_set[capacity].lbl != 0 ) {
-        printf("%d\n", packet_set[capacity].dat);
-        printfflush();
+        for (i = 0; i < (capacity+1); ++i)
+        {
+          printf("%d\n", packet_set[i].dat);
+          printfflush();
+        }
         LastDeliveredAltIndex = inMsg->ai;
         packet_set[capacity].lbl = 0;
       }
