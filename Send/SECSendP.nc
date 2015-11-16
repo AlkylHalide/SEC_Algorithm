@@ -63,8 +63,11 @@ implementation {
   /***************** Prototypes ****************/
   task void send();
 
-  // function declaration
+  // declaration of fetch function to get an array of new messages
   uint16_t * fetch(int pl);
+
+  // declaration of packet_set function to generate packets for sending
+  uint16_t * packet_set();
   
   /***************** Boot Events ****************/
   event void Boot.booted() {
@@ -188,7 +191,20 @@ implementation {
       // Increment the counter (for pl amount of messages sent instead of copies of the same message)
       ++counter;
     }
-
     return messages;
+  }
+
+  // function packet_set to generate packets for sending
+  uint16_t * packet_set() {
+    // Consider message array as bit matrix
+    // Transpose matrix: data[i].bit[j] = messages[j].bit[i]
+    // return array with <capacity> amount of SECMsg
+    // SECMsg = <Ai; lbl; data(i)> with i € [1, n]
+
+    // SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
+    // btrMsg->ai = AltIndex;
+    // btrMsg->lbl = msgLbl;
+    // btrMsg->dat = *(p + i);
+    // btrMsg->nodeid = TOS_NODE_ID;
   }
 }
