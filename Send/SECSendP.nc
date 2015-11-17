@@ -40,6 +40,8 @@ implementation {
   // The size of the array is equal to capacity+1
   // This needs to be set manually: no dynamic array definition possible
   nx_struct ACKMsg ACK_set[11];
+
+  nx_struct dat dataTabel[11];
   
   // We also define a loop variable to go through the array
   uint8_t j = 0;
@@ -133,6 +135,7 @@ implementation {
 
         // Get a new messages array
         p = fetch(capacity + 1);
+        // TODO: ENCODE()
 
         i = 0;
 
@@ -200,6 +203,17 @@ implementation {
     // Transpose matrix: data[i].bit[j] = messages[j].bit[i]
     // return array with <capacity> amount of SECMsg
     // SECMsg = <Ai; lbl; data(i)> with i € [1, n]
+
+    uint16_t transpose[][];
+
+    for (int i = 0; i < (capacity + 1); ++i)
+    {
+      transpose = dectobin();
+    }
+
+    // for (c = 0; c < m; c++)
+    //       for( d = 0 ; d < n ; d++ )
+    //          transpose[d][c] = matrix[c][d];
 
     // SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
     // btrMsg->ai = AltIndex;
