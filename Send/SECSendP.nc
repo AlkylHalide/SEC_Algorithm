@@ -204,13 +204,6 @@ implementation {
     // return array with <capacity> amount of SECMsg
     // SECMsg = <Ai; lbl; data(i)> with i € [1, n]
 
-    uint16_t transpose[][];
-
-    for (int i = 0; i < (capacity + 1); ++i)
-    {
-      transpose = dectobin();
-    }
-
     // for (c = 0; c < m; c++)
     //       for( d = 0 ; d < n ; d++ )
     //          transpose[d][c] = matrix[c][d];
