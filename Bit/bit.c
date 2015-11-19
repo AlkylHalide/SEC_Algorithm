@@ -24,6 +24,10 @@ int main() {
   	}
   }
 
+  // *************************************//
+  //          SENDER: PACKET_SET
+  // *************************************//
+
   // Transfer 'rijen' amount of counter values to bits
   // The bits are stored in the 2D array 'result'
   printf("Original bit array:\n");
@@ -33,7 +37,6 @@ int main() {
   	for (j = 0; j < kolommen; ++j)
   	{
   		result[i][j] = (x & 0x8000) >> 15;
-  		// printf("%d", (x & 0x8000) >> 15);
   		printf("%d", result[i][j]);
   		x <<= 1;
   	}
@@ -56,7 +59,7 @@ int main() {
   printf("\n");
 
   // Convert the transposed bit array into a decimal value array
-  printf("Decimale array: \n");
+  printf("Decimal array: \n");
   x = 1;
   for (i = 0; i < rijen; ++i)
   {
@@ -65,11 +68,55 @@ int main() {
     {
       if (transpose[i][j] == 1) packet_set[i] = packet_set[i] * 2 + 1;
       else if (transpose[i][j] == 0) packet_set[i] *= 2;
-      // while (x <= transpose[i][j]) {
-      //   packet_set[i] *= 10;
-      //   x *= 10;
-      // }
-      // packet_set[i] += transpose[i][j];
+    }
+    printf("%d\n", packet_set[i]);
+  }
+  printf("\n");
+
+  // *************************************//
+  //      RECEIVER: REVERSE PACKET_SET
+  // *************************************//
+
+  // Using the same int to bit array conversion as above,
+  // the received 1D int array of decimals is converted to
+  // a 2D bit array
+  printf("Received bit array:\n");
+  for (i = 0; i < rijen; ++i)
+  {
+    x = packet_set[i];
+    for (j = 0; j < kolommen; ++j)
+    {
+      result[i][j] = (x & 0x8000) >> 15;
+      printf("%d", result[i][j]);
+      x <<= 1;
+    }
+    printf("\n");
+  }
+  printf("\n");
+
+  // Transpose the 'result' array and put the result in 'transpose'
+  printf("Transposed array:\n");
+  for (i = 0; i < rijen; ++i)
+  {
+    for (j = 0; j < kolommen; ++j)
+    {
+      transpose[i][j] = result[j][i];
+      printf("%d", transpose[i][j]);
+    }
+    printf("\n");
+  }
+  printf("\n");
+
+  // Convert the transposed bit array into a decimal value array
+  printf("Received decimal array: \n");
+  x = 1;
+  for (i = 0; i < rijen; ++i)
+  {
+    packet_set[i] = transpose[i][0];
+    for (j = 1; j < kolommen; ++j)
+    {
+      if (transpose[i][j] == 1) packet_set[i] = packet_set[i] * 2 + 1;
+      else if (transpose[i][j] == 0) packet_set[i] *= 2;
     }
     printf("%d\n", packet_set[i]);
   }
