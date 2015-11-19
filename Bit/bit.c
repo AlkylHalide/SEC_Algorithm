@@ -27,7 +27,6 @@ int main() {
   // Transfer 'rijen' amount of counter values to bits
   // The bits are stored in the 2D array 'result'
   printf("Original bit array:\n");
-  printf("\n");
   for (i = 0; i < rijen; ++i)
   {
     x = counter;
@@ -41,10 +40,10 @@ int main() {
   	printf("\n");
   	++counter;
   }
+  printf("\n");
 
   // Transpose the 'result' array and put the result in 'transpose'
   printf("Transposed array:\n");
-  printf("\n");
   for (i = 0; i < rijen; ++i)
   {
     for (j = 0; j < kolommen; ++j)
@@ -54,24 +53,25 @@ int main() {
     }
     printf("\n");
   }
+  printf("\n");
 
   // Convert the transposed bit array into a decimal value array
   printf("Decimale array: \n");
-  printf("\n");
   x = 1;
   for (i = 0; i < rijen; ++i)
   {
     packet_set[i] = transpose[i][0];
     for (j = 1; j < kolommen; ++j)
     {
-      while (x <= transpose[i][j]) {
-        packet_set[i] *= 10;
-        x *= 10;
-      }
-      packet_set[i] += transpose[i][j];
+      if (transpose[i][j] == 1) packet_set[i] = packet_set[i] * 2 + 1;
+      else if (transpose[i][j] == 0) packet_set[i] *= 2;
+      // while (x <= transpose[i][j]) {
+      //   packet_set[i] *= 10;
+      //   x *= 10;
+      // }
+      // packet_set[i] += transpose[i][j];
     }
     printf("%d\n", packet_set[i]);
-    printf("\n");
   }
 
 	return 0;
