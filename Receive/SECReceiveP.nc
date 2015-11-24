@@ -13,6 +13,8 @@
 #include <printf.h>
 #include "SECReceive.h"
 
+#define capacity 9
+
 module SECReceiveP {
   uses {
     interface Boot;
@@ -39,13 +41,10 @@ implementation {
 
   // Label variable
   uint16_t recLbl = 0;
-
-  // CAPACITY is defined as 10
-  uint16_t capacity = 10;
   
   // Array to contain all the received packages
   // Packet_set array length should be 2*capacity+1
-  nx_struct SECMsg packet_set[11];
+  nx_struct SECMsg packet_set[(capacity + 1)];
 
   // Variable for the array index for incoming packets
   uint8_t j = 0;
@@ -123,7 +122,8 @@ implementation {
           printfflush();
         }
         LastDeliveredAltIndex = inMsg->ai;
-        packet_set[capacity].lbl = 0;
+        // Clear the packet_set array
+        memset(packet_set, 0, sizeof(packet_set));
       }
 
       post send();
@@ -139,7 +139,7 @@ implementation {
   
   /***************** Timer Events ****************/
   event void Timer0.fired() {
-    post send();
+    // post send();
   }
   
   /***************** Tasks ****************/
