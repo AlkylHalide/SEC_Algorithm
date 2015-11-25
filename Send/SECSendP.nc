@@ -13,7 +13,7 @@
 #include <printf.h>
 #include "SECSend.h"
 
-#define capacity 9
+#define capacity 15
 #define rows (capacity + 1)
 #define columns 16
 
@@ -77,24 +77,20 @@ implementation {
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
+      
       // Initialize the ACK_set array with zeroes
       memset(ACK_set, 0, sizeof(ACK_set));
       // Get a new messages array
-      printf("DRIE\n");
-      printfflush();
       p = fetch(capacity + 1);
-      for (i = 0; i < (capacity+1); ++i)
-      {
-        printf("%d\n", *(p+i));
-        printfflush();
-      }
-      i = 0;
+
       // TODO: ENCODE()
 
       // Divide messages into packets using packet_set()
-      // printf("VIER\n");
-      // printfflush();
-      // pckt = packet_set();
+      pckt = packet_set();
+      
+      // Reset the loop variable
+      i = 0;
+
       post send();
     }
     else {
@@ -154,9 +150,6 @@ implementation {
   task void send() {
     if(!busy){
       SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
-      
-      printf("EEN\n");
-      printfflush();
 
       // Below is a check for when we increment the Alternating Index
       // and start transmitting a new message.
@@ -167,8 +160,6 @@ implementation {
 
       // If array is filled with 'capacity' packets:
       if ((ACK_set[capacity].lbl != 0) && (ACK_set[capacity].ldai == AltIndex)) {
-        printf("TWEE\n");
-        printfflush();
 
         // Put variable msgLbl back to 1 (starting point)
         msgLbl = 1;
@@ -184,34 +175,21 @@ implementation {
         //++counter;
 
         // Get a new messages array
-        printf("DRIE\n");
-        printfflush();
         p = fetch(capacity + 1);
+        
         // TODO: ENCODE()
 
         // Divide messages into packets using packet_set()
-        // printf("VIER\n");
-        // printfflush();
-        // pckt = packet_set();
+        pckt = packet_set();
 
-        for ( i = 0; i < (capacity + 1); i++ ) {
-          // printf("*(pckt + %d) : %d\n", i, *(pckt + i));
-          // printf("%d\n", *(pckt + i));
-          printf("%d\n", *(p + i));
-          printfflush();
-        }
-
+        // Reset the loop variable
         i = 0;
       }
 
       // The message to send is filled with the appropriate data
       btrMsg->ai = AltIndex;
-      printf("%d\n", btrMsg->ai);
       btrMsg->lbl = msgLbl;
-      printf("%d\n", btrMsg->lbl);
-      // btrMsg->dat = *(pckt + i);
-      btrMsg->dat = *(p + i);
-      printf("%d\n", btrMsg->dat);
+      btrMsg->dat = *(pckt + i);
       btrMsg->nodeid = TOS_NODE_ID;
 
       if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
@@ -243,48 +221,20 @@ implementation {
     // SECMsg = <Ai; lbl; data(i)> with i € [1, n]
 
     uint16_t x = 0;
-    // static uint8_t rows = (capacity + 1);
-    // static uint8_t columns = 16;
-    
-    // printf("VIJF\n");
-    // printfflush();
-
     uint16_t result[rows][columns];
-
-    // printf("ZES\n");
-    // printfflush();
-
     uint16_t transpose[columns][rows];
-
-    // printf("ZEVEN\n");
-    // printfflush();
-
-    static uint16_t packets[rows];
-
-    printf("ACHT\n");
-    printfflush();
+    static uint16_t packets[columns];
 
     // Initalize 2D arrays with zeroes
-    printf("NEGEN\n");
-    printfflush();
     for (i = 0; i < rows; ++i)
     {
-      printf("TIEN\n");
-      printfflush();
       packets[i] = 0;
       for (j = 0; j < columns; ++j)
       {
-        printf("ELF\n");
-        printfflush();
         result[i][j] = 0;
-        printf("TWAALF\n");
-        printfflush();
-        transpose[i][j] = 0;
+        transpose[j][i] = 0;
       }
     }
-
-    printf("INITIALIZE\n");
-    printfflush();
 
     // Transfer 'rows' amount of counter values to bits
     // The bits are stored in the 2D array 'result'
@@ -298,35 +248,26 @@ implementation {
       }
     }
 
-    printf("BIT CONVERSION\n");
-    printfflush();
-
     // Transpose the 'result' array and put the result in 'transpose'
-    for (i = 0; i < rows; ++i)
+    // printf("TRANSPOSE\n");
+    for (i = 0; i < columns; ++i)
     {
-      for (j = 0; j < columns; ++j)
+      for (j = 0; j < rows; ++j)
       {
         transpose[i][j] = result[j][i];
       }
     }
 
-    printf("TRANSPOSE\n");
-    printfflush();
-
     // Convert the transposed bit array into a decimal value array
     x = 1;
-    for (i = 0; i < rows; ++i)
+    for (i = 0; i < columns; ++i)
     {
-      packets[i] = transpose[i][0];
-      for (j = 1; j < columns; ++j)
+      for (j = 0; j < rows; ++j)
       {
         if (transpose[i][j] == 1) packets[i] = packets[i] * 2 + 1;
         else if (transpose[i][j] == 0) packets[i] *= 2;
       }
     }
-
-    printf("CONVERT\n");
-    printfflush();
 
     return packets;
   }

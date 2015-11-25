@@ -13,7 +13,7 @@
 #include <printf.h>
 #include "SECReceive.h"
 
-#define capacity 9
+#define capacity 15
 
 module SECReceiveP {
   uses {
@@ -116,11 +116,11 @@ implementation {
       // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
       // NO: continue normal operation.
       if (packet_set[capacity].lbl != 0 ) {
-        for (i = 0; i < (capacity+1); ++i)
-        {
-          printf("%d\n", packet_set[i].dat);
-          printfflush();
-        }
+        // for (i = 0; i < (capacity+1); ++i)
+        // {
+        //   printf("%d\n", packet_set[i].dat);
+        //   printfflush();
+        // }
         LastDeliveredAltIndex = inMsg->ai;
         // Clear the packet_set array
         memset(packet_set, 0, sizeof(packet_set));
