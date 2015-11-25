@@ -249,7 +249,6 @@ implementation {
     }
 
     // Transpose the 'result' array and put the result in 'transpose'
-    // printf("TRANSPOSE\n");
     for (i = 0; i < columns; ++i)
     {
       for (j = 0; j < rows; ++j)

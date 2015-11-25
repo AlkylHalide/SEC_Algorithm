@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 uint16_t main() {
-  uint16_t counter = 16;
+  uint16_t counter = 0;
   uint16_t x = 0;
   static uint8_t rijen = 16;
   static uint8_t kolommen = 16;
@@ -95,7 +95,7 @@ uint16_t main() {
     }
     printf("\n");
 
-    // // Transpose the 'transpose' array and put the result in 'result'
+    // Transpose the 'transpose' array and put the result in 'result'
     printf("Transposed array:\n");
     for (i = 0; i < rijen; ++i)
     {
@@ -108,13 +108,12 @@ uint16_t main() {
     }
     printf("\n");
 
-    // // Convert the transposed bit array into a decimal value array
+    // Convert the transposed bit array into a decimal value array
     printf("Received decimal array: \n");
     x = 1;
     for (i = 0; i < rijen; ++i)
     {
-      packet_set[i] = result[i][0];
-      for (j = 1; j < kolommen; ++j)
+      for (j = 0; j < kolommen; ++j)
       {
         if (result[i][j] == 1) packet_set[i] = packet_set[i] * 2 + 1;
         else if (result[i][j] == 0) packet_set[i] *= 2;

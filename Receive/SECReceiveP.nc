@@ -14,6 +14,8 @@
 #include "SECReceive.h"
 
 #define capacity 15
+#define rows (capacity + 1)
+#define columns 16
 
 module SECReceiveP {
   uses {
@@ -46,7 +48,8 @@ implementation {
   // Packet_set array length should be 2*capacity+1
   nx_struct SECMsg packet_set[(capacity + 1)];
 
-  // Variable for the array index for incoming packets
+  // Define some loop variables to go through arrays
+  uint8_t i = 0;
   uint8_t j = 0;
 
   // Message to transmit
@@ -55,15 +58,17 @@ implementation {
   // Variable to store the source address [Node ID] of the incoming packet
   uint16_t inNodeID = 0;
 
-  // On this receiver side we also add a counter value that runs equal to the counter
-  // at the sender side, which we receive as the data in the packets.
-  // By comparing both counters we can check if data gets corrupt during transfer or not.
-  uint16_t counter = 0;
-
-  uint8_t i = 0;
+  // Pointers to an int for the messages array
+  uint16_t *p;
   
   /***************** Prototypes ****************/
   task void send();
+
+  // declaration of deliver function to deliver the received messages to the application layer
+  void deliver();
+
+  // declaration of transpose function to transpose received packets
+  uint16_t * pckt();
   
   /***************** Boot Events ****************/
   event void Boot.booted() {
@@ -73,10 +78,8 @@ implementation {
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
-      // This is an initialization for the last element of the packet_set array.
-      // This is done so every iteration of the Receive.receive() function I can 
-      // check if the label of the last element of the array is empty or not.
-      packet_set[capacity].lbl = 0;
+      // Initialize the ACK_set array with zeroes
+      memset(packet_set, 0, sizeof(packet_set));
     }
     else {
       call AMControl.start();
@@ -122,6 +125,13 @@ implementation {
         //   printfflush();
         // }
         LastDeliveredAltIndex = inMsg->ai;
+
+        // Transpose messages array
+        p = pckt();
+
+        // Delive the messages to the application layer
+        deliver();
+
         // Clear the packet_set array
         memset(packet_set, 0, sizeof(packet_set));
       }
@@ -139,7 +149,7 @@ implementation {
   
   /***************** Timer Events ****************/
   event void Timer0.fired() {
-    // post send();
+    // do nothing
   }
   
   /***************** Tasks ****************/
@@ -160,5 +170,73 @@ implementation {
         busy = TRUE;
       }
     }
+  }
+
+  /***************** User-defined functions ****************/
+  // function returning messages array
+  void deliver() {
+    for ( i = 0; i < (capacity + 1); ++i) {
+      printf("%u\n", *(p + i));
+    }
+    printfflush();
+  }
+
+  // function packet_set to transpose received packets
+  uint16_t * pckt() {
+    // Consider message array as bit matrix
+    // Transpose matrix: data[i].bit[j] = messages[j].bit[i]
+    // return array with <capacity+1> amount of received messages
+
+    uint16_t x = 0;
+    uint16_t result[rows][columns];
+    uint16_t transpose[columns][rows];
+    static uint16_t packets[rows];
+
+    // Initalize 2D arrays with zeroes
+    for (i = 0; i < rows; ++i)
+    {
+      // packets[i] = 0;
+      for (j = 0; j < columns; ++j)
+      {
+        result[i][j] = 0;
+        transpose[j][i] = 0;
+      }
+    }
+
+    // Using the same int to bit array conversion as with the sender,
+    // the received 1D int array of decimals is converted to
+    // a 2D bit array
+    for (i = 0; i < columns; ++i)
+    {
+      x = packet_set[i].dat;
+      for (j = 0; j < rows; ++j)
+      {
+        transpose[i][j] = (x & 0x8000) >> 15;
+        x <<= 1;
+      }
+    }
+
+    // Transpose the 'transpose' array and put the result in 'result'
+    // printf("TRANSPOSE\n");
+    for (i = 0; i < rows; ++i)
+    {
+      for (j = 0; j < columns; ++j)
+      {
+        result[i][j] = transpose[j][i];
+      }
+    }
+
+    // Convert the transposed bit array into a decimal value array
+    x = 1;
+    for (i = 0; i < rows; ++i)
+    {
+      for (j = 0; j < columns; ++j)
+      {
+        if (result[i][j] == 1) packets[i] = packets[i] * 2 + 1;
+        else if (result[i][j] == 0) packets[i] *= 2;
+      }
+    }
+
+    return packets;
   }
 }
