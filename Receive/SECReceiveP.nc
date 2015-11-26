@@ -69,6 +69,8 @@ implementation {
 
   // declaration of transpose function to transpose received packets
   uint16_t * pckt();
+
+  bool checkArray(uint8_t pcktAi, uint8_t pcktLbl);
   
   /***************** Boot Events ****************/
   event void Boot.booted() {
@@ -99,23 +101,26 @@ implementation {
     else {
       SECMsg* inMsg = (SECMsg*)payload;
 
-      ldai = inMsg->ai;
-      recLbl = inMsg->lbl;
-      inNodeID = inMsg->nodeid;
+      if (checkArray(inMsg->ai, inMsg->lbl) && (inMsg->nodeid == (TOS_NODE_ID - 2)))
+      {
+        ldai = inMsg->ai;
+        recLbl = inMsg->lbl;
+        inNodeID = inMsg->nodeid;
 
-      // Add incoming packet to packet_set[]
-      // The packets in the receiving packet_set[] array should always be in order
-      // This means replacing, inserting and appending packets at the right point in the array
-      // according to their label value. This is solved very easily by making the array loop variable 'j'
-      // equal to the label of the incoming message, minus 1 (because labels start at 1 where the array
-      // index starts at 0).
-      j = inMsg->lbl - 1;
-      packet_set[j].ai = inMsg->ai;
-      packet_set[j].lbl = inMsg->lbl;
-      packet_set[j].dat = inMsg->dat;
-      packet_set[j].nodeid = inMsg->nodeid;
+        // Add incoming packet to packet_set[]
+        // The packets in the receiving packet_set[] array should always be in order
+        // This means replacing, inserting and appending packets at the right point in the array
+        // according to their label value. This is solved very easily by making the array loop variable 'j'
+        // equal to the label of the incoming message, minus 1 (because labels start at 1 where the array
+        // index starts at 0).
+        j = inMsg->lbl - 1;
+        packet_set[j].ai = inMsg->ai;
+        packet_set[j].lbl = inMsg->lbl;
+        packet_set[j].dat = inMsg->dat;
+        packet_set[j].nodeid = inMsg->nodeid;
+      }
 
-      // Check to see if the lbl variable of the incoming packet is 11 or not.
+      // Check if the label at position 'capacity' in the packet_set array is filled in or not
       // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
       // NO: continue normal operation.
       if (packet_set[capacity].lbl != 0 ) {
@@ -164,7 +169,8 @@ implementation {
       // Sender broadcast alles, Receiver zou enkel ACK moeten sturen naar Sender waar inkomende
       // message vandaan kwam.
       // UPDATE 16/11: Kan waarschijnlijk opgelost worden met Routing Algorithm
-      if(call AMSend.send(inNodeID, &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
+      // if(call AMSend.send((TOS_NODE_ID - 2), &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
+      if(call AMSend.send(AM_BROADCAST_ADDR, &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
         post send();
       } else {
         busy = TRUE;
@@ -238,5 +244,21 @@ implementation {
     }
 
     return packets;
+  }
+
+  bool checkArray(uint8_t pcktAi, uint8_t pcktLbl){
+    if ((pcktAi != LastDeliveredAltIndex) && (pcktAi < 3) && (pcktAi > -1) && (pcktLbl > 0) && (pcktLbl < (capacity+2)))
+    {
+      for (i = 0; i < (capacity + 1); ++i)
+      {
+        if ((pcktAi == packet_set[i].ai) && (pcktLbl == packet_set[i].lbl))
+        {
+          return FALSE;
+        }
+      }
+      return TRUE;
+    } else {
+      return FALSE;
+    }
   }
 }
