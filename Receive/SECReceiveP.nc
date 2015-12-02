@@ -13,9 +13,9 @@
 #include <printf.h>
 #include "SECReceive.h"
 
-#define capacity 15
-#define rows (capacity + 1)
-#define columns 16
+#define CAPACITY 15
+#define ROWS (CAPACITY + 1)
+#define COLUMNS 16
 
 module SECReceiveP {
   uses {
@@ -45,8 +45,8 @@ implementation {
   uint16_t recLbl = 0;
   
   // Array to contain all the received packages
-  // Packet_set array length should be 2*capacity+1
-  nx_struct SECMsg packet_set[(capacity + 1)];
+  // Packet_set array length should be 2*CAPACITY+1
+  nx_struct SECMsg packet_set[(CAPACITY + 1)];
 
   // Define some loop variables to go through arrays
   uint8_t i = 0;
@@ -101,7 +101,7 @@ implementation {
     else {
       SECMsg* inMsg = (SECMsg*)payload;
 
-      if (checkArray(inMsg->ai, inMsg->lbl) && (inMsg->nodeid == (TOS_NODE_ID - 2)))
+      if (checkArray(inMsg->ai, inMsg->lbl)) //&& (inMsg->nodeid == (TOS_NODE_ID - 2)))
       {
         ldai = inMsg->ai;
         recLbl = inMsg->lbl;
@@ -120,11 +120,11 @@ implementation {
         packet_set[j].nodeid = inMsg->nodeid;
       }
 
-      // Check if the label at position 'capacity' in the packet_set array is filled in or not
+      // Check if the label at position 'CAPACITY' in the packet_set array is filled in or not
       // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
       // NO: continue normal operation.
-      if (packet_set[capacity].lbl != 0 ) {
-        // for (i = 0; i < (capacity+1); ++i)
+      if (packet_set[CAPACITY].lbl != 0 ) {
+        // for (i = 0; i < (CAPACITY+1); ++i)
         // {
         //   printf("%d\n", packet_set[i].dat);
         //   printfflush();
@@ -181,7 +181,7 @@ implementation {
   /***************** User-defined functions ****************/
   // function returning messages array
   void deliver() {
-    for ( i = 0; i < (capacity + 1); ++i) {
+    for ( i = 0; i < (CAPACITY + 1); ++i) {
       printf("%u\n", *(p + i));
     }
     printfflush();
@@ -191,18 +191,18 @@ implementation {
   uint16_t * pckt() {
     // Consider message array as bit matrix
     // Transpose matrix: data[i].bit[j] = messages[j].bit[i]
-    // return array with <capacity+1> amount of received messages
+    // return array with <CAPACITY+1> amount of received messages
 
     uint16_t x = 0;
-    uint16_t result[rows][columns];
-    uint16_t transpose[columns][rows];
-    static uint16_t packets[rows];
+    uint16_t result[ROWS][COLUMNS];
+    uint16_t transpose[COLUMNS][ROWS];
+    static uint16_t packets[ROWS];
 
     // Initalize 2D arrays with zeroes
-    for (i = 0; i < rows; ++i)
+    for (i = 0; i < ROWS; ++i)
     {
       // packets[i] = 0;
-      for (j = 0; j < columns; ++j)
+      for (j = 0; j < COLUMNS; ++j)
       {
         result[i][j] = 0;
         transpose[j][i] = 0;
@@ -212,10 +212,10 @@ implementation {
     // Using the same int to bit array conversion as with the sender,
     // the received 1D int array of decimals is converted to
     // a 2D bit array
-    for (i = 0; i < columns; ++i)
+    for (i = 0; i < COLUMNS; ++i)
     {
       x = packet_set[i].dat;
-      for (j = 0; j < rows; ++j)
+      for (j = 0; j < ROWS; ++j)
       {
         transpose[i][j] = (x & 0x8000) >> 15;
         x <<= 1;
@@ -224,9 +224,9 @@ implementation {
 
     // Transpose the 'transpose' array and put the result in 'result'
     // printf("TRANSPOSE\n");
-    for (i = 0; i < rows; ++i)
+    for (i = 0; i < ROWS; ++i)
     {
-      for (j = 0; j < columns; ++j)
+      for (j = 0; j < COLUMNS; ++j)
       {
         result[i][j] = transpose[j][i];
       }
@@ -234,9 +234,9 @@ implementation {
 
     // Convert the transposed bit array into a decimal value array
     x = 1;
-    for (i = 0; i < rows; ++i)
+    for (i = 0; i < ROWS; ++i)
     {
-      for (j = 0; j < columns; ++j)
+      for (j = 0; j < COLUMNS; ++j)
       {
         if (result[i][j] == 1) packets[i] = packets[i] * 2 + 1;
         else if (result[i][j] == 0) packets[i] *= 2;
@@ -247,9 +247,9 @@ implementation {
   }
 
   bool checkArray(uint8_t pcktAi, uint8_t pcktLbl){
-    if ((pcktAi != LastDeliveredAltIndex) && (pcktAi < 3) && (pcktAi > -1) && (pcktLbl > 0) && (pcktLbl < (capacity+2)))
+    if ((pcktAi != LastDeliveredAltIndex) && (pcktAi < 3) && (pcktAi > -1) && (pcktLbl > 0) && (pcktLbl < (CAPACITY+2)))
     {
-      for (i = 0; i < (capacity + 1); ++i)
+      for (i = 0; i < (CAPACITY + 1); ++i)
       {
         if ((pcktAi == packet_set[i].ai) && (pcktLbl == packet_set[i].lbl))
         {

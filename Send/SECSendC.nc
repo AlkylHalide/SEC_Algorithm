@@ -26,14 +26,49 @@ implementation {
       new AMReceiverC(AM_ACKMSG),
       new TimerMilliC() as Timer0,
       LedsC;
+      // new PacketLogC(100) as Log;
+
+  /******** RPL ROUTING **********/
+  components RPLRankC;
+  components RPLRoutingEngineC;
+  components IPDispatchC;
+  //components RPLForwardingEngineC;
+  components RPLDAORoutingEngineC;
+  components IPStackC;
+  components IPProtocolsP;
+  /******** RPL ROUTING **********/
       
   SECSendP.Boot -> MainC;
-  SECSendP.AMControl -> ActiveMessageC;
+  // SECSendP.AMControl -> ActiveMessageC;
   SECSendP.Leds -> LedsC;
   SECSendP.AMSend -> AMSenderC;
-  SECSendP.Receive -> AMReceiverC;
-  SECSendP.PacketAcknowledgements -> ActiveMessageC;
+  // SECSendP.Receive -> AMReceiverC;
+  // SECSendP.Receive -> Log;
+  // Log.Receive -> AMReceiverC;
+  // SECSendP.PacketAcknowledgements -> ActiveMessageC;
   SECSendP.Timer0 -> Timer0;
   SECSendP.Packet -> AMSenderC;
   SECSendP.AMPacket -> AMSenderC;
+
+  /******** RPL ROUTING **********/
+  SECSendP.AMControl -> IPStackC;//IPDispatchC;
+  SECSendP.RPLRoute -> RPLRoutingEngineC;
+  SECSendP.RootControl -> RPLRoutingEngineC;
+  SECSendP.RoutingControl -> RPLRoutingEngineC;
+
+  components new UdpSocketC() as RPLUDP;
+  SECSendP.RPLUDP -> RPLUDP;
+
+  SECSendP.RPLDAO -> RPLDAORoutingEngineC;
+  // SECSendP.Random -> RandomC;
+
+  #ifdef RPL_ROUTING
+    components RPLRoutingC;
+  #endif
+
+  // #ifdef PRINTFUART_ENABLED
+  //   components PrintfC;
+  //   components SerialStartC;
+  // #endif
+  /******** RPL ROUTING **********/
 }
