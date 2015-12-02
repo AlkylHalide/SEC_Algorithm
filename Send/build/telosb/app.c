@@ -246,12 +246,12 @@ typedef int32_t ufs_daddr_t;
 typedef int32_t ufs_time_t;
 typedef u_int32_t uid_t;
 # 41 "/usr/bin/../lib/gcc/msp430/4.6.3/../../../../msp430/include/string.h" 3
-extern int memcmp(const void *arg_0x2b17568a7de8, const void *arg_0x2b17568ae100, size_t arg_0x2b17568ae3a8);
-extern void *memcpy(void *arg_0x2b17568aebf0, const void *arg_0x2b17568ac020, size_t arg_0x2b17568ac2c8);
-extern void *memmove(void *arg_0x2b17568acb50, const void *arg_0x2b17568ace28, size_t arg_0x2b17568ab100);
-extern void *memset(void *arg_0x2b17568ab980, int arg_0x2b17568abbe8, size_t arg_0x2b17568b2020);
+extern int memcmp(const void *arg_0x2b48285ffde8, const void *arg_0x2b4828606100, size_t arg_0x2b48286063a8);
+extern void *memcpy(void *arg_0x2b4828606bf0, const void *arg_0x2b4828604020, size_t arg_0x2b48286042c8);
+extern void *memmove(void *arg_0x2b4828604b50, const void *arg_0x2b4828604e28, size_t arg_0x2b4828603100);
+extern void *memset(void *arg_0x2b4828603980, int arg_0x2b4828603be8, size_t arg_0x2b482860a020);
 #line 65
-extern void *memset(void *arg_0x2b17568c4b10, int arg_0x2b17568c4d78, size_t arg_0x2b17568c3060);
+extern void *memset(void *arg_0x2b482861cb10, int arg_0x2b482861cd78, size_t arg_0x2b482861b060);
 # 62 "/usr/bin/../lib/gcc/msp430/4.6.3/../../../../msp430/include/stdlib.h" 3
 #line 59
 typedef struct __nesc_unnamed4242 {
@@ -406,7 +406,7 @@ struct _reent {
 
   int __sdidinit;
 
-  void (*__cleanup)(struct _reent *arg_0x2b1756907290);
+  void (*__cleanup)(struct _reent *arg_0x2b482865f290);
 
 
   struct _Bigint *_result;
@@ -446,7 +446,7 @@ struct _reent {
   struct _atexit _atexit0;
 
 
-  void (**_sig_func)(int arg_0x2b175690c300);
+  void (**_sig_func)(int arg_0x2b4828664300);
 
 
 
@@ -2599,7 +2599,7 @@ typedef struct __nesc_unnamed4332 {
 
 void table_init(table_t *table, void *data, uint16_t elt_len, uint16_t n_elts);
 
-void table_map(table_t *table, void (*fn)(void *arg_0x2b1758ab8208));
+void table_map(table_t *table, void (*fn)(void *arg_0x2b482a810208));
 # 25 "/home/evert/tinyos-main/tos/lib/net/blip/icmp/icmp6.h"
 enum __nesc_unnamed4333 {
   ICMP_EXT_TYPE_PREFIX = 3, 
@@ -2931,7 +2931,7 @@ static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__VectorTimerX1__fired(v
 #line 39
 static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__default__fired(
 # 51 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430TimerP.nc"
-uint8_t arg_0x2b1757041458);
+uint8_t arg_0x2b4828d99458);
 # 45 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430Timer.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Timer__get(void );
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430TimerEvent.nc"
@@ -2943,7 +2943,7 @@ static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__VectorTimerX1__fired(v
 #line 39
 static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__default__fired(
 # 51 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430TimerP.nc"
-uint8_t arg_0x2b1757041458);
+uint8_t arg_0x2b4828d99458);
 # 45 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430Timer.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__get(void );
 static bool /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__isOverflowPending(void );
@@ -3117,11 +3117,11 @@ static void McuSleepC__McuSleep__sleep(void );
 # 67 "/home/evert/tinyos-main/tos/interfaces/TaskBasic.nc"
 static error_t SchedulerBasicP__TaskBasic__postTask(
 # 56 "/home/evert/tinyos-main/tos/system/SchedulerBasicP.nc"
-uint8_t arg_0x2b1756dd6d50);
+uint8_t arg_0x2b4828b2ed50);
 # 75 "/home/evert/tinyos-main/tos/interfaces/TaskBasic.nc"
 static void SchedulerBasicP__TaskBasic__default__runTask(
 # 56 "/home/evert/tinyos-main/tos/system/SchedulerBasicP.nc"
-uint8_t arg_0x2b1756dd6d50);
+uint8_t arg_0x2b4828b2ed50);
 # 57 "/home/evert/tinyos-main/tos/interfaces/Scheduler.nc"
 static void SchedulerBasicP__Scheduler__init(void );
 #line 72
@@ -3152,7 +3152,7 @@ error_t error);
 # 110 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 static void /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__sendDone(
 # 48 "/home/evert/tinyos-main/tos/system/AMQueueImplP.nc"
-am_id_t arg_0x2b175718f340, 
+am_id_t arg_0x2b4828ee7340, 
 # 103 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -3165,7 +3165,7 @@ error_t error);
 # 75 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 static error_t /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__send(
 # 46 "/home/evert/tinyos-main/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x2b17571911c8, 
+uint8_t arg_0x2b4828ee91c8, 
 # 67 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -3179,7 +3179,7 @@ uint8_t len);
 #line 100
 static void /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__default__sendDone(
 # 46 "/home/evert/tinyos-main/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x2b17571911c8, 
+uint8_t arg_0x2b4828ee91c8, 
 # 96 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -3218,7 +3218,7 @@ uint8_t len);
 # 80 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 static error_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMSend__send(
 # 47 "/home/evert/tinyos-main/tos/lib/serial/SerialActiveMessageP.nc"
-am_id_t arg_0x2b17571e8508, 
+am_id_t arg_0x2b4828f40508, 
 # 80 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 71
@@ -3269,7 +3269,7 @@ message_t *
 
 /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Receive__default__receive(
 # 48 "/home/evert/tinyos-main/tos/lib/serial/SerialActiveMessageP.nc"
-am_id_t arg_0x2b17571e7780, 
+am_id_t arg_0x2b4828f3f780, 
 # 71 "/home/evert/tinyos-main/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -3338,7 +3338,7 @@ static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__receive
 # 75 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__send(
 # 51 "/home/evert/tinyos-main/tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x2b1757317020, 
+uart_id_t arg_0x2b482906f020, 
 # 67 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -3352,7 +3352,7 @@ uint8_t len);
 #line 100
 static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__default__sendDone(
 # 51 "/home/evert/tinyos-main/tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x2b1757317020, 
+uart_id_t arg_0x2b482906f020, 
 # 96 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -3370,7 +3370,7 @@ message_t *
 
 /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive__default__receive(
 # 50 "/home/evert/tinyos-main/tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x2b1757318468, 
+uart_id_t arg_0x2b4829070468, 
 # 71 "/home/evert/tinyos-main/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -3383,17 +3383,17 @@ uint8_t len);
 # 31 "/home/evert/tinyos-main/tos/lib/serial/SerialPacketInfo.nc"
 static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__upperLength(
 # 54 "/home/evert/tinyos-main/tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x2b1757316308, 
+uart_id_t arg_0x2b482906e308, 
 # 31 "/home/evert/tinyos-main/tos/lib/serial/SerialPacketInfo.nc"
 message_t *msg, uint8_t dataLinkLen);
 #line 15
 static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__offset(
 # 54 "/home/evert/tinyos-main/tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x2b1757316308);
+uart_id_t arg_0x2b482906e308);
 # 23 "/home/evert/tinyos-main/tos/lib/serial/SerialPacketInfo.nc"
 static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__dataLinkLength(
 # 54 "/home/evert/tinyos-main/tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x2b1757316308, 
+uart_id_t arg_0x2b482906e308, 
 # 23 "/home/evert/tinyos-main/tos/lib/serial/SerialPacketInfo.nc"
 message_t *msg, uint8_t upperLen);
 # 81 "/home/evert/tinyos-main/tos/lib/serial/SendBytePacket.nc"
@@ -3455,19 +3455,19 @@ static error_t HdlcTranslateC__SerialFrameComm__putData(uint8_t data);
 # 65 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__ResourceConfigure__unconfigure(
 # 44 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757416b38);
+uint8_t arg_0x2b482916eb38);
 # 59 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__ResourceConfigure__configure(
 # 44 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757416b38);
+uint8_t arg_0x2b482916eb38);
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartConfigure.nc"
 static msp430_uart_union_config_t */*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__default__getConfig(
 # 49 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757411e20);
+uint8_t arg_0x2b4829169e20);
 # 48 "/home/evert/tinyos-main/tos/interfaces/UartStream.nc"
 static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__send(
 # 45 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757415860, 
+uint8_t arg_0x2b482916d860, 
 # 44 "/home/evert/tinyos-main/tos/interfaces/UartStream.nc"
 uint8_t * buf, 
 
@@ -3477,13 +3477,13 @@ uint16_t len);
 #line 79
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receivedByte(
 # 45 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757415860, 
+uint8_t arg_0x2b482916d860, 
 # 79 "/home/evert/tinyos-main/tos/interfaces/UartStream.nc"
 uint8_t byte);
 #line 99
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receiveDone(
 # 45 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757415860, 
+uint8_t arg_0x2b482916d860, 
 # 95 "/home/evert/tinyos-main/tos/interfaces/UartStream.nc"
 uint8_t * buf, 
 
@@ -3493,7 +3493,7 @@ uint16_t len, error_t error);
 #line 57
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__sendDone(
 # 45 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757415860, 
+uint8_t arg_0x2b482916d860, 
 # 53 "/home/evert/tinyos-main/tos/interfaces/UartStream.nc"
 uint8_t * buf, 
 
@@ -3505,41 +3505,41 @@ static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Counter__overflow(void );
 # 120 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__release(
 # 48 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757412be8);
+uint8_t arg_0x2b482916abe8);
 # 97 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__immediateRequest(
 # 48 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757412be8);
+uint8_t arg_0x2b482916abe8);
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__granted(
 # 48 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757412be8);
+uint8_t arg_0x2b482916abe8);
 # 128 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static bool /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__isOwner(
 # 48 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757412be8);
+uint8_t arg_0x2b482916abe8);
 # 120 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__release(
 # 43 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b175741a8e8);
+uint8_t arg_0x2b48291728e8);
 # 97 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__immediateRequest(
 # 43 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b175741a8e8);
+uint8_t arg_0x2b48291728e8);
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__default__granted(
 # 43 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b175741a8e8);
+uint8_t arg_0x2b48291728e8);
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartInterrupts__rxDone(
 # 51 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757427948, 
+uint8_t arg_0x2b482917f948, 
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 uint8_t data);
 #line 49
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartInterrupts__txDone(
 # 51 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757427948);
+uint8_t arg_0x2b482917f948);
 # 143 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430Usart.nc"
 static void HplMsp430Usart1P__Usart__enableUartRx(void );
 #line 123
@@ -3751,13 +3751,13 @@ static void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__set(void );
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__rxDone(
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x2b17577db220, 
+uint8_t arg_0x2b4829533220, 
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 uint8_t data);
 #line 49
 static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__txDone(
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x2b17577db220);
+uint8_t arg_0x2b4829533220);
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__RawInterrupts__rxDone(uint8_t data);
 #line 49
@@ -3771,33 +3771,33 @@ static resource_client_id_t /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsResourceQue
 # 61 "/home/evert/tinyos-main/tos/interfaces/ResourceRequested.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__default__immediateRequested(
 # 55 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577df020);
+uint8_t arg_0x2b4829537020);
 # 65 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__unconfigure(
 # 60 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b1757821340);
+uint8_t arg_0x2b4829579340);
 # 59 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__configure(
 # 60 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b1757821340);
+uint8_t arg_0x2b4829579340);
 # 56 "/home/evert/tinyos-main/tos/interfaces/ResourceDefaultOwner.nc"
 static error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__release(void );
 # 120 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__Resource__release(
 # 54 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577e1d40);
+uint8_t arg_0x2b4829539d40);
 # 97 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__Resource__immediateRequest(
 # 54 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577e1d40);
+uint8_t arg_0x2b4829539d40);
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__Resource__default__granted(
 # 54 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577e1d40);
+uint8_t arg_0x2b4829539d40);
 # 128 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__Resource__isOwner(
 # 54 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577e1d40);
+uint8_t arg_0x2b4829539d40);
 # 90 "/home/evert/tinyos-main/tos/interfaces/ArbiterInfo.nc"
 static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ArbiterInfo__inUse(void );
 
@@ -4175,31 +4175,31 @@ error_t error);
 # 62 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 static error_t CC2420SpiP__Fifo__continueRead(
 # 46 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757ceb328, 
+uint8_t arg_0x2b4829a43328, 
 # 62 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 uint8_t * data, uint8_t length);
 #line 91
 static void CC2420SpiP__Fifo__default__writeDone(
 # 46 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757ceb328, 
+uint8_t arg_0x2b4829a43328, 
 # 91 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 uint8_t * data, uint8_t length, error_t error);
 #line 82
 static cc2420_status_t CC2420SpiP__Fifo__write(
 # 46 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757ceb328, 
+uint8_t arg_0x2b4829a43328, 
 # 82 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 uint8_t * data, uint8_t length);
 #line 51
 static cc2420_status_t CC2420SpiP__Fifo__beginRead(
 # 46 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757ceb328, 
+uint8_t arg_0x2b4829a43328, 
 # 51 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 uint8_t * data, uint8_t length);
 #line 71
 static void CC2420SpiP__Fifo__default__readDone(
 # 46 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757ceb328, 
+uint8_t arg_0x2b4829a43328, 
 # 71 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 uint8_t * data, uint8_t length, error_t error);
 # 31 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/ChipSpiResource.nc"
@@ -4217,13 +4217,13 @@ static void CC2420SpiP__SpiResource__granted(void );
 # 63 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Ram.nc"
 static cc2420_status_t CC2420SpiP__Ram__write(
 # 47 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint16_t arg_0x2b1757ce94d8, 
+uint16_t arg_0x2b4829a414d8, 
 # 63 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Ram.nc"
 uint8_t offset, uint8_t * data, uint8_t length);
 # 55 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Register.nc"
 static cc2420_status_t CC2420SpiP__Reg__read(
 # 48 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757ce8220, 
+uint8_t arg_0x2b4829a40220, 
 # 55 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Register.nc"
 uint16_t *data);
 
@@ -4235,59 +4235,59 @@ uint16_t *data);
 
 static cc2420_status_t CC2420SpiP__Reg__write(
 # 48 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757ce8220, 
+uint8_t arg_0x2b4829a40220, 
 # 63 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Register.nc"
 uint16_t data);
 # 120 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t CC2420SpiP__Resource__release(
 # 45 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757cec158);
+uint8_t arg_0x2b4829a44158);
 # 97 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t CC2420SpiP__Resource__immediateRequest(
 # 45 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757cec158);
+uint8_t arg_0x2b4829a44158);
 # 88 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t CC2420SpiP__Resource__request(
 # 45 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757cec158);
+uint8_t arg_0x2b4829a44158);
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static void CC2420SpiP__Resource__default__granted(
 # 45 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757cec158);
+uint8_t arg_0x2b4829a44158);
 # 128 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static bool CC2420SpiP__Resource__isOwner(
 # 45 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757cec158);
+uint8_t arg_0x2b4829a44158);
 # 75 "/home/evert/tinyos-main/tos/interfaces/TaskBasic.nc"
 static void CC2420SpiP__grant__runTask(void );
 # 53 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 static cc2420_status_t CC2420SpiP__Strobe__strobe(
 # 49 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757ce7020);
+uint8_t arg_0x2b4829a3f020);
 # 62 "/home/evert/tinyos-main/tos/interfaces/Init.nc"
 static error_t StateImplP__Init__init(void );
 # 71 "/home/evert/tinyos-main/tos/interfaces/State.nc"
 static uint8_t StateImplP__State__getState(
 # 67 "/home/evert/tinyos-main/tos/system/StateImplP.nc"
-uint8_t arg_0x2b1757d82020);
+uint8_t arg_0x2b4829ada020);
 # 56 "/home/evert/tinyos-main/tos/interfaces/State.nc"
 static void StateImplP__State__toIdle(
 # 67 "/home/evert/tinyos-main/tos/system/StateImplP.nc"
-uint8_t arg_0x2b1757d82020);
+uint8_t arg_0x2b4829ada020);
 # 66 "/home/evert/tinyos-main/tos/interfaces/State.nc"
 static bool StateImplP__State__isState(
 # 67 "/home/evert/tinyos-main/tos/system/StateImplP.nc"
-uint8_t arg_0x2b1757d82020, 
+uint8_t arg_0x2b4829ada020, 
 # 66 "/home/evert/tinyos-main/tos/interfaces/State.nc"
 uint8_t myState);
 #line 61
 static bool StateImplP__State__isIdle(
 # 67 "/home/evert/tinyos-main/tos/system/StateImplP.nc"
-uint8_t arg_0x2b1757d82020);
+uint8_t arg_0x2b4829ada020);
 # 45 "/home/evert/tinyos-main/tos/interfaces/State.nc"
 static error_t StateImplP__State__requestState(
 # 67 "/home/evert/tinyos-main/tos/system/StateImplP.nc"
-uint8_t arg_0x2b1757d82020, 
+uint8_t arg_0x2b4829ada020, 
 # 45 "/home/evert/tinyos-main/tos/interfaces/State.nc"
 uint8_t reqState);
 
@@ -4297,21 +4297,21 @@ uint8_t reqState);
 
 static void StateImplP__State__forceState(
 # 67 "/home/evert/tinyos-main/tos/system/StateImplP.nc"
-uint8_t arg_0x2b1757d82020, 
+uint8_t arg_0x2b4829ada020, 
 # 51 "/home/evert/tinyos-main/tos/interfaces/State.nc"
 uint8_t reqState);
 # 65 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__ResourceConfigure__unconfigure(
 # 76 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da94b8);
+uint8_t arg_0x2b4829b014b8);
 # 59 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__ResourceConfigure__configure(
 # 76 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da94b8);
+uint8_t arg_0x2b4829b014b8);
 # 70 "/home/evert/tinyos-main/tos/interfaces/SpiPacket.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__send(
 # 79 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da62f0, 
+uint8_t arg_0x2b4829afe2f0, 
 # 59 "/home/evert/tinyos-main/tos/interfaces/SpiPacket.nc"
 uint8_t * txBuf, 
 
@@ -4328,7 +4328,7 @@ uint16_t len);
 #line 82
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__default__sendDone(
 # 79 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da62f0, 
+uint8_t arg_0x2b4829afe2f0, 
 # 75 "/home/evert/tinyos-main/tos/interfaces/SpiPacket.nc"
 uint8_t * txBuf, 
 uint8_t * rxBuf, 
@@ -4342,49 +4342,49 @@ error_t error);
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiConfigure.nc"
 static msp430_spi_union_config_t */*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__default__getConfig(
 # 82 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da42f0);
+uint8_t arg_0x2b4829afc2f0);
 # 45 "/home/evert/tinyos-main/tos/interfaces/SpiByte.nc"
 static uint8_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiByte__write(uint8_t tx);
 # 120 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__release(
 # 81 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da50c8);
+uint8_t arg_0x2b4829afd0c8);
 # 97 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__immediateRequest(
 # 81 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da50c8);
+uint8_t arg_0x2b4829afd0c8);
 # 88 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__request(
 # 81 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da50c8);
+uint8_t arg_0x2b4829afd0c8);
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__granted(
 # 81 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da50c8);
+uint8_t arg_0x2b4829afd0c8);
 # 128 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__isOwner(
 # 81 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da50c8);
+uint8_t arg_0x2b4829afd0c8);
 # 120 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__release(
 # 75 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757daa2f0);
+uint8_t arg_0x2b4829b022f0);
 # 97 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__immediateRequest(
 # 75 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757daa2f0);
+uint8_t arg_0x2b4829b022f0);
 # 88 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__request(
 # 75 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757daa2f0);
+uint8_t arg_0x2b4829b022f0);
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__default__granted(
 # 75 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757daa2f0);
+uint8_t arg_0x2b4829b022f0);
 # 128 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__isOwner(
 # 75 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757daa2f0);
+uint8_t arg_0x2b4829b022f0);
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartInterrupts__rxDone(uint8_t data);
 #line 49
@@ -4424,19 +4424,19 @@ static void HplMsp430Usart0P__Usart__disableSpi(void );
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__rxDone(
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x2b17577db220, 
+uint8_t arg_0x2b4829533220, 
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 uint8_t data);
 #line 49
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__txDone(
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x2b17577db220);
+uint8_t arg_0x2b4829533220);
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430I2CInterrupts.nc"
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__RawI2CInterrupts__fired(void );
 #line 39
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__I2CInterrupts__default__fired(
 # 40 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x2b17577d8c58);
+uint8_t arg_0x2b4829530c58);
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__RawInterrupts__rxDone(uint8_t data);
 #line 49
@@ -4467,19 +4467,19 @@ static resource_client_id_t /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQue
 # 53 "/home/evert/tinyos-main/tos/interfaces/ResourceRequested.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__default__requested(
 # 55 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577df020);
+uint8_t arg_0x2b4829537020);
 # 61 "/home/evert/tinyos-main/tos/interfaces/ResourceRequested.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__default__immediateRequested(
 # 55 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577df020);
+uint8_t arg_0x2b4829537020);
 # 65 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__default__unconfigure(
 # 60 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b1757821340);
+uint8_t arg_0x2b4829579340);
 # 59 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__default__configure(
 # 60 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b1757821340);
+uint8_t arg_0x2b4829579340);
 # 56 "/home/evert/tinyos-main/tos/interfaces/ResourceDefaultOwner.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceDefaultOwner__release(void );
 #line 73
@@ -4491,23 +4491,23 @@ static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceDefaultO
 # 120 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__Resource__release(
 # 54 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577e1d40);
+uint8_t arg_0x2b4829539d40);
 # 97 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__Resource__immediateRequest(
 # 54 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577e1d40);
+uint8_t arg_0x2b4829539d40);
 # 88 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__Resource__request(
 # 54 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577e1d40);
+uint8_t arg_0x2b4829539d40);
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__Resource__default__granted(
 # 54 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577e1d40);
+uint8_t arg_0x2b4829539d40);
 # 128 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__Resource__isOwner(
 # 54 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577e1d40);
+uint8_t arg_0x2b4829539d40);
 # 90 "/home/evert/tinyos-main/tos/interfaces/ArbiterInfo.nc"
 static bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ArbiterInfo__inUse(void );
 
@@ -4727,19 +4727,19 @@ static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__TimerFrom__f
 #line 136
 static uint32_t /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__Timer__getNow(
 # 48 "/home/evert/tinyos-main/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x2b17583055d8);
+uint8_t arg_0x2b482a05d5d8);
 # 83 "/home/evert/tinyos-main/tos/lib/timer/Timer.nc"
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__Timer__default__fired(
 # 48 "/home/evert/tinyos-main/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x2b17583055d8);
+uint8_t arg_0x2b482a05d5d8);
 # 92 "/home/evert/tinyos-main/tos/lib/timer/Timer.nc"
 static bool /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__Timer__isRunning(
 # 48 "/home/evert/tinyos-main/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x2b17583055d8);
+uint8_t arg_0x2b482a05d5d8);
 # 64 "/home/evert/tinyos-main/tos/lib/timer/Timer.nc"
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__Timer__startPeriodic(
 # 48 "/home/evert/tinyos-main/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x2b17583055d8, 
+uint8_t arg_0x2b482a05d5d8, 
 # 64 "/home/evert/tinyos-main/tos/lib/timer/Timer.nc"
 uint32_t dt);
 
@@ -4752,7 +4752,7 @@ uint32_t dt);
 
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__Timer__startOneShot(
 # 48 "/home/evert/tinyos-main/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x2b17583055d8, 
+uint8_t arg_0x2b482a05d5d8, 
 # 73 "/home/evert/tinyos-main/tos/lib/timer/Timer.nc"
 uint32_t dt);
 
@@ -4761,7 +4761,7 @@ uint32_t dt);
 
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__Timer__stop(
 # 48 "/home/evert/tinyos-main/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x2b17583055d8);
+uint8_t arg_0x2b482a05d5d8);
 # 82 "/home/evert/tinyos-main/tos/lib/timer/Counter.nc"
 static void /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC__1__Counter__overflow(void );
 # 52 "/home/evert/tinyos-main/tos/interfaces/Random.nc"
@@ -4885,19 +4885,19 @@ static uint8_t CC2420TinyosNetworkP__ActiveSend__maxPayloadLength(void );
 # 120 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t CC2420TinyosNetworkP__Resource__release(
 # 46 "/home/evert/tinyos-main/tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
-uint8_t arg_0x2b175842c280);
+uint8_t arg_0x2b482a184280);
 # 97 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t CC2420TinyosNetworkP__Resource__immediateRequest(
 # 46 "/home/evert/tinyos-main/tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
-uint8_t arg_0x2b175842c280);
+uint8_t arg_0x2b482a184280);
 # 88 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t CC2420TinyosNetworkP__Resource__request(
 # 46 "/home/evert/tinyos-main/tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
-uint8_t arg_0x2b175842c280);
+uint8_t arg_0x2b482a184280);
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static void CC2420TinyosNetworkP__Resource__default__granted(
 # 46 "/home/evert/tinyos-main/tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
-uint8_t arg_0x2b175842c280);
+uint8_t arg_0x2b482a184280);
 # 75 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 static error_t CC2420TinyosNetworkP__BareSend__send(
 #line 67
@@ -5040,13 +5040,13 @@ static void CC2420ActiveMessageP__CC2420Config__syncDone(error_t error);
 # 95 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/RadioBackoff.nc"
 static void CC2420ActiveMessageP__RadioBackoff__default__requestCca(
 # 54 "/home/evert/tinyos-main/tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x2b1758543488, 
+am_id_t arg_0x2b482a29b488, 
 # 95 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/RadioBackoff.nc"
 message_t * msg);
 #line 81
 static void CC2420ActiveMessageP__RadioBackoff__default__requestInitialBackoff(
 # 54 "/home/evert/tinyos-main/tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x2b1758543488, 
+am_id_t arg_0x2b482a29b488, 
 # 81 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/RadioBackoff.nc"
 message_t * msg);
 
@@ -5057,13 +5057,13 @@ message_t * msg);
 
 static void CC2420ActiveMessageP__RadioBackoff__default__requestCongestionBackoff(
 # 54 "/home/evert/tinyos-main/tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x2b1758543488, 
+am_id_t arg_0x2b482a29b488, 
 # 88 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/RadioBackoff.nc"
 message_t * msg);
 # 59 "/home/evert/tinyos-main/tos/interfaces/SendNotifier.nc"
 static void CC2420ActiveMessageP__SendNotifier__default__aboutToSend(
 # 53 "/home/evert/tinyos-main/tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x2b1758545940, 
+am_id_t arg_0x2b482a29d940, 
 # 59 "/home/evert/tinyos-main/tos/interfaces/SendNotifier.nc"
 am_addr_t dest, 
 #line 57
@@ -5102,7 +5102,7 @@ static uint8_t CC2420ActiveMessageP__Packet__maxPayloadLength(void );
 # 80 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 static error_t CC2420ActiveMessageP__AMSend__send(
 # 48 "/home/evert/tinyos-main/tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x2b175854ce58, 
+am_id_t arg_0x2b482a2a4e58, 
 # 80 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 71
@@ -5125,7 +5125,7 @@ message_t *
 
 CC2420ActiveMessageP__Snoop__default__receive(
 # 50 "/home/evert/tinyos-main/tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x2b1758548b68, 
+am_id_t arg_0x2b482a2a0b68, 
 # 71 "/home/evert/tinyos-main/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -5144,7 +5144,7 @@ message_t *
 
 CC2420ActiveMessageP__Receive__default__receive(
 # 49 "/home/evert/tinyos-main/tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x2b1758548020, 
+am_id_t arg_0x2b482a2a0020, 
 # 71 "/home/evert/tinyos-main/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -5189,7 +5189,7 @@ error_t error);
 # 110 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__1__AMSend__sendDone(
 # 48 "/home/evert/tinyos-main/tos/system/AMQueueImplP.nc"
-am_id_t arg_0x2b175718f340, 
+am_id_t arg_0x2b4828ee7340, 
 # 103 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -5202,7 +5202,7 @@ error_t error);
 # 100 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__1__Send__default__sendDone(
 # 46 "/home/evert/tinyos-main/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x2b17571911c8, 
+uint8_t arg_0x2b4828ee91c8, 
 # 96 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -5409,7 +5409,7 @@ size_t len, struct ip6_metadata *meta);
 #line 17
 static error_t IPProtocolsP__IP__send(
 # 9 "/home/evert/tinyos-main/tos/lib/net/blip/IPProtocolsP.nc"
-uint8_t arg_0x2b1758973b30, 
+uint8_t arg_0x2b482a6cbb30, 
 # 17 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 struct ip6_packet *msg);
 
@@ -5419,34 +5419,34 @@ struct ip6_packet *msg);
 
 static void IPProtocolsP__IP__default__recv(
 # 9 "/home/evert/tinyos-main/tos/lib/net/blip/IPProtocolsP.nc"
-uint8_t arg_0x2b1758973b30, 
+uint8_t arg_0x2b482a6cbb30, 
 # 23 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 struct ip6_hdr *hdr, void *packet, 
 size_t len, struct ip6_metadata *meta);
 # 28 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/ForwardingEvents.nc"
 static bool IPForwardingEngineP__ForwardingEvents__default__approve(
 # 22 "/home/evert/tinyos-main/tos/lib/net/blip/IPForwardingEngineP.nc"
-uint8_t arg_0x2b17589e31d0, 
+uint8_t arg_0x2b482a73b1d0, 
 # 28 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/ForwardingEvents.nc"
 struct ip6_packet *pkt, 
 struct in6_addr *next_hop);
 #line 13
 static bool IPForwardingEngineP__ForwardingEvents__default__initiate(
 # 22 "/home/evert/tinyos-main/tos/lib/net/blip/IPForwardingEngineP.nc"
-uint8_t arg_0x2b17589e31d0, 
+uint8_t arg_0x2b482a73b1d0, 
 # 13 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/ForwardingEvents.nc"
 struct ip6_packet *pkt, 
 struct in6_addr *next_hop);
 #line 39
 static void IPForwardingEngineP__ForwardingEvents__default__linkResult(
 # 22 "/home/evert/tinyos-main/tos/lib/net/blip/IPForwardingEngineP.nc"
-uint8_t arg_0x2b17589e31d0, 
+uint8_t arg_0x2b482a73b1d0, 
 # 39 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/ForwardingEvents.nc"
 struct in6_addr *dest, struct send_info *info);
 # 18 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IPForward.nc"
 static error_t IPForwardingEngineP__IPForward__default__send(
 # 28 "/home/evert/tinyos-main/tos/lib/net/blip/IPForwardingEngineP.nc"
-uint8_t arg_0x2b17589db6f8, 
+uint8_t arg_0x2b482a7336f8, 
 # 18 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IPForward.nc"
 struct in6_addr *next_hop, 
 struct ip6_packet *msg, 
@@ -5460,13 +5460,13 @@ void *data);
 
 static void IPForwardingEngineP__IPForward__recv(
 # 28 "/home/evert/tinyos-main/tos/lib/net/blip/IPForwardingEngineP.nc"
-uint8_t arg_0x2b17589db6f8, 
+uint8_t arg_0x2b482a7336f8, 
 # 28 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IPForward.nc"
 struct ip6_hdr *iph, void *payload, struct ip6_metadata *meta);
 #line 22
 static void IPForwardingEngineP__IPForward__sendDone(
 # 28 "/home/evert/tinyos-main/tos/lib/net/blip/IPForwardingEngineP.nc"
-uint8_t arg_0x2b17589db6f8, 
+uint8_t arg_0x2b482a7336f8, 
 # 22 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IPForward.nc"
 struct send_info *status);
 # 75 "/home/evert/tinyos-main/tos/interfaces/TaskBasic.nc"
@@ -5650,7 +5650,7 @@ static error_t IPStackControlP__StdControl__default__start(void );
 # 17 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 static error_t ICMPCoreP__ICMP_IP__send(
 # 50 "/home/evert/tinyos-main/tos/lib/net/blip/icmp/ICMPCoreP.nc"
-uint8_t arg_0x2b1758d98c80, 
+uint8_t arg_0x2b482aaf0c80, 
 # 17 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 struct ip6_packet *msg);
 
@@ -5660,7 +5660,7 @@ struct ip6_packet *msg);
 
 static void ICMPCoreP__ICMP_IP__default__recv(
 # 50 "/home/evert/tinyos-main/tos/lib/net/blip/icmp/ICMPCoreP.nc"
-uint8_t arg_0x2b1758d98c80, 
+uint8_t arg_0x2b482aaf0c80, 
 # 23 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 struct ip6_hdr *hdr, void *packet, 
 size_t len, struct ip6_metadata *meta);
@@ -5740,7 +5740,7 @@ size_t len, struct ip6_metadata *meta);
 #line 17
 static error_t /*RPLRoutingEngineC.ICMP_RS.ICMPCodeDispatchP*/ICMPCodeDispatchP__0__IP__send(
 # 35 "/home/evert/tinyos-main/tos/lib/net/blip/icmp/ICMPCodeDispatchP.nc"
-uint8_t arg_0x2b1758dc9d10, 
+uint8_t arg_0x2b482ab21d10, 
 # 17 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 struct ip6_packet *msg);
 
@@ -5750,7 +5750,7 @@ struct ip6_packet *msg);
 
 static void /*RPLRoutingEngineC.ICMP_RS.ICMPCodeDispatchP*/ICMPCodeDispatchP__0__IP__default__recv(
 # 35 "/home/evert/tinyos-main/tos/lib/net/blip/icmp/ICMPCodeDispatchP.nc"
-uint8_t arg_0x2b1758dc9d10, 
+uint8_t arg_0x2b482ab21d10, 
 # 23 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 struct ip6_hdr *hdr, void *packet, 
 size_t len, struct ip6_metadata *meta);
@@ -5795,14 +5795,14 @@ static void UdpP__IPAddress__changed(bool valid);
 # 18 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/UDP.nc"
 static error_t UdpP__UDP__sendto(
 # 8 "/home/evert/tinyos-main/tos/lib/net/blip/UdpP.nc"
-uint8_t arg_0x2b1758e01630, 
+uint8_t arg_0x2b482ab59630, 
 # 18 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/UDP.nc"
 struct sockaddr_in6 *dest, void *payload, 
 uint16_t len);
 #line 12
 static error_t UdpP__UDP__bind(
 # 8 "/home/evert/tinyos-main/tos/lib/net/blip/UdpP.nc"
-uint8_t arg_0x2b1758e01630, 
+uint8_t arg_0x2b482ab59630, 
 # 12 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/UDP.nc"
 uint16_t port);
 
@@ -5815,7 +5815,7 @@ uint16_t port);
 
 static error_t UdpP__UDP__sendtov(
 # 8 "/home/evert/tinyos-main/tos/lib/net/blip/UdpP.nc"
-uint8_t arg_0x2b1758e01630, 
+uint8_t arg_0x2b482ab59630, 
 # 21 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/UDP.nc"
 struct sockaddr_in6 *dest, 
 struct ip_iovec *iov);
@@ -5827,7 +5827,7 @@ struct ip_iovec *iov);
 
 static void UdpP__UDP__default__recvfrom(
 # 8 "/home/evert/tinyos-main/tos/lib/net/blip/UdpP.nc"
-uint8_t arg_0x2b1758e01630, 
+uint8_t arg_0x2b482ab59630, 
 # 29 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/UDP.nc"
 struct sockaddr_in6 *src, void *payload, 
 uint16_t len, struct ip6_metadata *meta);
@@ -5840,7 +5840,7 @@ size_t len, struct ip6_metadata *meta);
 #line 17
 static error_t /*RPLRoutingC.ICMP_RA.ICMPCodeDispatchP*/ICMPCodeDispatchP__1__IP__send(
 # 35 "/home/evert/tinyos-main/tos/lib/net/blip/icmp/ICMPCodeDispatchP.nc"
-uint8_t arg_0x2b1758dc9d10, 
+uint8_t arg_0x2b482ab21d10, 
 # 17 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 struct ip6_packet *msg);
 
@@ -5850,7 +5850,7 @@ struct ip6_packet *msg);
 
 static void /*RPLRoutingC.ICMP_RA.ICMPCodeDispatchP*/ICMPCodeDispatchP__1__IP__default__recv(
 # 35 "/home/evert/tinyos-main/tos/lib/net/blip/icmp/ICMPCodeDispatchP.nc"
-uint8_t arg_0x2b1758dc9d10, 
+uint8_t arg_0x2b482ab21d10, 
 # 23 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 struct ip6_hdr *hdr, void *packet, 
 size_t len, struct ip6_metadata *meta);
@@ -5941,9 +5941,9 @@ static uint16_t *SECSendP__packet_set(void );
 
 
 static inline void SECSendP__Boot__booted(void );
-#line 120
+#line 115
 static inline void SECSendP__AMControl__startDone(error_t error);
-#line 151
+#line 146
 static inline void SECSendP__AMControl__stopDone(error_t error);
 
 
@@ -5951,7 +5951,7 @@ static inline void SECSendP__AMControl__stopDone(error_t error);
 
 
 static inline void SECSendP__RPLUDP__recvfrom(struct sockaddr_in6 *from, void *payload, uint16_t len, struct ip6_metadata *meta);
-#line 189
+#line 184
 static inline void SECSendP__AMSend__sendDone(message_t *msg, error_t error);
 
 
@@ -5971,9 +5971,9 @@ static inline void SECSendP__Timer0__fired(void );
 
 
 static inline void SECSendP__send__runTask(void );
-#line 273
+#line 268
 static uint16_t *SECSendP__fetch(uint8_t pl);
-#line 285
+#line 280
 static uint16_t *SECSendP__packet_set(void );
 # 62 "/home/evert/tinyos-main/tos/interfaces/Init.nc"
 static error_t PlatformP__MoteInit__init(void );
@@ -6079,7 +6079,7 @@ static inline error_t Msp430ClockP__Init__init(void );
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__fired(
 # 51 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430TimerP.nc"
-uint8_t arg_0x2b1757041458);
+uint8_t arg_0x2b4828d99458);
 # 48 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Timer__overflow(void );
 # 62 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430TimerP.nc"
@@ -6109,7 +6109,7 @@ static inline void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__default_
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__fired(
 # 51 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430TimerP.nc"
-uint8_t arg_0x2b1757041458);
+uint8_t arg_0x2b4828d99458);
 # 48 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__overflow(void );
 # 62 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430TimerP.nc"
@@ -6612,7 +6612,7 @@ int main(void )   ;
 # 75 "/home/evert/tinyos-main/tos/interfaces/TaskBasic.nc"
 static void SchedulerBasicP__TaskBasic__runTask(
 # 56 "/home/evert/tinyos-main/tos/system/SchedulerBasicP.nc"
-uint8_t arg_0x2b1756dd6d50);
+uint8_t arg_0x2b4828b2ed50);
 # 76 "/home/evert/tinyos-main/tos/interfaces/McuSleep.nc"
 static void SchedulerBasicP__McuSleep__sleep(void );
 # 61 "/home/evert/tinyos-main/tos/system/SchedulerBasicP.nc"
@@ -6718,7 +6718,7 @@ static inline void /*PrintfC.SerialAMSenderC.AMQueueEntryP*/AMQueueEntryP__0__Se
 # 80 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 static error_t /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__send(
 # 48 "/home/evert/tinyos-main/tos/system/AMQueueImplP.nc"
-am_id_t arg_0x2b175718f340, 
+am_id_t arg_0x2b4828ee7340, 
 # 80 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 71
@@ -6735,7 +6735,7 @@ uint8_t len);
 # 100 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 static void /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__sendDone(
 # 46 "/home/evert/tinyos-main/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x2b17571911c8, 
+uint8_t arg_0x2b4828ee91c8, 
 # 96 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -6828,7 +6828,7 @@ uint8_t len);
 # 110 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 static void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMSend__sendDone(
 # 47 "/home/evert/tinyos-main/tos/lib/serial/SerialActiveMessageP.nc"
-am_id_t arg_0x2b17571e8508, 
+am_id_t arg_0x2b4828f40508, 
 # 103 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -6847,7 +6847,7 @@ message_t *
 
 /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Receive__receive(
 # 48 "/home/evert/tinyos-main/tos/lib/serial/SerialActiveMessageP.nc"
-am_id_t arg_0x2b17571e7780, 
+am_id_t arg_0x2b4828f3f780, 
 # 71 "/home/evert/tinyos-main/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -7332,7 +7332,7 @@ static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__rece
 # 100 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__sendDone(
 # 51 "/home/evert/tinyos-main/tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x2b1757317020, 
+uart_id_t arg_0x2b482906f020, 
 # 96 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -7350,7 +7350,7 @@ message_t *
 
 /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive__receive(
 # 50 "/home/evert/tinyos-main/tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x2b1757318468, 
+uart_id_t arg_0x2b4829070468, 
 # 71 "/home/evert/tinyos-main/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -7363,17 +7363,17 @@ uint8_t len);
 # 31 "/home/evert/tinyos-main/tos/lib/serial/SerialPacketInfo.nc"
 static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__upperLength(
 # 54 "/home/evert/tinyos-main/tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x2b1757316308, 
+uart_id_t arg_0x2b482906e308, 
 # 31 "/home/evert/tinyos-main/tos/lib/serial/SerialPacketInfo.nc"
 message_t *msg, uint8_t dataLinkLen);
 #line 15
 static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__offset(
 # 54 "/home/evert/tinyos-main/tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x2b1757316308);
+uart_id_t arg_0x2b482906e308);
 # 23 "/home/evert/tinyos-main/tos/lib/serial/SerialPacketInfo.nc"
 static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__dataLinkLength(
 # 54 "/home/evert/tinyos-main/tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x2b1757316308, 
+uart_id_t arg_0x2b482906e308, 
 # 23 "/home/evert/tinyos-main/tos/lib/serial/SerialPacketInfo.nc"
 message_t *msg, uint8_t upperLen);
 # 71 "/home/evert/tinyos-main/tos/lib/serial/SendBytePacket.nc"
@@ -7572,7 +7572,7 @@ static inline void HdlcTranslateC__UartStream__receiveDone(uint8_t *buf, uint16_
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartConfigure.nc"
 static msp430_uart_union_config_t */*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__getConfig(
 # 49 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757411e20);
+uint8_t arg_0x2b4829169e20);
 # 97 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430Usart.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__resetUsart(bool reset);
 #line 179
@@ -7589,13 +7589,13 @@ static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__setModeUart(msp430_uart
 # 79 "/home/evert/tinyos-main/tos/interfaces/UartStream.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receivedByte(
 # 45 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757415860, 
+uint8_t arg_0x2b482916d860, 
 # 79 "/home/evert/tinyos-main/tos/interfaces/UartStream.nc"
 uint8_t byte);
 #line 99
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receiveDone(
 # 45 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757415860, 
+uint8_t arg_0x2b482916d860, 
 # 95 "/home/evert/tinyos-main/tos/interfaces/UartStream.nc"
 uint8_t * buf, 
 
@@ -7605,7 +7605,7 @@ uint16_t len, error_t error);
 #line 57
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__sendDone(
 # 45 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757415860, 
+uint8_t arg_0x2b482916d860, 
 # 53 "/home/evert/tinyos-main/tos/interfaces/UartStream.nc"
 uint8_t * buf, 
 
@@ -7615,19 +7615,19 @@ uint16_t len, error_t error);
 # 120 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__release(
 # 48 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757412be8);
+uint8_t arg_0x2b482916abe8);
 # 97 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__immediateRequest(
 # 48 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757412be8);
+uint8_t arg_0x2b482916abe8);
 # 128 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static bool /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__isOwner(
 # 48 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b1757412be8);
+uint8_t arg_0x2b482916abe8);
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__granted(
 # 43 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x2b175741a8e8);
+uint8_t arg_0x2b48291728e8);
 #line 59
 uint16_t /*Msp430Uart1P.UartP*/Msp430UartP__0__m_tx_len;
 #line 59
@@ -8032,13 +8032,13 @@ static uint8_t /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__ArbiterIn
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Interrupts__rxDone(
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x2b17577db220, 
+uint8_t arg_0x2b4829533220, 
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 uint8_t data);
 #line 49
 static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Interrupts__txDone(
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x2b17577db220);
+uint8_t arg_0x2b4829533220);
 
 
 
@@ -8091,15 +8091,15 @@ static inline resource_client_id_t /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsReso
 # 61 "/home/evert/tinyos-main/tos/interfaces/ResourceRequested.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__immediateRequested(
 # 55 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577df020);
+uint8_t arg_0x2b4829537020);
 # 65 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__unconfigure(
 # 60 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b1757821340);
+uint8_t arg_0x2b4829579340);
 # 59 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__configure(
 # 60 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b1757821340);
+uint8_t arg_0x2b4829579340);
 # 53 "/home/evert/tinyos-main/tos/interfaces/ResourceQueue.nc"
 static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__Queue__isEmpty(void );
 #line 70
@@ -8111,7 +8111,7 @@ static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultO
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__Resource__granted(
 # 54 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577e1d40);
+uint8_t arg_0x2b4829539d40);
 # 67 "/home/evert/tinyos-main/tos/interfaces/TaskBasic.nc"
 static error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__grantedTask__postTask(void );
 # 75 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
@@ -9232,13 +9232,13 @@ uint16_t len);
 # 91 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 static void CC2420SpiP__Fifo__writeDone(
 # 46 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757ceb328, 
+uint8_t arg_0x2b4829a43328, 
 # 91 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 uint8_t * data, uint8_t length, error_t error);
 #line 71
 static void CC2420SpiP__Fifo__readDone(
 # 46 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757ceb328, 
+uint8_t arg_0x2b4829a43328, 
 # 71 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 uint8_t * data, uint8_t length, error_t error);
 # 24 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/ChipSpiResource.nc"
@@ -9265,7 +9265,7 @@ static bool CC2420SpiP__SpiResource__isOwner(void );
 #line 102
 static void CC2420SpiP__Resource__granted(
 # 45 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x2b1757cec158);
+uint8_t arg_0x2b4829a44158);
 # 67 "/home/evert/tinyos-main/tos/interfaces/TaskBasic.nc"
 static error_t CC2420SpiP__grant__postTask(void );
 # 88 "/home/evert/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc"
@@ -9443,7 +9443,7 @@ static uint8_t StateImplP__State__getState(uint8_t id);
 # 82 "/home/evert/tinyos-main/tos/interfaces/SpiPacket.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__sendDone(
 # 79 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da62f0, 
+uint8_t arg_0x2b4829afe2f0, 
 # 75 "/home/evert/tinyos-main/tos/interfaces/SpiPacket.nc"
 uint8_t * txBuf, 
 uint8_t * rxBuf, 
@@ -9457,7 +9457,7 @@ error_t error);
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiConfigure.nc"
 static msp430_spi_union_config_t */*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__getConfig(
 # 82 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da42f0);
+uint8_t arg_0x2b4829afc2f0);
 # 180 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430Usart.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__enableRxIntr(void );
 #line 197
@@ -9479,23 +9479,23 @@ static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__disableSpi(void 
 # 120 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__release(
 # 81 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da50c8);
+uint8_t arg_0x2b4829afd0c8);
 # 97 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__immediateRequest(
 # 81 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da50c8);
+uint8_t arg_0x2b4829afd0c8);
 # 88 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__request(
 # 81 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da50c8);
+uint8_t arg_0x2b4829afd0c8);
 # 128 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__isOwner(
 # 81 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757da50c8);
+uint8_t arg_0x2b4829afd0c8);
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__granted(
 # 75 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x2b1757daa2f0);
+uint8_t arg_0x2b4829b022f0);
 # 67 "/home/evert/tinyos-main/tos/interfaces/TaskBasic.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__signalDone_task__postTask(void );
 # 102 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
@@ -9725,17 +9725,17 @@ static uint8_t /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__ArbiterIn
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Interrupts__rxDone(
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x2b17577db220, 
+uint8_t arg_0x2b4829533220, 
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 uint8_t data);
 #line 49
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Interrupts__txDone(
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x2b17577db220);
+uint8_t arg_0x2b4829533220);
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430I2CInterrupts.nc"
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__I2CInterrupts__fired(
 # 40 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x2b17577d8c58);
+uint8_t arg_0x2b4829530c58);
 
 
 
@@ -9790,19 +9790,19 @@ static inline error_t /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__2
 # 53 "/home/evert/tinyos-main/tos/interfaces/ResourceRequested.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__requested(
 # 55 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577df020);
+uint8_t arg_0x2b4829537020);
 # 61 "/home/evert/tinyos-main/tos/interfaces/ResourceRequested.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__immediateRequested(
 # 55 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577df020);
+uint8_t arg_0x2b4829537020);
 # 65 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__unconfigure(
 # 60 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b1757821340);
+uint8_t arg_0x2b4829579340);
 # 59 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__configure(
 # 60 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b1757821340);
+uint8_t arg_0x2b4829579340);
 # 79 "/home/evert/tinyos-main/tos/interfaces/ResourceQueue.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__Queue__enqueue(resource_client_id_t id);
 #line 53
@@ -9818,7 +9818,7 @@ static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceDefaultO
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__Resource__granted(
 # 54 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
-uint8_t arg_0x2b17577e1d40);
+uint8_t arg_0x2b4829539d40);
 # 67 "/home/evert/tinyos-main/tos/interfaces/TaskBasic.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__grantedTask__postTask(void );
 # 75 "/home/evert/tinyos-main/tos/system/ArbiterP.nc"
@@ -10784,7 +10784,7 @@ static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__TimerFrom__s
 
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__Timer__fired(
 # 48 "/home/evert/tinyos-main/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x2b17583055d8);
+uint8_t arg_0x2b482a05d5d8);
 #line 71
 enum /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0____nesc_unnamed4412 {
 #line 71
@@ -11069,7 +11069,7 @@ uint8_t len);
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
 static void CC2420TinyosNetworkP__Resource__granted(
 # 46 "/home/evert/tinyos-main/tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
-uint8_t arg_0x2b175842c280);
+uint8_t arg_0x2b482a184280);
 # 100 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 static void CC2420TinyosNetworkP__BareSend__sendDone(
 #line 96
@@ -11402,13 +11402,13 @@ static uint16_t CC2420ActiveMessageP__CC2420Config__getPanAddr(void );
 # 95 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/RadioBackoff.nc"
 static void CC2420ActiveMessageP__RadioBackoff__requestCca(
 # 54 "/home/evert/tinyos-main/tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x2b1758543488, 
+am_id_t arg_0x2b482a29b488, 
 # 95 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/RadioBackoff.nc"
 message_t * msg);
 #line 81
 static void CC2420ActiveMessageP__RadioBackoff__requestInitialBackoff(
 # 54 "/home/evert/tinyos-main/tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x2b1758543488, 
+am_id_t arg_0x2b482a29b488, 
 # 81 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/RadioBackoff.nc"
 message_t * msg);
 
@@ -11419,13 +11419,13 @@ message_t * msg);
 
 static void CC2420ActiveMessageP__RadioBackoff__requestCongestionBackoff(
 # 54 "/home/evert/tinyos-main/tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x2b1758543488, 
+am_id_t arg_0x2b482a29b488, 
 # 88 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/RadioBackoff.nc"
 message_t * msg);
 # 59 "/home/evert/tinyos-main/tos/interfaces/SendNotifier.nc"
 static void CC2420ActiveMessageP__SendNotifier__aboutToSend(
 # 53 "/home/evert/tinyos-main/tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x2b1758545940, 
+am_id_t arg_0x2b482a29d940, 
 # 59 "/home/evert/tinyos-main/tos/interfaces/SendNotifier.nc"
 am_addr_t dest, 
 #line 57
@@ -11433,7 +11433,7 @@ message_t * msg);
 # 110 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 static void CC2420ActiveMessageP__AMSend__sendDone(
 # 48 "/home/evert/tinyos-main/tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x2b175854ce58, 
+am_id_t arg_0x2b482a2a4e58, 
 # 103 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -11452,7 +11452,7 @@ message_t *
 
 CC2420ActiveMessageP__Snoop__receive(
 # 50 "/home/evert/tinyos-main/tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x2b1758548b68, 
+am_id_t arg_0x2b482a2a0b68, 
 # 71 "/home/evert/tinyos-main/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -11475,7 +11475,7 @@ message_t *
 
 CC2420ActiveMessageP__Receive__receive(
 # 49 "/home/evert/tinyos-main/tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x2b1758548020, 
+am_id_t arg_0x2b482a2a0020, 
 # 71 "/home/evert/tinyos-main/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -11598,7 +11598,7 @@ static inline void /*SECSendC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__1_
 # 80 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__1__AMSend__send(
 # 48 "/home/evert/tinyos-main/tos/system/AMQueueImplP.nc"
-am_id_t arg_0x2b175718f340, 
+am_id_t arg_0x2b4828ee7340, 
 # 80 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 71
@@ -11615,7 +11615,7 @@ uint8_t len);
 # 100 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__1__Send__sendDone(
 # 46 "/home/evert/tinyos-main/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x2b17571911c8, 
+uint8_t arg_0x2b4828ee91c8, 
 # 96 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -12469,7 +12469,7 @@ uint8_t first_type, uint8_t *search_type);
 # 23 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 static void IPProtocolsP__IP__recv(
 # 9 "/home/evert/tinyos-main/tos/lib/net/blip/IPProtocolsP.nc"
-uint8_t arg_0x2b1758973b30, 
+uint8_t arg_0x2b482a6cbb30, 
 # 23 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 struct ip6_hdr *hdr, void *packet, 
 size_t len, struct ip6_metadata *meta);
@@ -12492,27 +12492,27 @@ size_t len, struct ip6_metadata *meta);
 # 28 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/ForwardingEvents.nc"
 static bool IPForwardingEngineP__ForwardingEvents__approve(
 # 22 "/home/evert/tinyos-main/tos/lib/net/blip/IPForwardingEngineP.nc"
-uint8_t arg_0x2b17589e31d0, 
+uint8_t arg_0x2b482a73b1d0, 
 # 28 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/ForwardingEvents.nc"
 struct ip6_packet *pkt, 
 struct in6_addr *next_hop);
 #line 13
 static bool IPForwardingEngineP__ForwardingEvents__initiate(
 # 22 "/home/evert/tinyos-main/tos/lib/net/blip/IPForwardingEngineP.nc"
-uint8_t arg_0x2b17589e31d0, 
+uint8_t arg_0x2b482a73b1d0, 
 # 13 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/ForwardingEvents.nc"
 struct ip6_packet *pkt, 
 struct in6_addr *next_hop);
 #line 39
 static void IPForwardingEngineP__ForwardingEvents__linkResult(
 # 22 "/home/evert/tinyos-main/tos/lib/net/blip/IPForwardingEngineP.nc"
-uint8_t arg_0x2b17589e31d0, 
+uint8_t arg_0x2b482a73b1d0, 
 # 39 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/ForwardingEvents.nc"
 struct in6_addr *dest, struct send_info *info);
 # 18 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IPForward.nc"
 static error_t IPForwardingEngineP__IPForward__send(
 # 28 "/home/evert/tinyos-main/tos/lib/net/blip/IPForwardingEngineP.nc"
-uint8_t arg_0x2b17589db6f8, 
+uint8_t arg_0x2b482a7336f8, 
 # 18 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IPForward.nc"
 struct in6_addr *next_hop, 
 struct ip6_packet *msg, 
@@ -13169,7 +13169,7 @@ static inline error_t IPStackControlP__StdControl__default__start(void );
 # 23 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 static void ICMPCoreP__ICMP_IP__recv(
 # 50 "/home/evert/tinyos-main/tos/lib/net/blip/icmp/ICMPCoreP.nc"
-uint8_t arg_0x2b1758d98c80, 
+uint8_t arg_0x2b482aaf0c80, 
 # 23 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 struct ip6_hdr *hdr, void *packet, 
 size_t len, struct ip6_metadata *meta);
@@ -13272,7 +13272,7 @@ static error_t /*RPLRoutingEngineC.ICMP_RS.ICMPCodeDispatchP*/ICMPCodeDispatchP_
 
 static void /*RPLRoutingEngineC.ICMP_RS.ICMPCodeDispatchP*/ICMPCodeDispatchP__0__IP__recv(
 # 35 "/home/evert/tinyos-main/tos/lib/net/blip/icmp/ICMPCodeDispatchP.nc"
-uint8_t arg_0x2b1758dc9d10, 
+uint8_t arg_0x2b482ab21d10, 
 # 23 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 struct ip6_hdr *hdr, void *packet, 
 size_t len, struct ip6_metadata *meta);
@@ -13361,7 +13361,7 @@ static bool UdpP__IPAddress__setSource(struct ip6_hdr *hdr);
 # 29 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/UDP.nc"
 static void UdpP__UDP__recvfrom(
 # 8 "/home/evert/tinyos-main/tos/lib/net/blip/UdpP.nc"
-uint8_t arg_0x2b1758e01630, 
+uint8_t arg_0x2b482ab59630, 
 # 29 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/UDP.nc"
 struct sockaddr_in6 *src, void *payload, 
 uint16_t len, struct ip6_metadata *meta);
@@ -13422,7 +13422,7 @@ static error_t /*RPLRoutingC.ICMP_RA.ICMPCodeDispatchP*/ICMPCodeDispatchP__1__RA
 
 static void /*RPLRoutingC.ICMP_RA.ICMPCodeDispatchP*/ICMPCodeDispatchP__1__IP__recv(
 # 35 "/home/evert/tinyos-main/tos/lib/net/blip/icmp/ICMPCodeDispatchP.nc"
-uint8_t arg_0x2b1758dc9d10, 
+uint8_t arg_0x2b482ab21d10, 
 # 23 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
 struct ip6_hdr *hdr, void *packet, 
 size_t len, struct ip6_metadata *meta);
@@ -13507,9 +13507,9 @@ static inline void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__default_
 }
 
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430TimerEvent.nc"
-inline static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__fired(uint8_t arg_0x2b1757041458){
+inline static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__fired(uint8_t arg_0x2b4828d99458){
 #line 39
-  switch (arg_0x2b1757041458) {
+  switch (arg_0x2b4828d99458) {
 #line 39
     case 0:
 #line 39
@@ -13537,7 +13537,7 @@ inline static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__fired(ui
 #line 39
     default:
 #line 39
-      /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__default__fired(arg_0x2b1757041458);
+      /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__default__fired(arg_0x2b4828d99458);
 #line 39
       break;
 #line 39
@@ -14542,9 +14542,9 @@ message_t *msg)
 }
 
 # 88 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/RadioBackoff.nc"
-inline static void CC2420ActiveMessageP__RadioBackoff__requestCongestionBackoff(am_id_t arg_0x2b1758543488, message_t * msg){
+inline static void CC2420ActiveMessageP__RadioBackoff__requestCongestionBackoff(am_id_t arg_0x2b482a29b488, message_t * msg){
 #line 88
-    CC2420ActiveMessageP__RadioBackoff__default__requestCongestionBackoff(arg_0x2b1758543488, msg);
+    CC2420ActiveMessageP__RadioBackoff__default__requestCongestionBackoff(arg_0x2b482a29b488, msg);
 #line 88
 }
 #line 88
@@ -14654,13 +14654,13 @@ static inline bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__d
 }
 
 # 128 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
-inline static bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__isOwner(uint8_t arg_0x2b1757da50c8){
+inline static bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__isOwner(uint8_t arg_0x2b4829afd0c8){
 #line 128
   unsigned char __nesc_result;
 #line 128
 
 #line 128
-  switch (arg_0x2b1757da50c8) {
+  switch (arg_0x2b4829afd0c8) {
 #line 128
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
 #line 128
@@ -14670,7 +14670,7 @@ inline static bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__i
 #line 128
     default:
 #line 128
-      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__isOwner(arg_0x2b1757da50c8);
+      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__isOwner(arg_0x2b4829afd0c8);
 #line 128
       break;
 #line 128
@@ -14712,13 +14712,13 @@ static inline msp430_spi_union_config_t */*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDma
 }
 
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430SpiConfigure.nc"
-inline static msp430_spi_union_config_t */*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__getConfig(uint8_t arg_0x2b1757da42f0){
+inline static msp430_spi_union_config_t */*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__getConfig(uint8_t arg_0x2b4829afc2f0){
 #line 39
   union __nesc_unnamed4311 *__nesc_result;
 #line 39
 
 #line 39
-    __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__default__getConfig(arg_0x2b1757da42f0);
+    __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__default__getConfig(arg_0x2b4829afc2f0);
 #line 39
 
 #line 39
@@ -14747,9 +14747,9 @@ static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceC
 }
 
 # 59 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
-inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__configure(uint8_t arg_0x2b1757821340){
+inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__configure(uint8_t arg_0x2b4829579340){
 #line 59
-  switch (arg_0x2b1757821340) {
+  switch (arg_0x2b4829579340) {
 #line 59
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID:
 #line 59
@@ -14759,7 +14759,7 @@ inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceC
 #line 59
     default:
 #line 59
-      /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__default__configure(arg_0x2b1757821340);
+      /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__default__configure(arg_0x2b4829579340);
 #line 59
       break;
 #line 59
@@ -14788,9 +14788,9 @@ static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceR
 }
 
 # 61 "/home/evert/tinyos-main/tos/interfaces/ResourceRequested.nc"
-inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__immediateRequested(uint8_t arg_0x2b17577df020){
+inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__immediateRequested(uint8_t arg_0x2b4829537020){
 #line 61
-    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__default__immediateRequested(arg_0x2b17577df020);
+    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__default__immediateRequested(arg_0x2b4829537020);
 #line 61
 }
 #line 61
@@ -14836,13 +14836,13 @@ static inline error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource
 }
 
 # 97 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
-inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__immediateRequest(uint8_t arg_0x2b1757da50c8){
+inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__immediateRequest(uint8_t arg_0x2b4829afd0c8){
 #line 97
   unsigned char __nesc_result;
 #line 97
 
 #line 97
-  switch (arg_0x2b1757da50c8) {
+  switch (arg_0x2b4829afd0c8) {
 #line 97
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
 #line 97
@@ -14852,7 +14852,7 @@ inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource
 #line 97
     default:
 #line 97
-      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__immediateRequest(arg_0x2b1757da50c8);
+      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__immediateRequest(arg_0x2b4829afd0c8);
 #line 97
       break;
 #line 97
@@ -15234,9 +15234,9 @@ static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceR
 }
 
 # 53 "/home/evert/tinyos-main/tos/interfaces/ResourceRequested.nc"
-inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__requested(uint8_t arg_0x2b17577df020){
+inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__requested(uint8_t arg_0x2b4829537020){
 #line 53
-    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__default__requested(arg_0x2b17577df020);
+    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__default__requested(arg_0x2b4829537020);
 #line 53
 }
 #line 53
@@ -15290,13 +15290,13 @@ static inline error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource
 }
 
 # 88 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
-inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__request(uint8_t arg_0x2b1757da50c8){
+inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__request(uint8_t arg_0x2b4829afd0c8){
 #line 88
   unsigned char __nesc_result;
 #line 88
 
 #line 88
-  switch (arg_0x2b1757da50c8) {
+  switch (arg_0x2b4829afd0c8) {
 #line 88
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
 #line 88
@@ -15306,7 +15306,7 @@ inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource
 #line 88
     default:
 #line 88
-      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__request(arg_0x2b1757da50c8);
+      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__request(arg_0x2b4829afd0c8);
 #line 88
       break;
 #line 88
@@ -15490,9 +15490,9 @@ static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceC
 }
 
 # 65 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
-inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__unconfigure(uint8_t arg_0x2b1757821340){
+inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__unconfigure(uint8_t arg_0x2b4829579340){
 #line 65
-  switch (arg_0x2b1757821340) {
+  switch (arg_0x2b4829579340) {
 #line 65
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID:
 #line 65
@@ -15502,7 +15502,7 @@ inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceC
 #line 65
     default:
 #line 65
-      /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__default__unconfigure(arg_0x2b1757821340);
+      /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__default__unconfigure(arg_0x2b4829579340);
 #line 65
       break;
 #line 65
@@ -15653,13 +15653,13 @@ static inline error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource
 }
 
 # 120 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
-inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__release(uint8_t arg_0x2b1757da50c8){
+inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__release(uint8_t arg_0x2b4829afd0c8){
 #line 120
   unsigned char __nesc_result;
 #line 120
 
 #line 120
-  switch (arg_0x2b1757da50c8) {
+  switch (arg_0x2b4829afd0c8) {
 #line 120
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
 #line 120
@@ -15669,7 +15669,7 @@ inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource
 #line 120
     default:
 #line 120
-      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__release(arg_0x2b1757da50c8);
+      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__release(arg_0x2b4829afd0c8);
 #line 120
       break;
 #line 120
@@ -18210,9 +18210,9 @@ message_t *msg)
 }
 
 # 95 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/RadioBackoff.nc"
-inline static void CC2420ActiveMessageP__RadioBackoff__requestCca(am_id_t arg_0x2b1758543488, message_t * msg){
+inline static void CC2420ActiveMessageP__RadioBackoff__requestCca(am_id_t arg_0x2b482a29b488, message_t * msg){
 #line 95
-    CC2420ActiveMessageP__RadioBackoff__default__requestCca(arg_0x2b1758543488, msg);
+    CC2420ActiveMessageP__RadioBackoff__default__requestCca(arg_0x2b482a29b488, msg);
 #line 95
 }
 #line 95
@@ -19500,13 +19500,13 @@ struct in6_addr *next_hop)
 }
 
 # 13 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/ForwardingEvents.nc"
-inline static bool IPForwardingEngineP__ForwardingEvents__initiate(uint8_t arg_0x2b17589e31d0, struct ip6_packet *pkt, struct in6_addr *next_hop){
+inline static bool IPForwardingEngineP__ForwardingEvents__initiate(uint8_t arg_0x2b482a73b1d0, struct ip6_packet *pkt, struct in6_addr *next_hop){
 #line 13
   unsigned char __nesc_result;
 #line 13
 
 #line 13
-  switch (arg_0x2b17589e31d0) {
+  switch (arg_0x2b482a73b1d0) {
 #line 13
     case RPL_IFACE:
 #line 13
@@ -19516,7 +19516,7 @@ inline static bool IPForwardingEngineP__ForwardingEvents__initiate(uint8_t arg_0
 #line 13
     default:
 #line 13
-      __nesc_result = IPForwardingEngineP__ForwardingEvents__default__initiate(arg_0x2b17589e31d0, pkt, next_hop);
+      __nesc_result = IPForwardingEngineP__ForwardingEvents__default__initiate(arg_0x2b482a73b1d0, pkt, next_hop);
 #line 13
       break;
 #line 13
@@ -19542,13 +19542,13 @@ void *data)
 }
 
 # 18 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IPForward.nc"
-inline static error_t IPForwardingEngineP__IPForward__send(uint8_t arg_0x2b17589db6f8, struct in6_addr *next_hop, struct ip6_packet *msg, void *data){
+inline static error_t IPForwardingEngineP__IPForward__send(uint8_t arg_0x2b482a7336f8, struct in6_addr *next_hop, struct ip6_packet *msg, void *data){
 #line 18
   unsigned char __nesc_result;
 #line 18
 
 #line 18
-  switch (arg_0x2b17589db6f8) {
+  switch (arg_0x2b482a7336f8) {
 #line 18
     case ROUTE_IFACE_154:
 #line 18
@@ -19558,7 +19558,7 @@ inline static error_t IPForwardingEngineP__IPForward__send(uint8_t arg_0x2b17589
 #line 18
     default:
 #line 18
-      __nesc_result = IPForwardingEngineP__IPForward__default__send(arg_0x2b17589db6f8, next_hop, msg, data);
+      __nesc_result = IPForwardingEngineP__IPForward__default__send(arg_0x2b482a7336f8, next_hop, msg, data);
 #line 18
       break;
 #line 18
@@ -21974,16 +21974,16 @@ inline static error_t SECSendP__send__postTask(void ){
 #line 67
 }
 #line 67
-# 189 "SECSendP.nc"
+# 184 "SECSendP.nc"
 static inline void SECSendP__AMSend__sendDone(message_t *msg, error_t error)
-#line 189
+#line 184
 {
   SECSendP__busy = FALSE;
   if (DELAY_BETWEEN_MESSAGES > 0) {
       SECSendP__Timer0__startOneShot(DELAY_BETWEEN_MESSAGES);
     }
   else 
-#line 193
+#line 188
     {
       SECSendP__send__postTask();
     }
@@ -22010,9 +22010,9 @@ static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP__1__Send__default__send
 }
 
 # 100 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
-inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__1__Send__sendDone(uint8_t arg_0x2b17571911c8, message_t * msg, error_t error){
+inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__1__Send__sendDone(uint8_t arg_0x2b4828ee91c8, message_t * msg, error_t error){
 #line 100
-  switch (arg_0x2b17571911c8) {
+  switch (arg_0x2b4828ee91c8) {
 #line 100
     case 0U:
 #line 100
@@ -22022,7 +22022,7 @@ inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__1__Send__sendDone(uint
 #line 100
     default:
 #line 100
-      /*AMQueueP.AMQueueImplP*/AMQueueImplP__1__Send__default__sendDone(arg_0x2b17571911c8, msg, error);
+      /*AMQueueP.AMQueueImplP*/AMQueueImplP__1__Send__default__sendDone(arg_0x2b4828ee91c8, msg, error);
 #line 100
       break;
 #line 100
@@ -22287,9 +22287,9 @@ static inline void CC2420ActiveMessageP__SendNotifier__default__aboutToSend(am_i
 }
 
 # 59 "/home/evert/tinyos-main/tos/interfaces/SendNotifier.nc"
-inline static void CC2420ActiveMessageP__SendNotifier__aboutToSend(am_id_t arg_0x2b1758545940, am_addr_t dest, message_t * msg){
+inline static void CC2420ActiveMessageP__SendNotifier__aboutToSend(am_id_t arg_0x2b482a29d940, am_addr_t dest, message_t * msg){
 #line 59
-    CC2420ActiveMessageP__SendNotifier__default__aboutToSend(arg_0x2b1758545940, dest, msg);
+    CC2420ActiveMessageP__SendNotifier__default__aboutToSend(arg_0x2b482a29d940, dest, msg);
 #line 59
 }
 #line 59
@@ -22568,13 +22568,13 @@ uint8_t len)
 }
 
 # 80 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
-inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__1__AMSend__send(am_id_t arg_0x2b175718f340, am_addr_t addr, message_t * msg, uint8_t len){
+inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__1__AMSend__send(am_id_t arg_0x2b4828ee7340, am_addr_t addr, message_t * msg, uint8_t len){
 #line 80
   unsigned char __nesc_result;
 #line 80
 
 #line 80
-  __nesc_result = CC2420ActiveMessageP__AMSend__send(arg_0x2b175718f340, addr, msg, len);
+  __nesc_result = CC2420ActiveMessageP__AMSend__send(arg_0x2b4828ee7340, addr, msg, len);
 #line 80
 
 #line 80
@@ -22754,9 +22754,9 @@ static inline void CC2420TinyosNetworkP__Resource__default__granted(uint8_t clie
 }
 
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
-inline static void CC2420TinyosNetworkP__Resource__granted(uint8_t arg_0x2b175842c280){
+inline static void CC2420TinyosNetworkP__Resource__granted(uint8_t arg_0x2b482a184280){
 #line 102
-  switch (arg_0x2b175842c280) {
+  switch (arg_0x2b482a184280) {
 #line 102
     case CC2420ActiveMessageC__CC2420_AM_SEND_ID:
 #line 102
@@ -22766,7 +22766,7 @@ inline static void CC2420TinyosNetworkP__Resource__granted(uint8_t arg_0x2b17584
 #line 102
     default:
 #line 102
-      CC2420TinyosNetworkP__Resource__default__granted(arg_0x2b175842c280);
+      CC2420TinyosNetworkP__Resource__default__granted(arg_0x2b482a184280);
 #line 102
       break;
 #line 102
@@ -22998,9 +22998,9 @@ static inline void PacketLinkP__DelayTimer__fired(void )
     }
 }
 
-# 199 "SECSendP.nc"
+# 194 "SECSendP.nc"
 static inline void SECSendP__Timer0__fired(void )
-#line 199
+#line 194
 {
 
 
@@ -23291,9 +23291,9 @@ static inline void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__Timer
 }
 
 # 83 "/home/evert/tinyos-main/tos/lib/timer/Timer.nc"
-inline static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__Timer__fired(uint8_t arg_0x2b17583055d8){
+inline static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__Timer__fired(uint8_t arg_0x2b482a05d5d8){
 #line 83
-  switch (arg_0x2b17583055d8) {
+  switch (arg_0x2b482a05d5d8) {
 #line 83
     case 1U:
 #line 83
@@ -23351,7 +23351,7 @@ inline static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__Timer
 #line 83
     default:
 #line 83
-      /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__Timer__default__fired(arg_0x2b17583055d8);
+      /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC__0__Timer__default__fired(arg_0x2b482a05d5d8);
 #line 83
       break;
 #line 83
@@ -23853,13 +23853,13 @@ static inline message_t *CC2420ActiveMessageP__Snoop__default__receive(am_id_t i
 }
 
 # 78 "/home/evert/tinyos-main/tos/interfaces/Receive.nc"
-inline static message_t * CC2420ActiveMessageP__Snoop__receive(am_id_t arg_0x2b1758548b68, message_t * msg, void * payload, uint8_t len){
+inline static message_t * CC2420ActiveMessageP__Snoop__receive(am_id_t arg_0x2b482a2a0b68, message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
 #line 78
 
 #line 78
-    __nesc_result = CC2420ActiveMessageP__Snoop__default__receive(arg_0x2b1758548b68, msg, payload, len);
+    __nesc_result = CC2420ActiveMessageP__Snoop__default__receive(arg_0x2b482a2a0b68, msg, payload, len);
 #line 78
 
 #line 78
@@ -23875,13 +23875,13 @@ static inline message_t *CC2420ActiveMessageP__Receive__default__receive(am_id_t
 }
 
 # 78 "/home/evert/tinyos-main/tos/interfaces/Receive.nc"
-inline static message_t * CC2420ActiveMessageP__Receive__receive(am_id_t arg_0x2b1758548020, message_t * msg, void * payload, uint8_t len){
+inline static message_t * CC2420ActiveMessageP__Receive__receive(am_id_t arg_0x2b482a2a0020, message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
 #line 78
 
 #line 78
-    __nesc_result = CC2420ActiveMessageP__Receive__default__receive(arg_0x2b1758548020, msg, payload, len);
+    __nesc_result = CC2420ActiveMessageP__Receive__default__receive(arg_0x2b482a2a0020, msg, payload, len);
 #line 78
 
 #line 78
@@ -24858,13 +24858,13 @@ struct in6_addr *next_hop)
 }
 
 # 28 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/ForwardingEvents.nc"
-inline static bool IPForwardingEngineP__ForwardingEvents__approve(uint8_t arg_0x2b17589e31d0, struct ip6_packet *pkt, struct in6_addr *next_hop){
+inline static bool IPForwardingEngineP__ForwardingEvents__approve(uint8_t arg_0x2b482a73b1d0, struct ip6_packet *pkt, struct in6_addr *next_hop){
 #line 28
   unsigned char __nesc_result;
 #line 28
 
 #line 28
-  switch (arg_0x2b17589e31d0) {
+  switch (arg_0x2b482a73b1d0) {
 #line 28
     case RPL_IFACE:
 #line 28
@@ -24874,7 +24874,7 @@ inline static bool IPForwardingEngineP__ForwardingEvents__approve(uint8_t arg_0x
 #line 28
     default:
 #line 28
-      __nesc_result = IPForwardingEngineP__ForwardingEvents__default__approve(arg_0x2b17589e31d0, pkt, next_hop);
+      __nesc_result = IPForwardingEngineP__ForwardingEvents__default__approve(arg_0x2b482a73b1d0, pkt, next_hop);
 #line 28
       break;
 #line 28
@@ -24955,9 +24955,9 @@ size_t len, struct ip6_metadata *meta)
 }
 
 # 23 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
-inline static void /*RPLRoutingEngineC.ICMP_RS.ICMPCodeDispatchP*/ICMPCodeDispatchP__0__IP__recv(uint8_t arg_0x2b1758dc9d10, struct ip6_hdr *hdr, void *packet, size_t len, struct ip6_metadata *meta){
+inline static void /*RPLRoutingEngineC.ICMP_RS.ICMPCodeDispatchP*/ICMPCodeDispatchP__0__IP__recv(uint8_t arg_0x2b482ab21d10, struct ip6_hdr *hdr, void *packet, size_t len, struct ip6_metadata *meta){
 #line 23
-  switch (arg_0x2b1758dc9d10) {
+  switch (arg_0x2b482ab21d10) {
 #line 23
     case ICMPV6_CODE_DIS:
 #line 23
@@ -24967,7 +24967,7 @@ inline static void /*RPLRoutingEngineC.ICMP_RS.ICMPCodeDispatchP*/ICMPCodeDispat
 #line 23
     default:
 #line 23
-      /*RPLRoutingEngineC.ICMP_RS.ICMPCodeDispatchP*/ICMPCodeDispatchP__0__IP__default__recv(arg_0x2b1758dc9d10, hdr, packet, len, meta);
+      /*RPLRoutingEngineC.ICMP_RS.ICMPCodeDispatchP*/ICMPCodeDispatchP__0__IP__default__recv(arg_0x2b482ab21d10, hdr, packet, len, meta);
 #line 23
       break;
 #line 23
@@ -25979,9 +25979,9 @@ size_t len, struct ip6_metadata *meta)
 }
 
 # 23 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
-inline static void /*RPLRoutingC.ICMP_RA.ICMPCodeDispatchP*/ICMPCodeDispatchP__1__IP__recv(uint8_t arg_0x2b1758dc9d10, struct ip6_hdr *hdr, void *packet, size_t len, struct ip6_metadata *meta){
+inline static void /*RPLRoutingC.ICMP_RA.ICMPCodeDispatchP*/ICMPCodeDispatchP__1__IP__recv(uint8_t arg_0x2b482ab21d10, struct ip6_hdr *hdr, void *packet, size_t len, struct ip6_metadata *meta){
 #line 23
-  switch (arg_0x2b1758dc9d10) {
+  switch (arg_0x2b482ab21d10) {
 #line 23
     case ICMPV6_CODE_DIO:
 #line 23
@@ -25997,7 +25997,7 @@ inline static void /*RPLRoutingC.ICMP_RA.ICMPCodeDispatchP*/ICMPCodeDispatchP__1
 #line 23
     default:
 #line 23
-      /*RPLRoutingC.ICMP_RA.ICMPCodeDispatchP*/ICMPCodeDispatchP__1__IP__default__recv(arg_0x2b1758dc9d10, hdr, packet, len, meta);
+      /*RPLRoutingC.ICMP_RA.ICMPCodeDispatchP*/ICMPCodeDispatchP__1__IP__default__recv(arg_0x2b482ab21d10, hdr, packet, len, meta);
 #line 23
       break;
 #line 23
@@ -26023,9 +26023,9 @@ size_t len, struct ip6_metadata *meta)
 }
 
 # 23 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
-inline static void ICMPCoreP__ICMP_IP__recv(uint8_t arg_0x2b1758d98c80, struct ip6_hdr *hdr, void *packet, size_t len, struct ip6_metadata *meta){
+inline static void ICMPCoreP__ICMP_IP__recv(uint8_t arg_0x2b482aaf0c80, struct ip6_hdr *hdr, void *packet, size_t len, struct ip6_metadata *meta){
 #line 23
-  switch (arg_0x2b1758d98c80) {
+  switch (arg_0x2b482aaf0c80) {
 #line 23
     case 155:
 #line 23
@@ -26037,7 +26037,7 @@ inline static void ICMPCoreP__ICMP_IP__recv(uint8_t arg_0x2b1758d98c80, struct i
 #line 23
     default:
 #line 23
-      ICMPCoreP__ICMP_IP__default__recv(arg_0x2b1758d98c80, hdr, packet, len, meta);
+      ICMPCoreP__ICMP_IP__default__recv(arg_0x2b482aaf0c80, hdr, packet, len, meta);
 #line 23
       break;
 #line 23
@@ -26130,9 +26130,9 @@ inline static am_id_t SECSendP__AMPacket__type(message_t * amsg){
 #line 147
 }
 #line 147
-# 157 "SECSendP.nc"
+# 152 "SECSendP.nc"
 static inline void SECSendP__RPLUDP__recvfrom(struct sockaddr_in6 *from, void *payload, uint16_t len, struct ip6_metadata *meta)
-#line 157
+#line 152
 {
 
 
@@ -26172,9 +26172,9 @@ struct ip6_metadata *meta)
 }
 
 # 29 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/UDP.nc"
-inline static void UdpP__UDP__recvfrom(uint8_t arg_0x2b1758e01630, struct sockaddr_in6 *src, void *payload, uint16_t len, struct ip6_metadata *meta){
+inline static void UdpP__UDP__recvfrom(uint8_t arg_0x2b482ab59630, struct sockaddr_in6 *src, void *payload, uint16_t len, struct ip6_metadata *meta){
 #line 29
-  switch (arg_0x2b1758e01630) {
+  switch (arg_0x2b482ab59630) {
 #line 29
     case 0U:
 #line 29
@@ -26184,7 +26184,7 @@ inline static void UdpP__UDP__recvfrom(uint8_t arg_0x2b1758e01630, struct sockad
 #line 29
     default:
 #line 29
-      UdpP__UDP__default__recvfrom(arg_0x2b1758e01630, src, payload, len, meta);
+      UdpP__UDP__default__recvfrom(arg_0x2b482ab59630, src, payload, len, meta);
 #line 29
       break;
 #line 29
@@ -26256,9 +26256,9 @@ size_t len, struct ip6_metadata *meta)
 }
 
 # 23 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/IP.nc"
-inline static void IPProtocolsP__IP__recv(uint8_t arg_0x2b1758973b30, struct ip6_hdr *hdr, void *packet, size_t len, struct ip6_metadata *meta){
+inline static void IPProtocolsP__IP__recv(uint8_t arg_0x2b482a6cbb30, struct ip6_hdr *hdr, void *packet, size_t len, struct ip6_metadata *meta){
 #line 23
-  switch (arg_0x2b1758973b30) {
+  switch (arg_0x2b482a6cbb30) {
 #line 23
     case IANA_UDP:
 #line 23
@@ -26274,7 +26274,7 @@ inline static void IPProtocolsP__IP__recv(uint8_t arg_0x2b1758973b30, struct ip6
 #line 23
     default:
 #line 23
-      IPProtocolsP__IP__default__recv(arg_0x2b1758973b30, hdr, packet, len, meta);
+      IPProtocolsP__IP__default__recv(arg_0x2b482a6cbb30, hdr, packet, len, meta);
 #line 23
       break;
 #line 23
@@ -26592,9 +26592,9 @@ static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__defaul
 }
 
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
-inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__granted(uint8_t arg_0x2b1757daa2f0){
+inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__granted(uint8_t arg_0x2b4829b022f0){
 #line 102
-  switch (arg_0x2b1757daa2f0) {
+  switch (arg_0x2b4829b022f0) {
 #line 102
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
 #line 102
@@ -26604,7 +26604,7 @@ inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__grante
 #line 102
     default:
 #line 102
-      /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__default__granted(arg_0x2b1757daa2f0);
+      /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__default__granted(arg_0x2b4829b022f0);
 #line 102
       break;
 #line 102
@@ -26626,9 +26626,9 @@ static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__Resource_
 }
 
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
-inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__Resource__granted(uint8_t arg_0x2b17577e1d40){
+inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__Resource__granted(uint8_t arg_0x2b4829539d40){
 #line 102
-  switch (arg_0x2b17577e1d40) {
+  switch (arg_0x2b4829539d40) {
 #line 102
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID:
 #line 102
@@ -26638,7 +26638,7 @@ inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__Resource_
 #line 102
     default:
 #line 102
-      /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__Resource__default__granted(arg_0x2b17577e1d40);
+      /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__1__Resource__default__granted(arg_0x2b4829539d40);
 #line 102
       break;
 #line 102
@@ -26669,9 +26669,9 @@ static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__defau
 }
 
 # 82 "/home/evert/tinyos-main/tos/interfaces/SpiPacket.nc"
-inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__sendDone(uint8_t arg_0x2b1757da62f0, uint8_t * txBuf, uint8_t * rxBuf, uint16_t len, error_t error){
+inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__sendDone(uint8_t arg_0x2b4829afe2f0, uint8_t * txBuf, uint8_t * rxBuf, uint16_t len, error_t error){
 #line 82
-  switch (arg_0x2b1757da62f0) {
+  switch (arg_0x2b4829afe2f0) {
 #line 82
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
 #line 82
@@ -26681,7 +26681,7 @@ inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__sendD
 #line 82
     default:
 #line 82
-      /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__default__sendDone(arg_0x2b1757da62f0, txBuf, rxBuf, len, error);
+      /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__default__sendDone(arg_0x2b4829afe2f0, txBuf, rxBuf, len, error);
 #line 82
       break;
 #line 82
@@ -27215,9 +27215,9 @@ static inline void CC2420SpiP__Fifo__default__readDone(uint8_t addr, uint8_t *rx
 }
 
 # 71 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Fifo.nc"
-inline static void CC2420SpiP__Fifo__readDone(uint8_t arg_0x2b1757ceb328, uint8_t * data, uint8_t length, error_t error){
+inline static void CC2420SpiP__Fifo__readDone(uint8_t arg_0x2b4829a43328, uint8_t * data, uint8_t length, error_t error){
 #line 71
-  switch (arg_0x2b1757ceb328) {
+  switch (arg_0x2b4829a43328) {
 #line 71
     case CC2420_TXFIFO:
 #line 71
@@ -27233,7 +27233,7 @@ inline static void CC2420SpiP__Fifo__readDone(uint8_t arg_0x2b1757ceb328, uint8_
 #line 71
     default:
 #line 71
-      CC2420SpiP__Fifo__default__readDone(arg_0x2b1757ceb328, data, length, error);
+      CC2420SpiP__Fifo__default__readDone(arg_0x2b4829a43328, data, length, error);
 #line 71
       break;
 #line 71
@@ -27264,9 +27264,9 @@ message_t *msg)
 }
 
 # 81 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/RadioBackoff.nc"
-inline static void CC2420ActiveMessageP__RadioBackoff__requestInitialBackoff(am_id_t arg_0x2b1758543488, message_t * msg){
+inline static void CC2420ActiveMessageP__RadioBackoff__requestInitialBackoff(am_id_t arg_0x2b482a29b488, message_t * msg){
 #line 81
-    CC2420ActiveMessageP__RadioBackoff__default__requestInitialBackoff(arg_0x2b1758543488, msg);
+    CC2420ActiveMessageP__RadioBackoff__default__requestInitialBackoff(arg_0x2b482a29b488, msg);
 #line 81
 }
 #line 81
@@ -27405,9 +27405,9 @@ static inline void CC2420SpiP__Fifo__default__writeDone(uint8_t addr, uint8_t *t
 }
 
 # 91 "/home/evert/tinyos-main/tos/chips/cc2420/interfaces/CC2420Fifo.nc"
-inline static void CC2420SpiP__Fifo__writeDone(uint8_t arg_0x2b1757ceb328, uint8_t * data, uint8_t length, error_t error){
+inline static void CC2420SpiP__Fifo__writeDone(uint8_t arg_0x2b4829a43328, uint8_t * data, uint8_t length, error_t error){
 #line 91
-  switch (arg_0x2b1757ceb328) {
+  switch (arg_0x2b4829a43328) {
 #line 91
     case CC2420_TXFIFO:
 #line 91
@@ -27423,7 +27423,7 @@ inline static void CC2420SpiP__Fifo__writeDone(uint8_t arg_0x2b1757ceb328, uint8
 #line 91
     default:
 #line 91
-      CC2420SpiP__Fifo__default__writeDone(arg_0x2b1757ceb328, data, length, error);
+      CC2420SpiP__Fifo__default__writeDone(arg_0x2b4829a43328, data, length, error);
 #line 91
       break;
 #line 91
@@ -27974,9 +27974,9 @@ static inline void CC2420SpiP__Resource__default__granted(uint8_t id)
 }
 
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
-inline static void CC2420SpiP__Resource__granted(uint8_t arg_0x2b1757cec158){
+inline static void CC2420SpiP__Resource__granted(uint8_t arg_0x2b4829a44158){
 #line 102
-  switch (arg_0x2b1757cec158) {
+  switch (arg_0x2b4829a44158) {
 #line 102
     case /*CC2420ControlC.Spi*/CC2420SpiC__0__CLIENT_ID:
 #line 102
@@ -28010,7 +28010,7 @@ inline static void CC2420SpiP__Resource__granted(uint8_t arg_0x2b1757cec158){
 #line 102
     default:
 #line 102
-      CC2420SpiP__Resource__default__granted(arg_0x2b1757cec158);
+      CC2420SpiP__Resource__default__granted(arg_0x2b4829a44158);
 #line 102
       break;
 #line 102
@@ -28642,9 +28642,9 @@ inline static void CC2420TinyosNetworkP__BareSend__sendDone(message_t * msg, err
 }
 #line 100
 # 110 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
-inline static void CC2420ActiveMessageP__AMSend__sendDone(am_id_t arg_0x2b175854ce58, message_t * msg, error_t error){
+inline static void CC2420ActiveMessageP__AMSend__sendDone(am_id_t arg_0x2b482a2a4e58, message_t * msg, error_t error){
 #line 110
-  /*AMQueueP.AMQueueImplP*/AMQueueImplP__1__AMSend__sendDone(arg_0x2b175854ce58, msg, error);
+  /*AMQueueP.AMQueueImplP*/AMQueueImplP__1__AMSend__sendDone(arg_0x2b482a2a4e58, msg, error);
 #line 110
 }
 #line 110
@@ -28770,9 +28770,9 @@ struct send_info *info)
 }
 
 # 39 "/home/evert/tinyos-main/tos/lib/net/blip/interfaces/ForwardingEvents.nc"
-inline static void IPForwardingEngineP__ForwardingEvents__linkResult(uint8_t arg_0x2b17589e31d0, struct in6_addr *dest, struct send_info *info){
+inline static void IPForwardingEngineP__ForwardingEvents__linkResult(uint8_t arg_0x2b482a73b1d0, struct in6_addr *dest, struct send_info *info){
 #line 39
-  switch (arg_0x2b17589e31d0) {
+  switch (arg_0x2b482a73b1d0) {
 #line 39
     case RPL_IFACE:
 #line 39
@@ -28782,7 +28782,7 @@ inline static void IPForwardingEngineP__ForwardingEvents__linkResult(uint8_t arg
 #line 39
     default:
 #line 39
-      IPForwardingEngineP__ForwardingEvents__default__linkResult(arg_0x2b17589e31d0, dest, info);
+      IPForwardingEngineP__ForwardingEvents__default__linkResult(arg_0x2b482a73b1d0, dest, info);
 #line 39
       break;
 #line 39
@@ -28790,9 +28790,9 @@ inline static void IPForwardingEngineP__ForwardingEvents__linkResult(uint8_t arg
 #line 39
 }
 #line 39
-# 151 "SECSendP.nc"
+# 146 "SECSendP.nc"
 static inline void SECSendP__AMControl__stopDone(error_t error)
-#line 151
+#line 146
 {
 }
 
@@ -28913,9 +28913,9 @@ inline static error_t SECSendP__RPLDAO__startDAO(void ){
 #line 40
 }
 #line 40
-# 120 "SECSendP.nc"
+# 115 "SECSendP.nc"
 static inline void SECSendP__AMControl__startDone(error_t error)
-#line 120
+#line 115
 {
 
   while (SECSendP__RPLDAO__startDAO() != SUCCESS) ;
@@ -29550,13 +29550,13 @@ inline static void /*PrintfC.SerialAMSenderC.AMQueueEntryP*/AMQueueEntryP__0__AM
 }
 #line 162
 # 80 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
-inline static error_t /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__send(am_id_t arg_0x2b175718f340, am_addr_t addr, message_t * msg, uint8_t len){
+inline static error_t /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__send(am_id_t arg_0x2b4828ee7340, am_addr_t addr, message_t * msg, uint8_t len){
 #line 80
   unsigned char __nesc_result;
 #line 80
 
 #line 80
-  __nesc_result = /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMSend__send(arg_0x2b175718f340, addr, msg, len);
+  __nesc_result = /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMSend__send(arg_0x2b4828ee7340, addr, msg, len);
 #line 80
 
 #line 80
@@ -29745,13 +29745,13 @@ uint8_t upperLen)
 }
 
 # 23 "/home/evert/tinyos-main/tos/lib/serial/SerialPacketInfo.nc"
-inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__dataLinkLength(uart_id_t arg_0x2b1757316308, message_t *msg, uint8_t upperLen){
+inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__dataLinkLength(uart_id_t arg_0x2b482906e308, message_t *msg, uint8_t upperLen){
 #line 23
   unsigned char __nesc_result;
 #line 23
 
 #line 23
-  switch (arg_0x2b1757316308) {
+  switch (arg_0x2b482906e308) {
 #line 23
     case TOS_SERIAL_ACTIVE_MESSAGE_ID:
 #line 23
@@ -29761,7 +29761,7 @@ inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
 #line 23
     default:
 #line 23
-      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__dataLinkLength(arg_0x2b1757316308, msg, upperLen);
+      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__dataLinkLength(arg_0x2b482906e308, msg, upperLen);
 #line 23
       break;
 #line 23
@@ -29788,13 +29788,13 @@ static inline uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
 }
 
 # 15 "/home/evert/tinyos-main/tos/lib/serial/SerialPacketInfo.nc"
-inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__offset(uart_id_t arg_0x2b1757316308){
+inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__offset(uart_id_t arg_0x2b482906e308){
 #line 15
   unsigned char __nesc_result;
 #line 15
 
 #line 15
-  switch (arg_0x2b1757316308) {
+  switch (arg_0x2b482906e308) {
 #line 15
     case TOS_SERIAL_ACTIVE_MESSAGE_ID:
 #line 15
@@ -29804,7 +29804,7 @@ inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
 #line 15
     default:
 #line 15
-      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__offset(arg_0x2b1757316308);
+      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__offset(arg_0x2b482906e308);
 #line 15
       break;
 #line 15
@@ -29910,9 +29910,9 @@ static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__default__gran
 }
 
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
-inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__granted(uint8_t arg_0x2b175741a8e8){
+inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__granted(uint8_t arg_0x2b48291728e8){
 #line 102
-  switch (arg_0x2b175741a8e8) {
+  switch (arg_0x2b48291728e8) {
 #line 102
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 102
@@ -29922,7 +29922,7 @@ inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__granted(uint8
 #line 102
     default:
 #line 102
-      /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__default__granted(arg_0x2b175741a8e8);
+      /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__default__granted(arg_0x2b48291728e8);
 #line 102
       break;
 #line 102
@@ -29944,9 +29944,9 @@ static inline void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__Resource_
 }
 
 # 102 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
-inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__Resource__granted(uint8_t arg_0x2b17577e1d40){
+inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__Resource__granted(uint8_t arg_0x2b4829539d40){
 #line 102
-  switch (arg_0x2b17577e1d40) {
+  switch (arg_0x2b4829539d40) {
 #line 102
     case /*PlatformSerialC.UartC.UsartC*/Msp430Usart1C__0__CLIENT_ID:
 #line 102
@@ -29956,7 +29956,7 @@ inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__Resource_
 #line 102
     default:
 #line 102
-      /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__Resource__default__granted(arg_0x2b17577e1d40);
+      /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__Resource__default__granted(arg_0x2b4829539d40);
 #line 102
       break;
 #line 102
@@ -29971,9 +29971,9 @@ static inline void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceC
 }
 
 # 59 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
-inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__configure(uint8_t arg_0x2b1757821340){
+inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__configure(uint8_t arg_0x2b4829579340){
 #line 59
-  switch (arg_0x2b1757821340) {
+  switch (arg_0x2b4829579340) {
 #line 59
     case /*PlatformSerialC.UartC.UsartC*/Msp430Usart1C__0__CLIENT_ID:
 #line 59
@@ -29983,7 +29983,7 @@ inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceC
 #line 59
     default:
 #line 59
-      /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__configure(arg_0x2b1757821340);
+      /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__configure(arg_0x2b4829579340);
 #line 59
       break;
 #line 59
@@ -30022,13 +30022,13 @@ static inline msp430_uart_union_config_t */*Msp430Uart1P.UartP*/Msp430UartP__0__
 }
 
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/Msp430UartConfigure.nc"
-inline static msp430_uart_union_config_t */*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__getConfig(uint8_t arg_0x2b1757411e20){
+inline static msp430_uart_union_config_t */*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__getConfig(uint8_t arg_0x2b4829169e20){
 #line 39
   union __nesc_unnamed4315 *__nesc_result;
 #line 39
 
 #line 39
-  switch (arg_0x2b1757411e20) {
+  switch (arg_0x2b4829169e20) {
 #line 39
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 39
@@ -30038,7 +30038,7 @@ inline static msp430_uart_union_config_t */*Msp430Uart1P.UartP*/Msp430UartP__0__
 #line 39
     default:
 #line 39
-      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__default__getConfig(arg_0x2b1757411e20);
+      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__default__getConfig(arg_0x2b4829169e20);
 #line 39
       break;
 #line 39
@@ -30358,9 +30358,9 @@ static inline void /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__default
 }
 
 # 100 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
-inline static void /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__sendDone(uint8_t arg_0x2b17571911c8, message_t * msg, error_t error){
+inline static void /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__sendDone(uint8_t arg_0x2b4828ee91c8, message_t * msg, error_t error){
 #line 100
-  switch (arg_0x2b17571911c8) {
+  switch (arg_0x2b4828ee91c8) {
 #line 100
     case 0U:
 #line 100
@@ -30370,7 +30370,7 @@ inline static void /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__sendDon
 #line 100
     default:
 #line 100
-      /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__default__sendDone(arg_0x2b17571911c8, msg, error);
+      /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__default__sendDone(arg_0x2b4828ee91c8, msg, error);
 #line 100
       break;
 #line 100
@@ -30408,9 +30408,9 @@ static inline void /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__sendD
 }
 
 # 110 "/home/evert/tinyos-main/tos/interfaces/AMSend.nc"
-inline static void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMSend__sendDone(am_id_t arg_0x2b17571e8508, message_t * msg, error_t error){
+inline static void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMSend__sendDone(am_id_t arg_0x2b4828f40508, message_t * msg, error_t error){
 #line 110
-  /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__sendDone(arg_0x2b17571e8508, msg, error);
+  /*SerialAMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__sendDone(arg_0x2b4828f40508, msg, error);
 #line 110
 }
 #line 110
@@ -30429,9 +30429,9 @@ static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__
 }
 
 # 100 "/home/evert/tinyos-main/tos/interfaces/Send.nc"
-inline static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__sendDone(uart_id_t arg_0x2b1757317020, message_t * msg, error_t error){
+inline static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__sendDone(uart_id_t arg_0x2b482906f020, message_t * msg, error_t error){
 #line 100
-  switch (arg_0x2b1757317020) {
+  switch (arg_0x2b482906f020) {
 #line 100
     case TOS_SERIAL_ACTIVE_MESSAGE_ID:
 #line 100
@@ -30441,7 +30441,7 @@ inline static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__
 #line 100
     default:
 #line 100
-      /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__default__sendDone(arg_0x2b1757317020, msg, error);
+      /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__default__sendDone(arg_0x2b482906f020, msg, error);
 #line 100
       break;
 #line 100
@@ -30632,13 +30632,13 @@ static inline message_t */*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Rec
 }
 
 # 78 "/home/evert/tinyos-main/tos/interfaces/Receive.nc"
-inline static message_t * /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Receive__receive(am_id_t arg_0x2b17571e7780, message_t * msg, void * payload, uint8_t len){
+inline static message_t * /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Receive__receive(am_id_t arg_0x2b4828f3f780, message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
 #line 78
 
 #line 78
-    __nesc_result = /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Receive__default__receive(arg_0x2b17571e7780, msg, payload, len);
+    __nesc_result = /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Receive__default__receive(arg_0x2b4828f3f780, msg, payload, len);
 #line 78
 
 #line 78
@@ -30663,13 +30663,13 @@ uint8_t len)
 }
 
 # 78 "/home/evert/tinyos-main/tos/interfaces/Receive.nc"
-inline static message_t * /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive__receive(uart_id_t arg_0x2b1757318468, message_t * msg, void * payload, uint8_t len){
+inline static message_t * /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive__receive(uart_id_t arg_0x2b4829070468, message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
 #line 78
 
 #line 78
-  switch (arg_0x2b1757318468) {
+  switch (arg_0x2b4829070468) {
 #line 78
     case TOS_SERIAL_ACTIVE_MESSAGE_ID:
 #line 78
@@ -30679,7 +30679,7 @@ inline static message_t * /*SerialDispatcherC.SerialDispatcherP*/SerialDispatche
 #line 78
     default:
 #line 78
-      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive__default__receive(arg_0x2b1757318468, msg, payload, len);
+      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive__default__receive(arg_0x2b4829070468, msg, payload, len);
 #line 78
       break;
 #line 78
@@ -30707,13 +30707,13 @@ uint8_t dataLinkLen)
 }
 
 # 31 "/home/evert/tinyos-main/tos/lib/serial/SerialPacketInfo.nc"
-inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__upperLength(uart_id_t arg_0x2b1757316308, message_t *msg, uint8_t dataLinkLen){
+inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__upperLength(uart_id_t arg_0x2b482906e308, message_t *msg, uint8_t dataLinkLen){
 #line 31
   unsigned char __nesc_result;
 #line 31
 
 #line 31
-  switch (arg_0x2b1757316308) {
+  switch (arg_0x2b482906e308) {
 #line 31
     case TOS_SERIAL_ACTIVE_MESSAGE_ID:
 #line 31
@@ -30723,7 +30723,7 @@ inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
 #line 31
     default:
 #line 31
-      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__upperLength(arg_0x2b1757316308, msg, dataLinkLen);
+      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__upperLength(arg_0x2b482906e308, msg, dataLinkLen);
 #line 31
       break;
 #line 31
@@ -30871,9 +30871,9 @@ static inline void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceC
 }
 
 # 65 "/home/evert/tinyos-main/tos/interfaces/ResourceConfigure.nc"
-inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__unconfigure(uint8_t arg_0x2b1757821340){
+inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__unconfigure(uint8_t arg_0x2b4829579340){
 #line 65
-  switch (arg_0x2b1757821340) {
+  switch (arg_0x2b4829579340) {
 #line 65
     case /*PlatformSerialC.UartC.UsartC*/Msp430Usart1C__0__CLIENT_ID:
 #line 65
@@ -30883,7 +30883,7 @@ inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceC
 #line 65
     default:
 #line 65
-      /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__unconfigure(arg_0x2b1757821340);
+      /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__unconfigure(arg_0x2b4829579340);
 #line 65
       break;
 #line 65
@@ -31040,13 +31040,13 @@ static inline error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__defau
 }
 
 # 120 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
-inline static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__release(uint8_t arg_0x2b1757412be8){
+inline static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__release(uint8_t arg_0x2b482916abe8){
 #line 120
   unsigned char __nesc_result;
 #line 120
 
 #line 120
-  switch (arg_0x2b1757412be8) {
+  switch (arg_0x2b482916abe8) {
 #line 120
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 120
@@ -31056,7 +31056,7 @@ inline static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__relea
 #line 120
     default:
 #line 120
-      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__release(arg_0x2b1757412be8);
+      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__release(arg_0x2b482916abe8);
 #line 120
       break;
 #line 120
@@ -31077,13 +31077,13 @@ static inline bool /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default_
 }
 
 # 128 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
-inline static bool /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__isOwner(uint8_t arg_0x2b1757412be8){
+inline static bool /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__isOwner(uint8_t arg_0x2b482916abe8){
 #line 128
   unsigned char __nesc_result;
 #line 128
 
 #line 128
-  switch (arg_0x2b1757412be8) {
+  switch (arg_0x2b482916abe8) {
 #line 128
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 128
@@ -31093,7 +31093,7 @@ inline static bool /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__isOwner(
 #line 128
     default:
 #line 128
-      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__isOwner(arg_0x2b1757412be8);
+      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__isOwner(arg_0x2b482916abe8);
 #line 128
       break;
 #line 128
@@ -31330,9 +31330,9 @@ static inline void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceR
 }
 
 # 61 "/home/evert/tinyos-main/tos/interfaces/ResourceRequested.nc"
-inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__immediateRequested(uint8_t arg_0x2b17577df020){
+inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__immediateRequested(uint8_t arg_0x2b4829537020){
 #line 61
-    /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__default__immediateRequested(arg_0x2b17577df020);
+    /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__default__immediateRequested(arg_0x2b4829537020);
 #line 61
 }
 #line 61
@@ -31386,13 +31386,13 @@ static inline error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__defau
 }
 
 # 97 "/home/evert/tinyos-main/tos/interfaces/Resource.nc"
-inline static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__immediateRequest(uint8_t arg_0x2b1757412be8){
+inline static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__immediateRequest(uint8_t arg_0x2b482916abe8){
 #line 97
   unsigned char __nesc_result;
 #line 97
 
 #line 97
-  switch (arg_0x2b1757412be8) {
+  switch (arg_0x2b482916abe8) {
 #line 97
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 97
@@ -31402,7 +31402,7 @@ inline static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__immed
 #line 97
     default:
 #line 97
-      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__immediateRequest(arg_0x2b1757412be8);
+      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__immediateRequest(arg_0x2b482916abe8);
 #line 97
       break;
 #line 97
@@ -31999,9 +31999,9 @@ inline static void * SECSendP__Packet__getPayload(message_t * msg, uint8_t len){
 #line 126
 }
 #line 126
-# 207 "SECSendP.nc"
+# 202 "SECSendP.nc"
 static inline void SECSendP__send__runTask(void )
-#line 207
+#line 202
 {
   if (!SECSendP__busy) {
 
@@ -32062,7 +32062,7 @@ static inline void SECSendP__send__runTask(void )
           SECSendP__send__postTask();
         }
       else 
-#line 265
+#line 260
         {
           SECSendP__busy = TRUE;
         }
@@ -32884,11 +32884,6 @@ static inline void SECSendP__Boot__booted(void )
 #line 101
 {
 
-
-
-
-
-
   if (TOS_NODE_ID == 11) {
       SECSendP__RootControl__setRoot();
     }
@@ -33542,9 +33537,9 @@ static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__re
 }
 
 # 79 "/home/evert/tinyos-main/tos/interfaces/UartStream.nc"
-inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receivedByte(uint8_t arg_0x2b1757415860, uint8_t byte){
+inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receivedByte(uint8_t arg_0x2b482916d860, uint8_t byte){
 #line 79
-  switch (arg_0x2b1757415860) {
+  switch (arg_0x2b482916d860) {
 #line 79
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 79
@@ -33554,7 +33549,7 @@ inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receivedByt
 #line 79
     default:
 #line 79
-      /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receivedByte(arg_0x2b1757415860, byte);
+      /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receivedByte(arg_0x2b482916d860, byte);
 #line 79
       break;
 #line 79
@@ -33575,9 +33570,9 @@ static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__re
 }
 
 # 99 "/home/evert/tinyos-main/tos/interfaces/UartStream.nc"
-inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receiveDone(uint8_t arg_0x2b1757415860, uint8_t * buf, uint16_t len, error_t error){
+inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receiveDone(uint8_t arg_0x2b482916d860, uint8_t * buf, uint16_t len, error_t error){
 #line 99
-  switch (arg_0x2b1757415860) {
+  switch (arg_0x2b482916d860) {
 #line 99
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 99
@@ -33587,7 +33582,7 @@ inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receiveDone
 #line 99
     default:
 #line 99
-      /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receiveDone(arg_0x2b1757415860, buf, len, error);
+      /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receiveDone(arg_0x2b482916d860, buf, len, error);
 #line 99
       break;
 #line 99
@@ -33623,9 +33618,9 @@ static inline void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Inter
 }
 
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
-inline static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Interrupts__rxDone(uint8_t arg_0x2b17577db220, uint8_t data){
+inline static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Interrupts__rxDone(uint8_t arg_0x2b4829533220, uint8_t data){
 #line 54
-  switch (arg_0x2b17577db220) {
+  switch (arg_0x2b4829533220) {
 #line 54
     case /*PlatformSerialC.UartC.UsartC*/Msp430Usart1C__0__CLIENT_ID:
 #line 54
@@ -33635,7 +33630,7 @@ inline static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Inter
 #line 54
     default:
 #line 54
-      /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__rxDone(arg_0x2b17577db220, data);
+      /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__rxDone(arg_0x2b4829533220, data);
 #line 54
       break;
 #line 54
@@ -33937,9 +33932,9 @@ static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__se
 }
 
 # 57 "/home/evert/tinyos-main/tos/interfaces/UartStream.nc"
-inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__sendDone(uint8_t arg_0x2b1757415860, uint8_t * buf, uint16_t len, error_t error){
+inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__sendDone(uint8_t arg_0x2b482916d860, uint8_t * buf, uint16_t len, error_t error){
 #line 57
-  switch (arg_0x2b1757415860) {
+  switch (arg_0x2b482916d860) {
 #line 57
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 57
@@ -33949,7 +33944,7 @@ inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__sendDone(ui
 #line 57
     default:
 #line 57
-      /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__sendDone(arg_0x2b1757415860, buf, len, error);
+      /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__sendDone(arg_0x2b482916d860, buf, len, error);
 #line 57
       break;
 #line 57
@@ -34004,9 +33999,9 @@ static inline void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Inter
 }
 
 # 49 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
-inline static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Interrupts__txDone(uint8_t arg_0x2b17577db220){
+inline static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Interrupts__txDone(uint8_t arg_0x2b4829533220){
 #line 49
-  switch (arg_0x2b17577db220) {
+  switch (arg_0x2b4829533220) {
 #line 49
     case /*PlatformSerialC.UartC.UsartC*/Msp430Usart1C__0__CLIENT_ID:
 #line 49
@@ -34016,7 +34011,7 @@ inline static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Inter
 #line 49
     default:
 #line 49
-      /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__txDone(arg_0x2b17577db220);
+      /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__txDone(arg_0x2b4829533220);
 #line 49
       break;
 #line 49
@@ -34851,9 +34846,9 @@ static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Inter
 }
 
 # 54 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
-inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Interrupts__rxDone(uint8_t arg_0x2b17577db220, uint8_t data){
+inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Interrupts__rxDone(uint8_t arg_0x2b4829533220, uint8_t data){
 #line 54
-  switch (arg_0x2b17577db220) {
+  switch (arg_0x2b4829533220) {
 #line 54
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID:
 #line 54
@@ -34863,7 +34858,7 @@ inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Inter
 #line 54
     default:
 #line 54
-      /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__rxDone(arg_0x2b17577db220, data);
+      /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__rxDone(arg_0x2b4829533220, data);
 #line 54
       break;
 #line 54
@@ -34940,9 +34935,9 @@ static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__I2CIn
 }
 
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430I2CInterrupts.nc"
-inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__I2CInterrupts__fired(uint8_t arg_0x2b17577d8c58){
+inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__I2CInterrupts__fired(uint8_t arg_0x2b4829530c58){
 #line 39
-    /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__I2CInterrupts__default__fired(arg_0x2b17577d8c58);
+    /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__I2CInterrupts__default__fired(arg_0x2b4829530c58);
 #line 39
 }
 #line 39
@@ -34975,9 +34970,9 @@ static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Inter
 }
 
 # 49 "/home/evert/tinyos-main/tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
-inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Interrupts__txDone(uint8_t arg_0x2b17577db220){
+inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Interrupts__txDone(uint8_t arg_0x2b4829533220){
 #line 49
-  switch (arg_0x2b17577db220) {
+  switch (arg_0x2b4829533220) {
 #line 49
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID:
 #line 49
@@ -34987,7 +34982,7 @@ inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Inter
 #line 49
     default:
 #line 49
-      /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__txDone(arg_0x2b17577db220);
+      /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__txDone(arg_0x2b4829533220);
 #line 49
       break;
 #line 49
@@ -35096,9 +35091,9 @@ static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__default__fired(
 }
 
 # 39 "/home/evert/tinyos-main/tos/chips/msp430/timer/Msp430TimerEvent.nc"
-static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__fired(uint8_t arg_0x2b1757041458){
+static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__fired(uint8_t arg_0x2b4828d99458){
 #line 39
-  switch (arg_0x2b1757041458) {
+  switch (arg_0x2b4828d99458) {
 #line 39
     case 0:
 #line 39
@@ -35150,7 +35145,7 @@ static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__fired(uint8_t a
 #line 39
     default:
 #line 39
-      /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__default__fired(arg_0x2b1757041458);
+      /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__default__fired(arg_0x2b4828d99458);
 #line 39
       break;
 #line 39
@@ -36098,9 +36093,9 @@ static void SchedulerBasicP__TaskBasic__default__runTask(uint8_t id)
 }
 
 # 75 "/home/evert/tinyos-main/tos/interfaces/TaskBasic.nc"
-static void SchedulerBasicP__TaskBasic__runTask(uint8_t arg_0x2b1756dd6d50){
+static void SchedulerBasicP__TaskBasic__runTask(uint8_t arg_0x2b4828b2ed50){
 #line 75
-  switch (arg_0x2b1756dd6d50) {
+  switch (arg_0x2b4828b2ed50) {
 #line 75
     case SECSendP__send:
 #line 75
@@ -36320,7 +36315,7 @@ static void SchedulerBasicP__TaskBasic__runTask(uint8_t arg_0x2b1756dd6d50){
 #line 75
     default:
 #line 75
-      SchedulerBasicP__TaskBasic__default__runTask(arg_0x2b1756dd6d50);
+      SchedulerBasicP__TaskBasic__default__runTask(arg_0x2b4828b2ed50);
 #line 75
       break;
 #line 75
@@ -38660,9 +38655,9 @@ static error_t /*RPLRoutingEngineC.Routing*/RPLRoutingEngineP__0__StdControl__st
   return SUCCESS;
 }
 
-# 273 "SECSendP.nc"
+# 268 "SECSendP.nc"
 static uint16_t *SECSendP__fetch(uint8_t pl)
-#line 273
+#line 268
 {
   static uint16_t messages[15 + 1];
 
@@ -38676,7 +38671,7 @@ static uint16_t *SECSendP__fetch(uint8_t pl)
 
 
 static uint16_t *SECSendP__packet_set(void )
-#line 285
+#line 280
 {
 
 
@@ -38727,19 +38722,19 @@ static uint16_t *SECSendP__packet_set(void )
       for (SECSendP__j = 0; SECSendP__j < 15 + 1; ++SECSendP__j) 
         {
           if (transpose[SECSendP__i][SECSendP__j] == 1) {
-#line 334
+#line 329
             packets[SECSendP__i] = packets[SECSendP__i] * 2 + 1;
             }
           else {
-#line 335
+#line 330
             if (transpose[SECSendP__i][SECSendP__j] == 0) {
-#line 335
+#line 330
               packets[SECSendP__i] *= 2;
               }
             }
         }
     }
-#line 339
+#line 334
   return packets;
 }
 

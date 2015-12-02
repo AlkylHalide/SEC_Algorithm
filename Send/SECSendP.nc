@@ -100,11 +100,6 @@ implementation {
   /***************** Boot Events ****************/
   event void Boot.booted() {
     /******** RPL ROUTING **********/
-    // memset(MULTICAST_ADDR.s6_addr, 0, 16);
-    // MULTICAST_ADDR.s6_addr[0] = 0xFF;
-    // MULTICAST_ADDR.s6_addr[1] = 0x2;
-    // MULTICAST_ADDR.s6_addr[15] = 0x1A;
-
     if(TOS_NODE_ID == RPL_ROOT_ADDR){
       call RootControl.setRoot();
     }
