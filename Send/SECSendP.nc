@@ -13,12 +13,6 @@
 #include <printf.h>
 #include "SECSend.h"
 
-/******** RPL ROUTING **********/
-#include <Timer.h>
-#include <lib6lowpan/ip.h>
-// #include <blip_printf.h>
-/******** RPL ROUTING **********/
-
 module SECSendP {
   uses {
     interface Boot;
@@ -26,21 +20,10 @@ module SECSendP {
     interface AMSend;
     interface Packet;
     interface AMPacket;
-    // interface Receive;
+    interface Receive;
     interface Leds;
     interface PacketAcknowledgements;
     interface Timer<TMilli> as Timer0;
-
-    /******** RPL ROUTING **********/
-    interface RPLRoutingEngine as RPLRoute;
-    interface RootControl;
-    interface StdControl as RoutingControl;
-    //interface IP as RPL;
-    interface UDP as RPLUDP;
-    //interface RPLForwardingEngine;
-    interface RPLDAORoutingEngine as RPLDAO;
-    interface Random;
-    /******** RPL ROUTING **********/
   }
 }
 
@@ -49,17 +32,6 @@ implementation {
   #define CAPACITY 15
   #define ROWS (CAPACITY + 1)
   #define COLUMNS 16
-
-  /******** RPL ROUTING **********/
-  #ifndef RPL_ROOT_ADDR
-  #define RPL_ROOT_ADDR 1
-  #endif
-
-  #define UDP_PORT 5678
-
-  struct sockaddr_in6 dest;
-  // struct in6_addr MULTICAST_ADDR;
-  /******** RPL ROUTING **********/
 
   /***************** Local variables ****************/
   // Boolean to check if channel is busy
@@ -99,28 +71,11 @@ implementation {
   
   /***************** Boot Events ****************/
   event void Boot.booted() {
-    /******** RPL ROUTING **********/
-    if(TOS_NODE_ID == RPL_ROOT_ADDR){
-      call RootControl.setRoot();
-    }
-    call RoutingControl.start();
-
-    call RPLUDP.bind(UDP_PORT);
-    /******** RPL ROUTING **********/
-
     call AMControl.start();
   }
 
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
-    /******** RPL ROUTING **********/
-    while( call RPLDAO.startDAO() != SUCCESS );
-    
-    // if(TOS_NODE_ID != RPL_ROOT_ADDR){
-    //   // call Timer.startOneShot((call Random.rand16()%2)*2048U);
-    //   call Timer.startOneShot(DELAY_BETWEEN_MESSAGES);
-    // }
-    /******** RPL ROUTING **********/
     if (error == SUCCESS) {
       
       // Initialize the ACK_set array with zeroes
@@ -148,14 +103,9 @@ implementation {
   }
   
   /***************** Receive Events ****************/
-  /******** RPL ROUTING **********/
-  event void RPLUDP.recvfrom(struct sockaddr_in6 *from, void *payload, uint16_t len, struct ip6_metadata *meta){
-  /******** RPL ROUTING **********/
-  // event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-
-    // if(call AMPacket.type(msg) != AM_ACKMSG) {
-    if(call AMPacket.type(payload) != AM_ACKMSG) {
-      // return msg;
+  event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
+    if(call AMPacket.type(msg) != AM_ACKMSG) {
+      return msg;
     }
     else {
       ACKMsg* inMsg = (ACKMsg*)payload;
@@ -176,7 +126,7 @@ implementation {
         ++i;
       }
       
-      // return msg;
+      return msg;
     }
   }
   
@@ -192,9 +142,6 @@ implementation {
   
   /***************** Timer Events ****************/
   event void Timer0.fired() {
-    /******** RPL ROUTING **********/
-    // call MilliTimer.startOneShot(PACKET_INTERVAL + (call Random.rand16() % 100));
-    /******** RPL ROUTING **********/
     post send();
   }
   
@@ -246,16 +193,8 @@ implementation {
       btrMsg->dat = *(pckt + i);
       btrMsg->nodeid = TOS_NODE_ID;
 
-      /******** RPL ROUTING **********/
-      memcpy(dest.sin6_addr.s6_addr, call RPLRoute.getDodagId(), sizeof(struct in6_addr));
-      dest.sin6_port = htons(UDP_PORT);
-      /******** RPL ROUTING **********/
-
       // if(call AMSend.send((TOS_NODE_ID + 2), &myMsg, sizeof(SECMsg)) != SUCCESS) {
-      // if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
-      /******** RPL ROUTING **********/
-      if(call RPLUDP.sendto(&dest, &myMsg, sizeof(SECMsg)) != SUCCESS) {
-      /******** RPL ROUTING **********/
+      if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
         post send();
       } else {
         busy = TRUE;
