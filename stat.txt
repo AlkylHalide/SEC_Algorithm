@@ -64,13 +64,13 @@ to see if there are any differences
 TODO:
 - Finish advanced algorithm
 	* Correct functioning of arrays packet_set[] and ACK_set[]								[TUE] --> DONE
-	* AM_type for different messages														[TUE]
-	* Fetch() --> PC-serial communication or just reading large file? See what works.		[THU]
-	* Deliver()																				[THU]
+	* AM_type for different messages														[TUE] --> DONE
+	* Fetch() --> PC-serial communication or just reading large file? See what works.		[THU] --> TERMINATED
+	* Deliver()																				[THU] --> TERMINATED
 	* packet_set()																			[THU]
 	* Encode()																				[WED]
 	* Decode()																				[WED]
-- Test it using large file to transfer, then diff it at both ends							[FRI]
+- Test it using large file to transfer, then diff it at both ends							[FRI] --> TERMINATED
 - Unit-test the algorithm as completely as possible											[FRI]
 - Study LibReplay and see how it works														[SAT]
 - Clean up algorithm code																	[SUN]

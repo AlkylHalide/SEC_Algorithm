@@ -1,0 +1,175 @@
+Reed-Solomon Error Correction 
+by Hugo Lyppens
+
+
+Example 1:
+  (x4 + x2)  +  (x2 + 1) =(x4 + 1)
+0 - (x4 + x) = (x4 + x)
+x + x = 0
+x - x = 0
+
+Example 2:
+  (x4 + x2)  *  (x2 + 1) = (x6 + x2)
+x8 = x6 + x5 + x4 +1
+x255 = x0 = 1
+
+Example 3:
+ mov bl,I
+ mov bh,J
+ mov al,[edi+ebx]
+
+
+Listing One
+/******************************************************
+ * File: gf256.c -- contains code to construct GF(2^8) and all required
+ * arrays for GF(2^8) arithmetic.
+ * Copyright (c) 1995 by Hugo Lyppens with permission to print in DDJ
+ ******************************************************/
+#include "hdr.h"
+#include "rs.h"
+
+#define POL              0x171    /* primitive polynomial used to construct
+                                     GF(2^8) is: x8 + x6 + x5 + x4 + 1
+                                     represented as 101110001 binary */
+UBYTE                    RSG_powers[FIELDSZ];
+UBYTE                    RSG_logarithm[FIELDSZ];
+UBYTE                    RSG_multinv[FIELDSZ];
+UBYTE                    RSG_multiply[FIELDSZ][FIELDSZ];
+
+static UBYTE             multiply_func(UBYTE, UBYTE);
+static UBYTE             multinv_func(UBYTE);
+
+void        RSG_ConstructGaloisField()
+{
+     int          v;
+     UBYTE        i, j;
+     v = 1;
+     for(i = 0; ; i++) {
+          RSG_powers[i]         = (UBYTE)v;
+          RSG_logarithm[v]  = i;
+          v <<=1; // multiply v by alpha and reduce modulo POL
+          if(v & (1<<GF_M)) {
+                v ^= POL;
+          }
+          if(i==MAXELT-1)
+                break;
+     }
+     RSG_powers[MAXELT] = 1;
+     // construct multiplication table
+     for(i = 0; ; i++ ) {
+          if(i) RSG_multinv[i] = multinv_func(i);
+          for(j = i; ; j++) {
+              RSG_multiply[i][j] = RSG_multiply[j][i] = multiply_func(i, j);
+              if(j==MAXELT)
+                    break;
+          }
+          if(i==MAXELT)
+                break;
+     }
+}
+// compute multiplicative inverse of x. The value y for which x*y = 1
+static UBYTE multinv_func(x)
+UBYTE x;
+{
+    if(!x)
+        return 0;
+    return RSG_powers[FIELDSZ-1-RSG_logarithm[x]];
+}
+// compute product of i and j
+static UBYTE multiply_func(i, j)
+UBYTE i, j;
+{
+     int r, b, k;
+     r = 0; k = j;
+     for(b = 1; b<FIELDSZ; b<<=1, k<<=1) {
+        if(k & (1<<GF_M)) k^=POL;
+         if(i & b)       r ^= k;
+     }
+     return((UBYTE)r);
+}
+
+Listing Two
+/*********************************************************************
+ * File: genpol.c -- contains code to generate the generator polynomial
+ * of degree 2*T for Reed-Solomon encoding/decoding
+ * Copyright (c) 1995 by Hugo Lyppens with permission to print in DDJ
+ *********************************************************************/
+#include "hdr.h"
+#include "rs.h"
+
+UBYTE                    RSG_shiftregtab[FIELDSZ][2*T];
+Polynomial               RSG_genpol;
+void    RSG_CalcGeneratorPoly()
+{
+    int     i, j;
+    UBYTE   a, *p;
+    RSG_genpol.degree = 2*T;
+    memset(RSG_genpol.c, 0, 2*T);
+    RSG_genpol.c[0] = RSG_powers[0];
+    RSG_genpol.c[1] = 1;
+    for(j = 1; j<2*T; j++) {
+        a = RSG_powers[j];
+        for(i = 2*T; i>=1; i--) {
+           RSG_genpol.c[i] = RSG_genpol.c[i-1]^multiply(RSG_genpol.c[i], a);
+        }
+        RSG_genpol.c[0] = multiply(a, RSG_genpol.c[0]);
+    }
+    printf("Generator polynomial: ");
+    printpoly(&RSG_genpol);
+    for(i = 0; ; i++) {
+        p = &RSG_multiply[i][0];
+        for(j = 0; j<2*T; j++) {
+            RSG_shiftregtab[i][j] =
+                 p[RSG_genpol.c[j]];
+        }
+        if(i==MAXELT)
+            break;
+     }
+}
+
+Listing Three
+/******************************************************
+ * File: rsmain.c -- main function: repeatedly asks for original string and 
+ * string with errors and tries to recover original string from string with 
+ * errors using Reed-Solomon decoding
+ * Copyright (c) 1995 by Hugo Lyppens with permission to print in DDJ
+ ******************************************************/
+#include "hdr.h"
+#include <conio.h>
+#include "rs.h"
+
+main(argc, argv)
+int    argc;
+char  *argv[];
+{
+    char         str[N], str2[N];
+    int          r;
+
+    RSG_ConstructGaloisField();
+    RSG_CalcGeneratorPoly();
+
+    for(;;) {
+        printf("Enter original string or enter empty string to quit:\n");
+        memset(str, 0, N); str2[0] = 0;
+        gets(str);
+        if(!str[0]) break;
+        RSG_encode((UBYTE *)str);
+
+        printf("Enter string with up to %d symbol errors or enter empty string to quit:\n", T);
+        gets(str2);
+        if(!str2[0]) break;
+
+        strncpy(str, str2, K);
+        r = RSG_decode((UBYTE *)str);
+        if(r < 0) {
+            printf("Decoding error -- too many errors!\n");
+        } else {
+            printf("Decoding OK, recovered '%s' from '%s' by correcting %d errors!\n", str, str2, r);
+        }
+    }
+    return(0);
+}
+
+
+
+
