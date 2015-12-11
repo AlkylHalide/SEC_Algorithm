@@ -112,7 +112,7 @@ implementation {
 
       // Check if LastDeliveredIndex is equal to the current Alternating Index and
       // check if label lies in [1 10] interval
-      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < (CAPACITY + 2))) {
+      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < (CAPACITY + 2)) && (inMsg->nodeid == (TOS_NODE_ID + 10))) {
         // Add incoming packet to ACK_set
         j = inMsg->lbl - 1;
         ACK_set[j].ldai = inMsg->ldai;  
@@ -148,8 +148,6 @@ implementation {
   /***************** Tasks ****************/
   task void send() {
     if(!busy){
-      // struct sockaddr_in6 dest;
-
       SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
 
       // Below is a check for when we increment the Alternating Index
@@ -193,8 +191,8 @@ implementation {
       btrMsg->dat = *(pckt + i);
       btrMsg->nodeid = TOS_NODE_ID;
 
-      // if(call AMSend.send((TOS_NODE_ID + 2), &myMsg, sizeof(SECMsg)) != SUCCESS) {
-      if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
+      if(call AMSend.send((TOS_NODE_ID + 10), &myMsg, sizeof(SECMsg)) != SUCCESS) {
+      // if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
         post send();
       } else {
         busy = TRUE;

@@ -101,7 +101,7 @@ implementation {
     else {
       SECMsg* inMsg = (SECMsg*)payload;
 
-      if (checkArray(inMsg->ai, inMsg->lbl)) //&& (inMsg->nodeid == (TOS_NODE_ID - 2)))
+      if (checkArray(inMsg->ai, inMsg->lbl) && (inMsg->nodeid == (TOS_NODE_ID - 10)))
       {
         ldai = inMsg->ai;
         recLbl = inMsg->lbl;
@@ -166,8 +166,8 @@ implementation {
       // message vandaan kwam.
       // UPDATE 16/11: Kan waarschijnlijk opgelost worden met Routing Algorithm
       
-      // if(call AMSend.send((TOS_NODE_ID - 2), &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
-      if(call AMSend.send(AM_BROADCAST_ADDR, &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
+      if(call AMSend.send((TOS_NODE_ID - 10), &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
+      // if(call AMSend.send(AM_BROADCAST_ADDR, &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
         post send();
       } else {
         busy = TRUE;
