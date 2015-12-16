@@ -24,14 +24,13 @@ implementation {
       new AMSenderC(AM_ACKMSG),
       new AMReceiverC(AM_SECMSG),
       new TimerMilliC() as Timer0,
-      LedsC;
+      LedsC; 
       
   SECReceiveP.Boot -> MainC;
   SECReceiveP.AMControl -> ActiveMessageC;
   SECReceiveP.Leds -> LedsC;
   SECReceiveP.AMSend -> AMSenderC;
   SECReceiveP.Receive -> AMReceiverC;
-  // SECReceiveP.PacketAcknowledgements -> ActiveMessageC;
   SECReceiveP.Timer0 -> Timer0;
   SECReceiveP.Packet -> AMSenderC;      
   SECReceiveP.AMPacket -> AMSenderC;

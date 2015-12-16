@@ -32,6 +32,7 @@ implementation {
   #define CAPACITY 15
   #define ROWS (CAPACITY + 1)
   #define COLUMNS 16
+  #define SENDNODES 3
 
   /***************** Local variables ****************/
   // Boolean to check if channel is busy
@@ -112,7 +113,7 @@ implementation {
 
       // Check if LastDeliveredIndex is equal to the current Alternating Index and
       // check if label lies in [1 10] interval
-      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < (CAPACITY + 2)) && (inMsg->nodeid == (TOS_NODE_ID + 10))) {
+      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < (CAPACITY + 2)) && (inMsg->nodeid == (TOS_NODE_ID + SENDNODES))) {
         // Add incoming packet to ACK_set
         j = inMsg->lbl - 1;
         ACK_set[j].ldai = inMsg->ldai;  
@@ -191,7 +192,7 @@ implementation {
       btrMsg->dat = *(pckt + i);
       btrMsg->nodeid = TOS_NODE_ID;
 
-      if(call AMSend.send((TOS_NODE_ID + 10), &myMsg, sizeof(SECMsg)) != SUCCESS) {
+      if(call AMSend.send((TOS_NODE_ID + SENDNODES), &myMsg, sizeof(SECMsg)) != SUCCESS) {
       // if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
         post send();
       } else {
