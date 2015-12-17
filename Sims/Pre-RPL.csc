@@ -8,6 +8,7 @@
   <project EXPORT="discard">[APPS_DIR]/powertracker</project>
   <simulation>
     <title>Pre_RPL.csc</title>
+    <speedlimit>1.0</speedlimit>
     <randomseed>123456</randomseed>
     <motedelay_us>1000000</motedelay_us>
     <radiomedium>
@@ -174,7 +175,7 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>0</z>
+    <z>1</z>
     <height>160</height>
     <location_x>400</location_x>
     <location_y>0</location_y>
@@ -187,10 +188,10 @@
       <skin>org.contikios.cooja.plugins.skins.GridVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.TrafficVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.UDGMVisualizerSkin</skin>
-      <viewport>3.908924509090908 0.0 0.0 3.908924509090908 -103.7094814254544 147.8377804800001</viewport>
+      <viewport>3.908924509090908 0.0 0.0 3.908924509090908 -109.70948142545437 113.8377804800001</viewport>
     </plugin_config>
     <width>400</width>
-    <z>1</z>
+    <z>0</z>
     <height>400</height>
     <location_x>1</location_x>
     <location_y>1</location_y>
@@ -235,23 +236,10 @@
       <decorations>true</decorations>
     </plugin_config>
     <width>400</width>
-    <z>5</z>
+    <z>7</z>
     <height>160</height>
     <location_x>680</location_x>
     <location_y>0</location_y>
-  </plugin>
-  <plugin>
-    org.contikios.cooja.serialsocket.SerialSocketServer
-    <mote_arg>0</mote_arg>
-    <plugin_config>
-      <port>60001</port>
-      <bound>true</bound>
-    </plugin_config>
-    <width>362</width>
-    <z>4</z>
-    <height>116</height>
-    <location_x>16</location_x>
-    <location_y>413</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.serialsocket.SerialSocketServer
@@ -263,8 +251,34 @@
     <width>362</width>
     <z>2</z>
     <height>116</height>
+    <location_x>18</location_x>
+    <location_y>416</location_y>
+  </plugin>
+  <plugin>
+    org.contikios.cooja.serialsocket.SerialSocketServer
+    <mote_arg>4</mote_arg>
+    <plugin_config>
+      <port>60005</port>
+      <bound>true</bound>
+    </plugin_config>
+    <width>362</width>
+    <z>5</z>
+    <height>116</height>
     <location_x>15</location_x>
-    <location_y>543</location_y>
+    <location_y>536</location_y>
+  </plugin>
+  <plugin>
+    org.contikios.cooja.serialsocket.SerialSocketServer
+    <mote_arg>5</mote_arg>
+    <plugin_config>
+      <port>60006</port>
+      <bound>true</bound>
+    </plugin_config>
+    <width>362</width>
+    <z>4</z>
+    <height>116</height>
+    <location_x>17</location_x>
+    <location_y>655</location_y>
   </plugin>
 </simconf>
 
