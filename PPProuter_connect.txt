@@ -1,0 +1,9 @@
+Connectie maken met PPP router:
+
+sudo pppd debug passive noauth nodetach 115200 socket 127.0.0.1:60001 nocrtscts nocdtrcts lcp-echo-interval 0 noccp noip ipv6 ::23,::24
+
+Interface aanmaken voor connectie (in andere cli terwijl pppd commando actief is):
+sudo ifconfig ppp0 add fec0::100/64
+
+Initiate communication with the sensors:
+nc6 -u fec0::TOS_NODE_ID 8989 (UDP_PORT denk ik?)
