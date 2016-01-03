@@ -10,20 +10,28 @@
 // dat = data (message)
 // ldai = Last Delivered Alternating Index
 
-#include <printf.h>
 #include "SECSend.h"
+// #include <printf.h>
+#include <Timer.h>
+#include <lib6lowpan/ip.h>
+#include <blip_printf.h>
 
 module SECSendP {
   uses {
     interface Boot;
     interface SplitControl as AMControl;
-    interface AMSend;
-    interface Packet;
-    interface AMPacket;
-    interface Receive;
     interface Leds;
-    interface PacketAcknowledgements;
     interface Timer<TMilli> as Timer0;
+    // interface AMSend;
+    // interface Packet;
+    // interface AMPacket;
+    // interface Receive;
+
+    interface RPLRoutingEngine as RPLRoute;
+    interface RootControl;
+    interface StdControl as RoutingControl;
+    interface UDP as RPLUDP;
+    interface RPLDAORoutingEngine as RPLDAO;
   }
 }
 
@@ -32,11 +40,12 @@ implementation {
   #define CAPACITY 15
   #define ROWS (CAPACITY + 1)
   #define COLUMNS 16
-  #define SENDNODES 3
+  #define SENDNODES 1
+  #define UDP_PORT 5678
 
   /***************** Local variables ****************/
   // Boolean to check if channel is busy
-  bool busy = FALSE;
+  // bool busy = FALSE;
 
   // Array to hold the ACK messagess
   nx_struct ACKMsg ACK_set[(CAPACITY + 1)];
@@ -72,27 +81,38 @@ implementation {
   
   /***************** Boot Events ****************/
   event void Boot.booted() {
+    if(TOS_NODE_ID == RPL_ROOT_ADDR){
+      call RootControl.setRoot();
+    }
+    call RoutingControl.start();
+
     call AMControl.start();
+    
+    call RPLUDP.bind(UDP_PORT);
   }
 
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
       
-      // Initialize the ACK_set array with zeroes
-      memset(ACK_set, 0, sizeof(ACK_set));
-      // Get a new messages array
-      p = fetch(CAPACITY + 1);
+      while( call RPLDAO.startDAO() != SUCCESS );
 
-      // TODO: ENCODE()
+      if(TOS_NODE_ID != RPL_ROOT_ADDR){
+        // Initialize the ACK_set array with zeroes
+        memset(ACK_set, 0, sizeof(ACK_set));
+        // Get a new messages array
+        p = fetch(CAPACITY + 1);
 
-      // Divide messages into packets using packet_set()
-      pckt = packet_set();
-      
-      // Reset the loop variable
-      i = 0;
+        // TODO: ENCODE()
 
-      post send();
+        // Divide messages into packets using packet_set()
+        pckt = packet_set();
+        
+        // Reset the loop variable
+        i = 0;
+
+        post send();
+      }
     }
     else {
       call AMControl.start();
@@ -104,9 +124,12 @@ implementation {
   }
   
   /***************** Receive Events ****************/
-  event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    if(call AMPacket.type(msg) != AM_ACKMSG) {
-      return msg;
+  // event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
+  event void RPLUDP.recvfrom(struct sockaddr_in6 *from, void *payload, uint16_t len, struct ip6_metadata *meta){
+    // if(call AMPacket.type(msg) != AM_ACKMSG) {
+    // if(call AMPacket.type(payload) != AM_ACKMSG) {
+    if(len != sizeof(ACKMsg)) {
+      // return msg;
     }
     else {
       ACKMsg* inMsg = (ACKMsg*)payload;
@@ -127,29 +150,33 @@ implementation {
         ++i;
       }
       
-      return msg;
+      // return msg;
     }
   }
   
   /***************** AMSend Events ****************/
-  event void AMSend.sendDone(message_t *msg, error_t error) {
-    busy = FALSE;
-    if(DELAY_BETWEEN_MESSAGES > 0) {
-      call Timer0.startOneShot(DELAY_BETWEEN_MESSAGES);
-    } else {
+  // event void AMSend.sendDone(message_t *msg, error_t error) {
+  //   busy = FALSE;
+  //   if(DELAY_BETWEEN_MESSAGES > 0) {
+  //     call Timer0.startOneShot(DELAY_BETWEEN_MESSAGES);
+  //   } else {
+  //     post send();
+  //   }
+  // }
+  
+  /***************** Timer Events ****************/
+  event void Timer0.fired() {
+    if(TOS_NODE_ID != RPL_ROOT_ADDR){
       post send();
     }
   }
   
-  /***************** Timer Events ****************/
-  event void Timer0.fired() {
-    post send();
-  }
-  
   /***************** Tasks ****************/
   task void send() {
-    if(!busy){
-      SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
+    // if(!busy){
+      nx_struct SECMsg btrMsg; // = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
+
+      struct sockaddr_in6 dest;
 
       // Below is a check for when we increment the Alternating Index
       // and start transmitting a new message.
@@ -187,18 +214,42 @@ implementation {
       }
 
       // The message to send is filled with the appropriate data
-      btrMsg->ai = AltIndex;
-      btrMsg->lbl = msgLbl;
-      btrMsg->dat = *(pckt + i);
-      btrMsg->nodeid = TOS_NODE_ID;
+      memset(&btrMsg, 0, sizeof(nx_struct SECMsg));
+      // btrMsg->ai = AltIndex;
+      // btrMsg->lbl = msgLbl;
+      // btrMsg->dat = *(pckt + i);
+      // btrMsg->nodeid = TOS_NODE_ID;
+      btrMsg.ai = AltIndex;
+      btrMsg.lbl = msgLbl;
+      btrMsg.dat = *(pckt + i);
+      btrMsg.nodeid = TOS_NODE_ID;
 
-      if(call AMSend.send((TOS_NODE_ID + SENDNODES), &myMsg, sizeof(SECMsg)) != SUCCESS) {
-      // if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
-        post send();
+      // if(call AMSend.send((TOS_NODE_ID + SENDNODES), &myMsg, sizeof(SECMsg)) != SUCCESS) {
+      //   post send();
+      // } else {
+      //   busy = TRUE;
+      // }
+
+      // STRING ADDRESSING
+      // inet_pton6("fe8::2:ff:fe00:b", &dest.sin6_addr);
+
+      // DIRECT ADDRESSING WITHOUT STRING PARSE OVERHEAD
+      memset(&dest, 0, sizeof(struct sockaddr_in6));
+      dest.sin6_addr.s6_addr16[0] = htons(0xfec0);
+      dest.sin6_addr.s6_addr[15] = (TOS_NODE_ID + SENDNODES);
+
+      dest.sin6_port = htons(UDP_PORT);
+
+      printf("Generate Packet at %d \n", TOS_NODE_ID);
+      // call RPLUDP.sendto(&dest, &myMsg, sizeof(SECMsg));
+      call RPLUDP.sendto(&dest, &btrMsg, sizeof(nx_struct SECMsg));
+
+      if(DELAY_BETWEEN_MESSAGES > 0) {
+        call Timer0.startOneShot(DELAY_BETWEEN_MESSAGES);
       } else {
-        busy = TRUE;
+        post send();
       }
-    }
+    // }
   }
 
   /***************** User-defined functions ****************/

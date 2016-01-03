@@ -10,20 +10,28 @@
 // dat = data (message)
 // ldai = Last Delivered Alternating Index
 
-#include <printf.h>
 #include "SECReceive.h"
+// #include <printf.h>
+#include <Timer.h>
+#include <lib6lowpan/ip.h>
+#include <blip_printf.h>
 
 module SECReceiveP {
   uses {
     interface Boot;
     interface SplitControl as AMControl;
-    interface AMSend;
-    interface Packet;
-    interface AMPacket;
-    interface Receive;
     interface Leds;
-    interface PacketAcknowledgements;
     interface Timer<TMilli> as Timer0;
+    // interface AMSend;
+    // interface Packet;
+    // interface AMPacket;
+    // interface Receive;
+
+    interface RPLRoutingEngine as RPLRoute;
+    interface RootControl;
+    interface StdControl as RoutingControl;
+    interface UDP as RPLUDP;
+    interface RPLDAORoutingEngine as RPLDAO;
   }
 }
 
@@ -32,11 +40,12 @@ implementation {
   #define CAPACITY 15
   #define ROWS (CAPACITY + 1)
   #define COLUMNS 16
-  #define SENDNODES 3
+  #define SENDNODES 1
+  #define UDP_PORT 5678
   
   /***************** Local variables ****************/
   // Boolean to check if channel is busy
-  bool busy = FALSE;
+  // bool busy = FALSE;
 
   // Variable to keep track of the last delivered alternating index in the ABP protocol
   uint16_t LastDeliveredAltIndex = 2;
@@ -75,12 +84,22 @@ implementation {
   
   /***************** Boot Events ****************/
   event void Boot.booted() {
+    if(TOS_NODE_ID == RPL_ROOT_ADDR){
+      call RootControl.setRoot();
+    }
+    call RoutingControl.start();
+
     call AMControl.start();
+    
+    call RPLUDP.bind(UDP_PORT);
   }
 
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
+
+      while( call RPLDAO.startDAO() != SUCCESS );
+
       // Initialize the ACK_set array with zeroes
       memset(packet_set, 0, sizeof(packet_set));
     }
@@ -94,60 +113,63 @@ implementation {
   }
   
   /***************** Receive Events ****************/
-  event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-
-    if(call AMPacket.type(msg) != AM_SECMSG) {
-      return msg;
-    }
-    else {
-      SECMsg* inMsg = (SECMsg*)payload;
-
-      if (checkArray(inMsg->ai, inMsg->lbl) && (inMsg->nodeid == (TOS_NODE_ID - SENDNODES)))
-      {
-        ldai = inMsg->ai;
-        recLbl = inMsg->lbl;
-        inNodeID = inMsg->nodeid;
-
-        // Add incoming packet to packet_set[]
-        // The packets in the receiving packet_set[] array should always be in order
-        // This means replacing, inserting and appending packets at the right point in the array
-        // according to their label value. This is solved very easily by making the array loop variable 'j'
-        // equal to the label of the incoming message, minus 1 (because labels start at 1 where the array
-        // index starts at 0).
-        j = inMsg->lbl - 1;
-        packet_set[j].ai = inMsg->ai;
-        packet_set[j].lbl = inMsg->lbl;
-        packet_set[j].dat = inMsg->dat;
-        packet_set[j].nodeid = inMsg->nodeid;
+  // event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
+  event void RPLUDP.recvfrom(struct sockaddr_in6 *from, void *payload, uint16_t len, struct ip6_metadata *meta){
+    // if(call AMPacket.type(msg) != AM_SECMSG) {
+    if (TOS_NODE_ID != RPL_ROOT_ADDR){
+      if(len != sizeof(SECMsg)) {
+        // return msg;
       }
+      else {
+        SECMsg* inMsg = (SECMsg*)payload;
 
-      // Check if the label at position 'CAPACITY' in the packet_set array is filled in or not
-      // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
-      // NO: continue normal operation.
-      if (packet_set[CAPACITY].lbl != 0 ) {
-        // Update LastDeliveredIndex to AI of current message array
-        LastDeliveredAltIndex = inMsg->ai;
+        if (checkArray(inMsg->ai, inMsg->lbl) && (inMsg->nodeid == (TOS_NODE_ID - SENDNODES)))
+        {
+          ldai = inMsg->ai;
+          recLbl = inMsg->lbl;
+          inNodeID = inMsg->nodeid;
 
-        // Transpose messages array
-        p = pckt();
+          // Add incoming packet to packet_set[]
+          // The packets in the receiving packet_set[] array should always be in order
+          // This means replacing, inserting and appending packets at the right point in the array
+          // according to their label value. This is solved very easily by making the array loop variable 'j'
+          // equal to the label of the incoming message, minus 1 (because labels start at 1 where the array
+          // index starts at 0).
+          j = inMsg->lbl - 1;
+          packet_set[j].ai = inMsg->ai;
+          packet_set[j].lbl = inMsg->lbl;
+          packet_set[j].dat = inMsg->dat;
+          packet_set[j].nodeid = inMsg->nodeid;
+        }
 
-        // Delive the messages to the application layer
-        deliver();
+        // Check if the label at position 'CAPACITY' in the packet_set array is filled in or not
+        // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
+        // NO: continue normal operation.
+        if (packet_set[CAPACITY].lbl != 0 ) {
+          // Update LastDeliveredIndex to AI of current message array
+          LastDeliveredAltIndex = inMsg->ai;
 
-        // Clear the packet_set array
-        memset(packet_set, 0, sizeof(packet_set));
+          // Transpose messages array
+          p = pckt();
+
+          // Delive the messages to the application layer
+          deliver();
+
+          // Clear the packet_set array
+          memset(packet_set, 0, sizeof(packet_set));
+        }
+
+        post send();
+        
+        // return msg;      
       }
-
-      post send();
-      
-      return msg;      
     }
   }
   
   /***************** AMSend Events ****************/
-  event void AMSend.sendDone(message_t *msg, error_t error) {
-    busy = FALSE;
-  }
+  // event void AMSend.sendDone(message_t *msg, error_t error) {
+  //   busy = FALSE;
+  // }
   
   /***************** Timer Events ****************/
   event void Timer0.fired() {
@@ -156,24 +178,37 @@ implementation {
   
   /***************** Tasks ****************/
   task void send() {
-    if(!busy){
-      ACKMsg* outMsg = (ACKMsg*)(call Packet.getPayload(&ackMsg, sizeof(ACKMsg)));
-      outMsg->ldai = ldai;
-      outMsg->lbl = recLbl;
-      outMsg->nodeid = TOS_NODE_ID;
+    // if(!busy){
 
-      // TODO: zenden naar Node ID werkt blijkbaar niet, snap niet goed waarom.
-      // Sender broadcast alles, Receiver zou enkel ACK moeten sturen naar Sender waar inkomende
-      // message vandaan kwam.
-      // UPDATE 16/11: Kan waarschijnlijk opgelost worden met Routing Algorithm
+      // ACKMsg* outMsg = (ACKMsg*)(call Packet.getPayload(&ackMsg, sizeof(ACKMsg)));
+      nx_struct ACKMsg outMsg;
+      struct sockaddr_in6 dest;
+
+      memset(&outMsg, 0, sizeof(nx_struct ACKMsg));
+      // outMsg->ldai = ldai;
+      // outMsg->lbl = recLbl;
+      // outMsg->nodeid = TOS_NODE_ID;
+      outMsg.ldai = ldai;
+      outMsg.lbl = recLbl;
+      outMsg.nodeid = TOS_NODE_ID;
+
+      // DIRECT ADDRESSING WITHOUT STRING PARSE OVERHEAD
+      memset(&dest, 0, sizeof(struct sockaddr_in6));
+      dest.sin6_addr.s6_addr16[0] = htons(0xfec0);
+      dest.sin6_addr.s6_addr[15] = (TOS_NODE_ID - SENDNODES);
+
+      dest.sin6_port = htons(UDP_PORT);
+
+      printf("Generate Packet at %d \n", TOS_NODE_ID);
+      // call RPLUDP.sendto(&dest, &myMsg, sizeof(SECMsg));
+      call RPLUDP.sendto(&dest, &outMsg, sizeof(nx_struct ACKMsg));
       
-      if(call AMSend.send((TOS_NODE_ID - SENDNODES), &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
-      // if(call AMSend.send(AM_BROADCAST_ADDR, &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
-        post send();
-      } else {
-        busy = TRUE;
-      }
-    }
+      // if(call AMSend.send((TOS_NODE_ID - SENDNODES), &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
+      //   post send();
+      // } else {
+      //   busy = TRUE;
+      // }
+    // }
   }
 
   /***************** User-defined functions ****************/
