@@ -28,7 +28,7 @@ module SECSendP {
 }
 
 implementation {
-
+  
   #define CAPACITY 15
   #define ROWS (CAPACITY + 1)
   #define COLUMNS 16

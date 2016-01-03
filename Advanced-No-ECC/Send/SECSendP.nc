@@ -32,6 +32,7 @@ implementation {
   #define CAPACITY 15
   #define ROWS (CAPACITY + 1)
   #define COLUMNS 16
+  #define SENDNODES 3
 
   /***************** Local variables ****************/
   // Boolean to check if channel is busy
@@ -39,7 +40,7 @@ implementation {
 
   // Array to hold the ACK messagess
   nx_struct ACKMsg ACK_set[(CAPACITY + 1)];
-  
+
   // Define some loop variables to go through arrays
   uint8_t i = 0;
   uint8_t j = 0;
@@ -59,7 +60,7 @@ implementation {
 
   // Message to transmit
   message_t myMsg;
-  
+
   /***************** Prototypes ****************/
   task void send();
 
@@ -68,7 +69,7 @@ implementation {
 
   // declaration of packet_set function to generate packets for sending
   uint16_t * packet_set();
-  
+
   /***************** Boot Events ****************/
   event void Boot.booted() {
     call AMControl.start();
@@ -77,17 +78,15 @@ implementation {
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
-      
+
       // Initialize the ACK_set array with zeroes
       memset(ACK_set, 0, sizeof(ACK_set));
       // Get a new messages array
       p = fetch(CAPACITY + 1);
 
-      // TODO: ENCODE()
-
       // Divide messages into packets using packet_set()
       pckt = packet_set();
-      
+
       // Reset the loop variable
       i = 0;
 
@@ -97,11 +96,11 @@ implementation {
       call AMControl.start();
     }
   }
-  
+
   event void AMControl.stopDone(error_t error) {
     // do nothing
   }
-  
+
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
     if(call AMPacket.type(msg) != AM_ACKMSG) {
@@ -112,24 +111,24 @@ implementation {
 
       // Check if LastDeliveredIndex is equal to the current Alternating Index and
       // check if label lies in [1 10] interval
-      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < (CAPACITY + 2))) {
+      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < (CAPACITY + 2)) && (inMsg->nodeid == (TOS_NODE_ID + SENDNODES))) {
         // Add incoming packet to ACK_set
         j = inMsg->lbl - 1;
-        ACK_set[j].ldai = inMsg->ldai;  
+        ACK_set[j].ldai = inMsg->ldai;
         ACK_set[j].lbl = inMsg->lbl;
         ACK_set[j].nodeid = inMsg->nodeid;
-        
+
         // Increment the label
         ++msgLbl;
 
         // Increment the index for the data sent
         ++i;
       }
-      
+
       return msg;
     }
   }
-  
+
   /***************** AMSend Events ****************/
   event void AMSend.sendDone(message_t *msg, error_t error) {
     busy = FALSE;
@@ -139,17 +138,15 @@ implementation {
       post send();
     }
   }
-  
+
   /***************** Timer Events ****************/
   event void Timer0.fired() {
     post send();
   }
-  
+
   /***************** Tasks ****************/
   task void send() {
     if(!busy){
-      // struct sockaddr_in6 dest;
-
       SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
 
       // Below is a check for when we increment the Alternating Index
@@ -164,7 +161,7 @@ implementation {
 
         // Put variable msgLbl back to 1 (starting point)
         msgLbl = 1;
-        
+
         // Increment the Alternating Index in modulo 3
         ++AltIndex;
         AltIndex %= 3;
@@ -172,13 +169,8 @@ implementation {
         // Clear the ACK_set array
         memset(ACK_set, 0, sizeof(ACK_set));
 
-        // Increment the counter (for pl copies of the same data)
-        //++counter;
-
         // Get a new messages array
         p = fetch(CAPACITY + 1);
-        
-        // TODO: ENCODE()
 
         // Divide messages into packets using packet_set()
         pckt = packet_set();
@@ -193,8 +185,7 @@ implementation {
       btrMsg->dat = *(pckt + i);
       btrMsg->nodeid = TOS_NODE_ID;
 
-      // if(call AMSend.send((TOS_NODE_ID + 2), &myMsg, sizeof(SECMsg)) != SUCCESS) {
-      if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
+      if(call AMSend.send((TOS_NODE_ID + SENDNODES), &myMsg, sizeof(SECMsg)) != SUCCESS) {
         post send();
       } else {
         busy = TRUE;
@@ -204,12 +195,12 @@ implementation {
 
   /***************** User-defined functions ****************/
   // function returning messages array
-  uint16_t * fetch(uint8_t pl) {    
+  uint16_t * fetch(uint8_t pl) {
     static uint16_t messages[(CAPACITY + 1)];
 
     for ( i = 0; i < pl; ++i) {
       messages[i] = counter;
-      // Increment the counter (for pl amount of messages sent instead of copies of the same message)
+      // Increment the counter (for pl amount of messages)
       ++counter;
     }
     return messages;

@@ -21,11 +21,3 @@ Eisen:
 
 9. Sending packets contain <ai, lbl, dat> with m = <dat>, ai = [0,2] = state alternating index, lbl = distinct packet labels
 **/
-
-/**
-PART 1: End-to-end protocol (first attempt)
-**/
-
-/**
-PART 2: Full S²E²C algorithm (= first attempt + encoding)
-**/
