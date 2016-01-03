@@ -49,7 +49,7 @@ In a real-life situation, it is very likely that the Sender and Receiver nodes a
 
 We work with a separate Sender and Receiver algorithm. The code is therefore implemented in each version in two folders; *Send* and *Receive*. Each of these folder contains four files. I've made the naming conventions consistent for each file. I will show the structure for the *Send* algorithm, but it is identical to the *Receiver* algorithm except for the file names.
 
-1. Makefile
+#### 1. Makefile
 You can customize all the Makefile options if you need something changed. I'll explain the two most useful ones here, for the rest I refer to the TinyOS documentation and specifically BLIP 2.0. Both of these options are only available in the Multi-Hop version.
 
 `CFLAGS += -DRPL_ROOT_ADDR=11`
@@ -60,7 +60,7 @@ With this you can set the IPv6 prefix used to address the nodes in the network.
 
 I've implemented the Printf functionality in all the versions of the algorithm. To use it, simply use the standard `printf()` C-function followed by the `printfflush()` function to write the information to the node output.
 
-2. SECSend.h
+#### 2. SECSend.h
 There are two AM_TYPE numbers declared for the messages sent between Sender and Receiver. This way you can multiplex the radio channel. Again you can change this to any arbitrary number.
 ```
 AM_SECMSG = 5
@@ -97,10 +97,10 @@ ACKMsg defines three fields:
 * lbl: the label of the message, which is the label of the incoming message for which the Receiver acknowledges the arrival.
 * nodeid: the nodeid of the Receiver
 
-3. SECSendC.nc
+#### 3. SECSendC.nc
 This is the **Configuration** file for the TinyOS application. Unless you want to add new functionality to the algorithm, you should not change anything in here.
 
-4. SECSendP.nc
+#### 4. SECSendP.nc
 The **Component** file includes the actual operational logic of the algorithm.
 Here you can adjust three elements.
 
