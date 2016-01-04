@@ -1,0 +1,29 @@
+SETUP FOR THE SIMULATIONS
+-------------------------
+
+Four versions of the algorithm:
+1. First-Attempt
+2. Advanced-No-ECC
+3. Advanced-ECC
+4. Advanced-ECC-Multihop
+
+### CONTINUOUS RUNNING SIMULATIONS ###
+Each version runs continuously in Cooja, outputting information to the console
+Measure the amount of errors occur
+Reset simulation with random seed, go again
+
+  --> Let counter go until 10000 each simulation
+  --> Run 10 simulations, if possible 50
+
+Keep track of amount of errors per simulation
+Keep track of speed of specific algorithm, how fast are messages being send
+
+==> End results should give overview of overhead vs. performance
+
+            **Performance measures: speed and accuracy*
+
+### LIBREPLAY ###
+Insert, duplicate, reorder messages for each version
+
+Prove that algorithm is self-stabilizing: go to stable state after recovering
+from each error

@@ -21,17 +21,16 @@ module SECSendP {
     interface Packet;
     interface AMPacket;
     interface Receive;
-    interface Leds;
-    interface PacketAcknowledgements;
     interface Timer<TMilli> as Timer0;
   }
 }
 
 implementation {
-  
+
   #define CAPACITY 15
   #define ROWS (CAPACITY + 1)
   #define COLUMNS 16
+  #define SENDNODES 1
 
   /***************** Local variables ****************/
   // Boolean to check if channel is busy
@@ -83,8 +82,6 @@ implementation {
       // Get a new messages array
       p = fetch(CAPACITY + 1);
 
-      // TODO: ENCODE()
-
       // Divide messages into packets using packet_set()
       pckt = packet_set();
 
@@ -112,7 +109,7 @@ implementation {
 
       // Check if LastDeliveredIndex is equal to the current Alternating Index and
       // check if label lies in [1 10] interval
-      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < (CAPACITY + 2))) {
+      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < (CAPACITY + 2)) && (inMsg->nodeid == (TOS_NODE_ID + SENDNODES))) {
         // Add incoming packet to ACK_set
         j = inMsg->lbl - 1;
         ACK_set[j].ldai = inMsg->ldai;
@@ -148,8 +145,6 @@ implementation {
   /***************** Tasks ****************/
   task void send() {
     if(!busy){
-      // struct sockaddr_in6 dest;
-
       SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
 
       // Below is a check for when we increment the Alternating Index
@@ -172,9 +167,6 @@ implementation {
         // Clear the ACK_set array
         memset(ACK_set, 0, sizeof(ACK_set));
 
-        // Increment the counter (for pl copies of the same data)
-        //++counter;
-
         // Get a new messages array
         p = fetch(CAPACITY + 1);
 
@@ -193,8 +185,7 @@ implementation {
       btrMsg->dat = *(pckt + i);
       btrMsg->nodeid = TOS_NODE_ID;
 
-      // if(call AMSend.send((TOS_NODE_ID + 2), &myMsg, sizeof(SECMsg)) != SUCCESS) {
-      if(call AMSend.send(AM_BROADCAST_ADDR, &myMsg, sizeof(SECMsg)) != SUCCESS) {
+      if(call AMSend.send((TOS_NODE_ID + SENDNODES), &myMsg, sizeof(SECMsg)) != SUCCESS) {
         post send();
       } else {
         busy = TRUE;
@@ -209,7 +200,7 @@ implementation {
 
     for ( i = 0; i < pl; ++i) {
       messages[i] = counter;
-      // Increment the counter (for pl amount of messages sent instead of copies of the same message)
+      // Increment the counter (for pl amount of messages)
       ++counter;
     }
     return messages;
@@ -230,7 +221,7 @@ implementation {
     // Initalize 2D arrays with zeroes
     for (i = 0; i < ROWS; ++i)
     {
-      packets[i] = 0;
+      //packets[i] = 0;
       for (j = 0; j < COLUMNS; ++j)
       {
         result[i][j] = 0;

@@ -21,8 +21,6 @@ module SECSendP {
     interface Packet;
     interface AMPacket;
     interface Receive;
-    interface Leds;
-    interface PacketAcknowledgements;
     interface Timer<TMilli> as Timer0;
   }
 }

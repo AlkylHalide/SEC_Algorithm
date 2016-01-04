@@ -21,8 +21,6 @@ module SECReceiveP {
     interface Packet;
     interface AMPacket;
     interface Receive;
-    interface Leds;
-    interface PacketAcknowledgements;
     interface Timer<TMilli> as Timer0;
   }
 }
@@ -32,7 +30,8 @@ implementation {
   #define CAPACITY 15
   #define ROWS (CAPACITY + 1)
   #define COLUMNS 16
-  
+  #define SENDNODES 1
+
   /***************** Local variables ****************/
   // Boolean to check if channel is busy
   bool busy = FALSE;
@@ -43,9 +42,8 @@ implementation {
 
   // Label variable
   uint16_t recLbl = 0;
-  
+
   // Array to contain all the received packages
-  // Packet_set array length should be 2*CAPACITY+1
   nx_struct SECMsg packet_set[(CAPACITY + 1)];
 
   // Define some loop variables to go through arrays
@@ -60,7 +58,7 @@ implementation {
 
   // Pointers to an int for the messages array
   uint16_t *p;
-  
+
   /***************** Prototypes ****************/
   task void send();
 
@@ -71,7 +69,7 @@ implementation {
   uint16_t * pckt();
 
   bool checkArray(uint8_t pcktAi, uint8_t pcktLbl);
-  
+
   /***************** Boot Events ****************/
   event void Boot.booted() {
     call AMControl.start();
@@ -87,11 +85,11 @@ implementation {
       call AMControl.start();
     }
   }
-  
+
   event void AMControl.stopDone(error_t error) {
     // do nothing
   }
-  
+
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
 
@@ -101,7 +99,7 @@ implementation {
     else {
       SECMsg* inMsg = (SECMsg*)payload;
 
-      if (checkArray(inMsg->ai, inMsg->lbl)) //&& (inMsg->nodeid == (TOS_NODE_ID - 2)))
+      if (checkArray(inMsg->ai, inMsg->lbl) && (inMsg->nodeid == (TOS_NODE_ID - SENDNODES)))
       {
         ldai = inMsg->ai;
         recLbl = inMsg->lbl;
@@ -138,21 +136,21 @@ implementation {
       }
 
       post send();
-      
-      return msg;      
+
+      return msg;
     }
   }
-  
+
   /***************** AMSend Events ****************/
   event void AMSend.sendDone(message_t *msg, error_t error) {
     busy = FALSE;
   }
-  
+
   /***************** Timer Events ****************/
   event void Timer0.fired() {
     // do nothing
   }
-  
+
   /***************** Tasks ****************/
   task void send() {
     if(!busy){
@@ -161,13 +159,7 @@ implementation {
       outMsg->lbl = recLbl;
       outMsg->nodeid = TOS_NODE_ID;
 
-      // TODO: zenden naar Node ID werkt blijkbaar niet, snap niet goed waarom.
-      // Sender broadcast alles, Receiver zou enkel ACK moeten sturen naar Sender waar inkomende
-      // message vandaan kwam.
-      // UPDATE 16/11: Kan waarschijnlijk opgelost worden met Routing Algorithm
-      
-      // if(call AMSend.send((TOS_NODE_ID - 2), &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
-      if(call AMSend.send(AM_BROADCAST_ADDR, &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
+      if(call AMSend.send((TOS_NODE_ID - SENDNODES), &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
         post send();
       } else {
         busy = TRUE;
@@ -220,7 +212,6 @@ implementation {
     }
 
     // Transpose the 'transpose' array and put the result in 'result'
-    // printf("TRANSPOSE\n");
     for (i = 0; i < ROWS; ++i)
     {
       for (j = 0; j < COLUMNS; ++j)
