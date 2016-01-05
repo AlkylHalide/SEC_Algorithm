@@ -1,0 +1,48 @@
+ WARN [main] (Cooja.java:3171) - JAVA_HOME environment variable not set, Cooja motes may not compile
+ INFO [main] (Cooja.java:1314) - > Starting Cooja
+ INFO [main] (Cooja.java:2855) - External tools default settings: /external_tools_linux_64.config
+ INFO [main] (Cooja.java:2885) - External tools user settings: /home/evert/.cooja.user.properties
+ INFO [main] (Simulation.java:421) - Simulation random seed: 9
+ INFO [main] (MspMote.java:235) - Loading firmware from: /home/evert/tinyos-main/apps/SEC/First-Attempt/Simulations/../Send/build/telosb/main.exe
+ INFO [main] (MspMote.java:235) - Loading firmware from: /home/evert/tinyos-main/apps/SEC/First-Attempt/Simulations/../Receive/build/telosb/main.exe
+ INFO [main] (Cooja.java:1780) - Visualized plugin was not started: class org.contikios.cooja.plugins.SimControl
+ INFO [main] (Cooja.java:1780) - Visualized plugin was not started: class org.contikios.cooja.plugins.Visualizer
+ INFO [main] (Cooja.java:1780) - Visualized plugin was not started: class org.contikios.cooja.plugins.LogListener
+ INFO [main] (Cooja.java:1780) - Visualized plugin was not started: class org.contikios.cooja.plugins.TimeLine
+ INFO [main] (Cooja.java:1780) - Visualized plugin was not started: class org.contikios.cooja.plugins.Notes
+ INFO [main] (SerialSocketServer.java:389) - Listening on port: 60001
+ INFO [main] (SerialSocketServer.java:389) - Listening on port: 60002
+ INFO [main] (Cooja.java:1780) - Visualized plugin was not started: class org.contikios.cooja.plugins.SimControl
+ INFO [main] (ScriptRunner.java:429) - Test script deactivated
+ INFO [main] (LogScriptEngine.java:265) - Script timeout in 1000000 ms
+ INFO [main] (ScriptRunner.java:386) - Test script activated
+ INFO [Thread-4] (Simulation.java:252) - Simulation main loop started, system time: 1451954919062
+ INFO [Thread-5] (SerialSocketServer.java:478) - Forwarder: socket -> serial port
+ INFO [Thread-1] (SerialSocketServer.java:425) - Client connected: /127.0.0.1
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 5.00%, done in 150.7 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 10.00%, done in 119.0 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 15.00%, done in 104.3 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 20.00%, done in 93.2 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 25.00%, done in 85.5 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 30.00%, done in 78.5 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 35.00%, done in 71.5 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 40.00%, done in 65.1 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 45.00%, done in 59.0 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 50.00%, done in 53.1 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 55.00%, done in 47.4 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 60.00%, done in 42.0 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 65.00%, done in 36.6 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 70.00%, done in 31.3 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 75.00%, done in 26.0 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 80.00%, done in 20.7 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 85.00%, done in 15.5 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 90.00%, done in 10.3 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 95.00%, done in 5.2 sec
+ INFO [Thread-4] (LogScriptEngine.java:375) - Timeout event @ 1000000000
+ INFO [Thread-4] (Simulation.java:311) - Simulation main loop stopped, system time: 1451955021953	Duration: 102891 ms	Simulated time 1000000 ms	Ratio 9.719023043803636
+ INFO [Thread-3] (LogScriptEngine.java:309) - Test script finished
+ INFO [Thread-0] (SerialSocketServer.java:429) - Listening thread shut down: Socket closed
+ INFO [Thread-1] (SerialSocketServer.java:429) - Listening thread shut down: Socket closed
+ INFO [Thread-5] (SerialSocketServer.java:497) - Socket closed
+ INFO [Thread-5] (SerialSocketServer.java:501) - End of Stream
+ INFO [AWT-EventQueue-0] (ScriptRunner.java:429) - Test script deactivated
