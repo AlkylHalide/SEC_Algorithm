@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # AUTOMATIC SIMULATION SCRIPT OUTLINE
 
 # TO_DO/IDEAS
@@ -19,8 +21,6 @@
 #   # Switch back to first terminal
 #   excooja $1 nogui
 # }
-
-> /home/evert/tinyos-main/apps/SEC/PID.txt
 
 . /home/evert/tinyos-main/apps/SEC/coojasim.sh &
 . /home/evert/tinyos-main/apps/SEC/serial_connect.sh &

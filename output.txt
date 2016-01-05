@@ -16,33 +16,24 @@
  INFO [main] (ScriptRunner.java:429) - Test script deactivated
  INFO [main] (LogScriptEngine.java:265) - Script timeout in 1000000 ms
  INFO [main] (ScriptRunner.java:386) - Test script activated
- INFO [Thread-4] (Simulation.java:252) - Simulation main loop started, system time: 1451954919062
+ INFO [Thread-4] (Simulation.java:252) - Simulation main loop started, system time: 1451962200129
  INFO [Thread-5] (SerialSocketServer.java:478) - Forwarder: socket -> serial port
  INFO [Thread-1] (SerialSocketServer.java:425) - Client connected: /127.0.0.1
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 5.00%, done in 150.7 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 10.00%, done in 119.0 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 15.00%, done in 104.3 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 20.00%, done in 93.2 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 25.00%, done in 85.5 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 30.00%, done in 78.5 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 35.00%, done in 71.5 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 40.00%, done in 65.1 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 45.00%, done in 59.0 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 50.00%, done in 53.1 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 55.00%, done in 47.4 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 60.00%, done in 42.0 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 65.00%, done in 36.6 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 70.00%, done in 31.3 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 75.00%, done in 26.0 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 80.00%, done in 20.7 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 85.00%, done in 15.5 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 90.00%, done in 10.3 sec
- INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 95.00%, done in 5.2 sec
- INFO [Thread-4] (LogScriptEngine.java:375) - Timeout event @ 1000000000
- INFO [Thread-4] (Simulation.java:311) - Simulation main loop stopped, system time: 1451955021953	Duration: 102891 ms	Simulated time 1000000 ms	Ratio 9.719023043803636
- INFO [Thread-3] (LogScriptEngine.java:309) - Test script finished
- INFO [Thread-0] (SerialSocketServer.java:429) - Listening thread shut down: Socket closed
- INFO [Thread-1] (SerialSocketServer.java:429) - Listening thread shut down: Socket closed
- INFO [Thread-5] (SerialSocketServer.java:497) - Socket closed
- INFO [Thread-5] (SerialSocketServer.java:501) - End of Stream
- INFO [AWT-EventQueue-0] (ScriptRunner.java:429) - Test script deactivated
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 5.00%, done in 151.8 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 10.00%, done in 122.1 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 15.00%, done in 107.8 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 20.00%, done in 98.2 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 25.00%, done in 88.9 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 30.00%, done in 81.0 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 35.00%, done in 73.7 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 40.00%, done in 67.1 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 45.00%, done in 60.8 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 50.00%, done in 54.7 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 55.00%, done in 48.8 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 60.00%, done in 43.5 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 65.00%, done in 37.9 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 70.00%, done in 32.3 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 75.00%, done in 26.8 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 80.00%, done in 21.4 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 85.00%, done in 16.0 sec
+ INFO [Thread-4] (LogScriptEngine.java:389) - Test script at 90.00%, done in 10.7 sec
