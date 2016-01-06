@@ -6,13 +6,13 @@ This is the main repository for my thesis work, done at Chalmers University of T
 It represents the final stage of my Master of Engineering degree in Computer Science.
 My assignment was to implement the algorithm developed by my supervisor, Elad Michael Schiller, in TinyOS and test in different circumstances to determine its practical functionality, advantages, and limitations.
 
-The original paper can be found on the Gulliver Publications page. [gulliver](http://www.chalmers.se/hosted/gulliver-en/documents/publications "Gulliver Publications")
+The original paper can be found on the [Gulliver Publications page](http://www.chalmers.se/hosted/gulliver-en/documents/publications "Gulliver Publications").
 
-The direct link to the full text is available online through SpringerLink. [secpaper](http://link.springer.com/chapter/10.1007%2F978-3-642-33536-5_14)
+The direct link to the full text is available online through [Springer Link](http://link.springer.com/chapter/10.1007%2F978-3-642-33536-5_14).
 
 ----------------------------------------------------------------------
 
-### 1. Structure
+### Structure
 
 There are four main folders in which a version of the algorithm can be found.
 Each new version builds upon the previous one and adds functionality, as explained below.
@@ -48,7 +48,7 @@ In a real-life situation, it is very likely that the Sender and Receiver nodes a
 
 ----------------------------------------------------------------------
 
-### 2. Usage  
+### Usage  
 
 We work with a separate Sender and Receiver algorithm. The code is therefore implemented in each version in two folders; *Send* and *Receive*. Each of these folder contains four files. I've made the naming conventions consistent for each file. I will show the structure for the *Send* algorithm, but it is identical to the *Receiver* algorithm except for the file names.
 
