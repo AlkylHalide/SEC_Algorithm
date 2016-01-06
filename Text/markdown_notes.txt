@@ -153,6 +153,7 @@ Underscores
 ///////////////
 If you use Pandoc to convert to LaTeX:
 use backslash "\" to force a line break, in combination with a normal <Enter>
+This is only necessary with H4 titles and smaller (####)
 
 Here's a line for us to start with.
 
