@@ -15,13 +15,13 @@ excooja(){
   CURRDIR=$(pwd)
   cd ~/Contiki/tools/cooja
 	if [[ $1 == "run" ]]; then
-		ant run 2> /home/evert/tinyos-main/apps/SEC/stderr.txt
+		ant run 2> /home/evert/tinyos-main/apps/SEC/Scripts/textOutput/stderr.txt
 	elif [[ ${1: -4} == ".csc" && -z "$2" ]]; then
     # java -mx512m -jar $CONTIKI/tools/cooja/dist/cooja.jar -quickstart=$CURRDIR"/"$1 -contiki=$CONTIKI
-    java -mx512m -jar $CONTIKI/tools/cooja/dist/cooja.jar -quickstart=$1 -contiki=$CONTIKI 2> /home/evert/tinyos-main/apps/SEC/stderr.txt
+    java -mx512m -jar $CONTIKI/tools/cooja/dist/cooja.jar -quickstart=$1 -contiki=$CONTIKI 2> /home/evert/tinyos-main/apps/SEC/Scripts/textOutput/stderr.txt
   elif [[ ${1: -4} == ".csc" && $2 == "nogui" ]]; then
     # java -mx512m -jar $CONTIKI/tools/cooja/dist/cooja.jar -nogui=$CURRDIR"/"$1 -contiki=$CONTIKI
-    java -mx512m -jar $CONTIKI/tools/cooja/dist/cooja.jar -nogui=$1 -contiki=$CONTIKI 2> /home/evert/tinyos-main/apps/SEC/stderr.txt
+    java -mx512m -jar $CONTIKI/tools/cooja/dist/cooja.jar -nogui=$1 -contiki=$CONTIKI 2> /home/evert/tinyos-main/apps/SEC/Scripts/textOutput/stderr.txt
 	fi
   cd $CURRDIR
 }
