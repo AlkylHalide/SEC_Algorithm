@@ -1,0 +1,74 @@
+\subsubsection{2. Theory}\label{theory}
+
+There can be no practice without knowledge coming first, so I will use
+this chapter to explain the original algorithm, and how I'll use to
+implement the practical version.
+
+I divided the theoretical algorithm in two parts. This is in accordance
+with the way the algorithm is build up, and maps nicely on the actual
+development cycle I went through when implementing the algorithm.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  We start with the first attempt algorithm. This forms the foundation
+  for the other, more advanced versions. Just like in a house, you want
+  a strong foundation.
+\item
+  Next is the packet formation algorithm. This is a relatively small
+  part, but it adds an important feature. To reach the fully advanced
+  sender/receiver algorithm as described in the paper, we add Error
+  Correction Coding.
+\end{enumerate}
+
+\paragraph{First attempt algorithm\\\\We start with this first algorithm
+before moving on to the advanced versions. It is a self-stabilizing,
+large overhead end-to-end communication algorithm for coping with packet
+omissions, duplications, and reordering. We have two sides, a sender
+algorithm and a receiver
+algorithm.}\label{first-attempt-algorithm-we-start-with-this-first-algorithm-before-moving-on-to-the-advanced-versions.-it-is-a-self-stabilizing-large-overhead-end-to-end-communication-algorithm-for-coping-with-packet-omissions-duplications-and-reordering.-we-have-two-sides-a-sender-algorithm-and-a-receiver-algorithm.}
+
+The sender starts by fetching a batch of messages from the application
+layer. Each data packet is put in message of the form \textbf{}, where
+\emph{dat} represents the data, or the actual message packet. The sender
+then sends the packet to the receiver. The two other variables are the
+Alternating Index, and a label. The label increments until \emph{} every
+time a new message is send. The Alternating Index will only increment in
+modulo 3 when a new message batch is fetched. This means that for every
+value of the \emph{Ai}, \emph{} labels map on to it.
+
+The receiver gets the message delivered, reads the values and puts it in
+a position in a \emph{packet\_set} array. The positions in the array is
+not randomly chosen, but depends on the \emph{label} value. The Receiver
+then sends an \emph{ACK} (acknowledgement) message back to the sender.
+When the sender receives this message, it knows the current message was
+delivered at the destination and it puts the incoming acknowledgement in
+the \textbf{ACK\_set} array. The sender keeps the Alternating Index the
+same, but increments the label value. During this process where the
+receiver gets the message, puts it away, and sends an acknowledgement
+message, the sender keeps transmitting the same message. It only stops
+when the acknowledgement arrives. This is the principle of the
+\textbf{Alternating Bit Protocol} or ABP\cite{afek1989self}, and it is
+just slightly different from the well know Stop-and-Wait ARQ
+protocol\cite{fantacci1986generalised}, which waits with sending new
+messages until an acknowledgement arrives.
+
+Once the receiver has received the full batch of messages and the
+incoming label reaches \emph{}, the receiver sets it's \textbf{Last
+Delivered Alternating Index} value to the incoming \emph{Ai}, and
+delivers the messages in \emph{packet\_set} to the application layer on
+the receiver side.
+
+At this point both sides reset their arrays and the cycle start again
+with new messages.
+
+\paragraph{Packet formation from messages\\\\To add a form of redundancy
+to the algorithm, the \textbf{packet\_set()} function is added. It takes
+a batch of messages of length \emph{pl} and size \emph{ml} (per
+message), regards this batch of messages as a 2D bit-matrix, and
+tranposes this whole matrix. Instead of a \textbf{pl x ml} size matrix
+we now have a matrix with \textbf{n} amount of rows, where \emph{n
+\textgreater{} ml} because of the added redundancy bits from the Error
+Correction
+Coding.}\label{packet-formation-from-messages-to-add-a-form-of-redundancy-to-the-algorithm-the-packetux5fset-function-is-added.-it-takes-a-batch-of-messages-of-length-pl-and-size-ml-per-message-regards-this-batch-of-messages-as-a-2d-bit-matrix-and-tranposes-this-whole-matrix.-instead-of-a-pl-x-ml-size-matrix-we-now-have-a-matrix-with-n-amount-of-rows-where-n-ml-because-of-the-added-redundancy-bits-from-the-error-correction-coding.}
