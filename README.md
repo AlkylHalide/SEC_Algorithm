@@ -20,10 +20,10 @@ This makes it easy to quickly set up simulations and experiments for each versio
 
 The four versions are:
 
-* First-Attempt
-* Advanced-No-ECC
-* Advanced-ECC
-* Advanced-ECC-Multihop
+1. First-Attempt
+2. Advanced-No-ECC
+3. Advanced-ECC
+4. Advanced-ECC-Multihop
 
 All versions work through point-to-point communication. This means a Sender sends his messages to one specific Receiver, and the Receiver acknowledges the messages back to the original Sender.
 

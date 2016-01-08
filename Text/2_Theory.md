@@ -1,13 +1,13 @@
 ### 2. Theory
 
-There can be no practice without knowledge coming first, so I will use this chapter to explain the original algorithm, and how I'll use to implement the practical version.
+There can be no practice without knowledge coming first, so I will use this chapter to explain the original algorithm, and to explain how I'll use it to implement the practical version.
 
 I divided the theoretical algorithm in two parts. This is in accordance with the way the algorithm is build up, and maps nicely on the actual development cycle I went through when implementing the algorithm.
 
   1. We start with the first attempt algorithm. This forms the foundation for the other, more advanced versions. Just like in a house, you want a strong foundation.
   2. Next is the packet formation algorithm. This is a relatively small part, but it adds an important feature. To reach the fully advanced sender/receiver algorithm as described in the paper, we add Error Correction Coding.
 
-#### First attempt algorithm\
+#### 2.1 First attempt algorithm\
 \
 We start with this first algorithm before moving on to the advanced versions. It is a self-stabilizing, large overhead end-to-end communication algorithm for coping with packet omissions, duplications, and reordering. We have two sides, a sender algorithm and a receiver algorithm.
 
@@ -19,6 +19,6 @@ Once the receiver has received the full batch of messages and the incoming label
 
 At this point both sides reset their arrays and the cycle start again with new messages.
 
-#### Packet formation from messages\
+#### 2.2 Packet formation from messages\
 \
-To add a form of redundancy to the algorithm, the **packet_set()** function is added. It takes a batch of messages of length *pl* and size *ml* (per message), regards this batch of messages as a 2D bit-matrix, and tranposes this whole matrix. Instead of a **pl x ml** size matrix we now have a matrix with **n** amount of rows, where *n > ml* because of the added redundancy bits from the Error Correction Coding.
+To add a form of redundancy to the algorithm, the **packet_set()** function is added. It takes a batch of messages of length *pl* and size *ml* (per message), regards this batch of messages as a 2D bit-matrix, and transposes this whole matrix. Instead of a **pl x ml** size matrix we now have a matrix with **n** amount of rows, where *n > ml* because of the added redundancy bits from the Error Correction Coding.
