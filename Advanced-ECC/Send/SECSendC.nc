@@ -16,19 +16,17 @@ configuration SECSendC {
 }
 
 implementation {
-  components SECSendP,
-      MainC,
-      PrintfC,
-      SerialStartC,  
-      ActiveMessageC,
-      new AMSenderC(AM_SECMSG),
-      new AMReceiverC(AM_ACKMSG),
-      new TimerMilliC() as Timer0,
-      LedsC;
-      
+  components SECSendP;
+  components MainC;
+  components PrintfC;
+  components SerialStartC;
+  components ActiveMessageC;
+  components new AMSenderC(AM_SECMSG);
+  components new AMReceiverC(AM_ACKMSG);
+  components new TimerMilliC() as Timer0;
+
   SECSendP.Boot -> MainC;
   SECSendP.AMControl -> ActiveMessageC;
-  SECSendP.Leds -> LedsC;
   SECSendP.AMSend -> AMSenderC;
   SECSendP.Receive -> AMReceiverC;
   SECSendP.Timer0 -> Timer0;

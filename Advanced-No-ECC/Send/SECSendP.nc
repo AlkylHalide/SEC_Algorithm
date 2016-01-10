@@ -30,7 +30,7 @@ implementation {
   #define CAPACITY 15
   #define ROWS (CAPACITY + 1)
   #define COLUMNS 16
-  #define SENDNODES 3
+  #define SENDNODES 1
 
   /***************** Local variables ****************/
   // Boolean to check if channel is busy
@@ -170,6 +170,8 @@ implementation {
         // Get a new messages array
         p = fetch(CAPACITY + 1);
 
+        // TODO: ENCODE()
+
         // Divide messages into packets using packet_set()
         pckt = packet_set();
 
@@ -219,7 +221,7 @@ implementation {
     // Initalize 2D arrays with zeroes
     for (i = 0; i < ROWS; ++i)
     {
-      packets[i] = 0;
+      //packets[i] = 0;
       for (j = 0; j < COLUMNS; ++j)
       {
         result[i][j] = 0;

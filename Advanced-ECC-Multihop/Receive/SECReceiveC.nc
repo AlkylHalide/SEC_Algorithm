@@ -16,22 +16,20 @@ configuration SECReceiveC {
 }
 
 implementation {
-  components SECReceiveP,
-      MainC,
-      PrintfC,
-      SerialStartC,  
-      ActiveMessageC,
-      new AMSenderC(AM_ACKMSG),
-      new AMReceiverC(AM_SECMSG),
-      new TimerMilliC() as Timer0,
-      LedsC; 
-      
+  components SECReceiveP;
+  components MainC;
+  components PrintfC;
+  components SerialStartC;
+  components ActiveMessageC;
+  components new AMSenderC(AM_ACKMSG);
+  components new AMReceiverC(AM_SECMSG);
+  components new TimerMilliC() as Timer0;
+
   SECReceiveP.Boot -> MainC;
   SECReceiveP.AMControl -> ActiveMessageC;
-  SECReceiveP.Leds -> LedsC;
   SECReceiveP.AMSend -> AMSenderC;
   SECReceiveP.Receive -> AMReceiverC;
   SECReceiveP.Timer0 -> Timer0;
-  SECReceiveP.Packet -> AMSenderC;      
+  SECReceiveP.Packet -> AMSenderC;
   SECReceiveP.AMPacket -> AMSenderC;
 }

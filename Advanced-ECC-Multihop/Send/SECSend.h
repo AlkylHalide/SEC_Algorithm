@@ -13,8 +13,8 @@
 #ifndef SECSEND_H
 #define SECSEND_H
 
-enum {  
-   	DELAY_BETWEEN_MESSAGES = 50,
+enum {
+  DELAY_BETWEEN_MESSAGES = 50,
 	AM_SECMSG = 5,
 	AM_ACKMSG = 10,
 };
