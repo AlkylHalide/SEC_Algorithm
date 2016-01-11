@@ -13,6 +13,11 @@
 #include <printf.h>
 #include "SECReceive.h"
 
+#define CAPACITY 15
+#define ROWS (CAPACITY + 1)
+#define COLUMNS 16
+#define SENDNODES 1
+
 module SECReceiveP {
   uses {
     interface Boot;
@@ -26,12 +31,6 @@ module SECReceiveP {
 }
 
 implementation {
-
-  #define CAPACITY 15
-  #define ROWS (CAPACITY + 1)
-  #define COLUMNS 16
-  #define SENDNODES 1
-
   /***************** Local variables ****************/
   // Boolean to check if channel is busy
   bool busy = FALSE;

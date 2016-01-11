@@ -7,9 +7,14 @@
  * Copyright (c) 1995 by Hugo Lyppens
  * With permission to print in Dr. Dobb's Journal
  ******************************************************/
-#include "hdr.h"
-#include <conio.h>
-#include "rs.h"
+// #include "hdr.h"
+#include "HDR.H"
+// #include <conio.h>
+#include <curses.h>
+// conio.h is used for MS-DOS stuff back in the day
+// have to use this on linux instead
+// #include "rs.h"
+#include "RS.H"
 
 main(argc, argv)
 int    argc;
@@ -42,4 +47,3 @@ char  *argv[];
 	}
 	return(0);
 }
-

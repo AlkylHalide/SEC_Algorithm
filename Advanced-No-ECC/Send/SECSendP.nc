@@ -13,6 +13,11 @@
 #include <printf.h>
 #include "SECSend.h"
 
+#define CAPACITY 16
+/*#define ROWS CAPACITY*/
+/*#define COLUMNS 16*/
+#define SENDNODES 1
+
 module SECSendP {
   uses {
     interface Boot;
@@ -26,18 +31,12 @@ module SECSendP {
 }
 
 implementation {
-
-  #define CAPACITY 15
-  #define ROWS (CAPACITY + 1)
-  #define COLUMNS 16
-  #define SENDNODES 1
-
   /***************** Local variables ****************/
   // Boolean to check if channel is busy
   bool busy = FALSE;
 
   // Array to hold the ACK messagess
-  nx_struct ACKMsg ACK_set[(CAPACITY + 1)];
+  nx_struct ACKMsg ACK_set[CAPACITY];
 
   // Define some loop variables to go through arrays
   uint8_t i = 0;
@@ -59,11 +58,16 @@ implementation {
   // Message to transmit
   message_t myMsg;
 
+  #define mm 8
+  #define kk 223
+  int data[kk];
+
   /***************** Prototypes ****************/
   task void send();
 
   // declaration of fetch function to get an array of new messages
-  uint16_t * fetch(uint8_t pl);
+  /*uint16_t * fetch(uint8_t pl);*/
+  uint16_t * fetch();
 
   // declaration of packet_set function to generate packets for sending
   uint16_t * packet_set();
@@ -80,10 +84,12 @@ implementation {
       // Initialize the ACK_set array with zeroes
       memset(ACK_set, 0, sizeof(ACK_set));
       // Get a new messages array
-      p = fetch(CAPACITY + 1);
+      /*p = fetch(CAPACITY);*/
+      fetch();
+      packet_set();
 
       // Divide messages into packets using packet_set()
-      pckt = packet_set();
+      /*pckt = packet_set();*/
 
       // Reset the loop variable
       i = 0;
@@ -109,7 +115,7 @@ implementation {
 
       // Check if LastDeliveredIndex is equal to the current Alternating Index and
       // check if label lies in [1 10] interval
-      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < (CAPACITY + 2)) && (inMsg->nodeid == (TOS_NODE_ID + SENDNODES))) {
+      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < (CAPACITY + 1)) && (inMsg->nodeid == (TOS_NODE_ID + SENDNODES))) {
         // Add incoming packet to ACK_set
         j = inMsg->lbl - 1;
         ACK_set[j].ldai = inMsg->ldai;
@@ -155,7 +161,7 @@ implementation {
       // the alternating index in modulo 3.
 
       // If array is filled with 'CAPACITY' packets:
-      if ((ACK_set[CAPACITY].lbl != 0) && (ACK_set[CAPACITY].ldai == AltIndex)) {
+      if ((ACK_set[(CAPACITY-1)].lbl != 0) && (ACK_set[(CAPACITY-1)].ldai == AltIndex)) {
 
         // Put variable msgLbl back to 1 (starting point)
         msgLbl = 1;
@@ -168,7 +174,7 @@ implementation {
         memset(ACK_set, 0, sizeof(ACK_set));
 
         // Get a new messages array
-        p = fetch(CAPACITY + 1);
+        p = fetch(CAPACITY);
 
         // TODO: ENCODE()
 
@@ -182,7 +188,8 @@ implementation {
       // The message to send is filled with the appropriate data
       btrMsg->ai = AltIndex;
       btrMsg->lbl = msgLbl;
-      btrMsg->dat = *(pckt + i);
+      /*btrMsg->dat = *(pckt + i);*/
+      btrMsg->dat = data[i];
       btrMsg->nodeid = TOS_NODE_ID;
 
       if(call AMSend.send((TOS_NODE_ID + SENDNODES), &myMsg, sizeof(SECMsg)) != SUCCESS) {
@@ -195,15 +202,17 @@ implementation {
 
   /***************** User-defined functions ****************/
   // function returning messages array
-  uint16_t * fetch(uint8_t pl) {
-    static uint16_t messages[(CAPACITY + 1)];
+  /*uint16_t * fetch(uint8_t pl) {*/
+  uint16_t * fetch() {
+    /*static uint16_t messages[CAPACITY];*/
 
-    for ( i = 0; i < pl; ++i) {
-      messages[i] = counter;
+    for ( i = 0; i < CAPACITY; ++i) {
+      /*messages[i] = counter;*/
+      data[i] = counter;
       // Increment the counter (for pl amount of messages)
       ++counter;
     }
-    return messages;
+    /*return messages;*/
   }
 
   // function packet_set to generate packets for sending
@@ -213,7 +222,7 @@ implementation {
     // return array with <CAPACITY> amount of SECMsg
     // SECMsg = <Ai; lbl; data(i)> with i € [1, n]
 
-    uint16_t x = 0;
+    /*uint16_t x = 0;
     uint16_t result[ROWS][COLUMNS];
     uint16_t transpose[COLUMNS][ROWS];
     static uint16_t packets[COLUMNS];
@@ -261,6 +270,49 @@ implementation {
       }
     }
 
-    return packets;
+    return packets;*/
+
+
+    int a[10][10], b[10][10];
+
+    m = kk; // ROWS
+    n = mm; // COLUMNS
+
+    for(i=0; i<m; i++)
+    {
+             for(j=0; j<n; j++)
+             {
+                      /*scanf("%d", &a[i][j]);*/
+
+             }
+    }
+
+    for(i=0; i<m; i++)
+    {
+             for(j=0; j<n; j++)
+             {
+                      printf("\t%d", a[i][j]);
+             }
+             printf("\n\n");
+    }
+
+    /* Transposing array */
+    for(i=0; i<m; i++)
+    {
+             for(j=0; j<n; j++)
+             {
+                      b[j][i] = a[i][j];
+             }
+    }
+
+    printf("\n\n2-D array after transposing:\n\n");
+    for(i=0; i<n; i++)
+    {
+             for(j=0; j<m; j++)
+             {
+                      printf("\t%d", b[i][j]);
+             }
+             printf("\n\n");
+    }
   }
 }

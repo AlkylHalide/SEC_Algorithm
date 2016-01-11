@@ -13,6 +13,9 @@
 #include <printf.h>
 #include "SECSend.h"
 
+#define CAPACITY 16
+#define SENDNODES 1
+
 module SECSendP {
   uses {
     interface Boot;
@@ -26,16 +29,12 @@ module SECSendP {
 }
 
 implementation {
-
-  #define CAPACITY 15
-  #define SENDNODES 1
-
   /***************** Local variables ****************/
   // Boolean to check if channel is busy
   bool busy = FALSE;
 
   // Array to hold the ACK messagess
-  nx_struct ACKMsg ACK_set[(CAPACITY + 1)];
+  nx_struct ACKMsg ACK_set[CAPACITY];
 
   // Define some loop variables to go through arrays
   uint8_t i = 0;
@@ -74,7 +73,7 @@ implementation {
       // Initialize the ACK_set array with zeroes
       memset(ACK_set, 0, sizeof(ACK_set));
       // Get a new messages array
-      p = fetch(CAPACITY + 1);
+      p = fetch(CAPACITY);
 
       // Reset the loop variable
       i = 0;
@@ -100,7 +99,7 @@ implementation {
 
       // Check if LastDeliveredIndex is equal to the current Alternating Index and
       // check if label lies in [1 10] interval
-      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < (CAPACITY + 2)) && (inMsg->nodeid == (TOS_NODE_ID + SENDNODES))) {
+      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < (CAPACITY + 1)) && (inMsg->nodeid == (TOS_NODE_ID + SENDNODES))) {
         // Add incoming packet to ACK_set
         j = inMsg->lbl - 1;
         ACK_set[j].ldai = inMsg->ldai;
@@ -141,12 +140,12 @@ implementation {
       // Below is a check for when we increment the Alternating Index
       // and start transmitting a new message.
       // As long as the ACK_set array is not full (checked by seeing if the lbl at position 11 is 0 or not),
-      // we keep the label. From the moment it's full, aka 11 (CAPACITY+1)
+      // we keep the label. From the moment it's full, aka 11 (CAPACITY)
       // messages have been send, we put the label back at zero and increment
       // the alternating index in modulo 3.
 
       // If array is filled with 'CAPACITY' packets:
-      if ((ACK_set[CAPACITY].lbl != 0) && (ACK_set[CAPACITY].ldai == AltIndex)) {
+      if ((ACK_set[(CAPACITY-1)].lbl != 0) && (ACK_set[(CAPACITY-1)].ldai == AltIndex)) {
 
         // Put variable msgLbl back to 1 (starting point)
         msgLbl = 1;
@@ -159,7 +158,7 @@ implementation {
         memset(ACK_set, 0, sizeof(ACK_set));
 
         // Get a new messages array
-        p = fetch(CAPACITY + 1);
+        p = fetch(CAPACITY);
 
         // Reset the loop variable
         i = 0;
@@ -182,7 +181,7 @@ implementation {
   /***************** User-defined functions ****************/
   // function returning messages array
   uint16_t * fetch(uint8_t pl) {
-    static uint16_t messages[(CAPACITY + 1)];
+    static uint16_t messages[CAPACITY];
 
     for ( i = 0; i < pl; ++i) {
       messages[i] = counter;

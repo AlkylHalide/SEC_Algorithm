@@ -11,6 +11,7 @@
 // ldai = Last Delivered Alternating Index
 
 #include <printf.h>
+#include <math.h>
 #include "SECSend.h"
 
 module SECSendP {
@@ -26,9 +27,8 @@ module SECSendP {
 }
 
 implementation {
-
-  #define CAPACITY 15
-  #define ROWS (CAPACITY + 1)
+  #define CAPACITY 16           // CAPACITY can't be higher than the value of kk! (see Reed-Solomon variables)
+  #define ROWS CAPACITY
   #define COLUMNS 16
   #define SENDNODES 1
 
@@ -37,7 +37,7 @@ implementation {
   bool busy = FALSE;
 
   // Array to hold the ACK messagess
-  nx_struct ACKMsg ACK_set[(CAPACITY + 1)];
+  nx_struct ACKMsg ACK_set[CAPACITY];
 
   // Define some loop variables to go through arrays
   uint8_t i = 0;
@@ -59,6 +59,19 @@ implementation {
   // Message to transmit
   message_t myMsg;
 
+  /***************** Reed-Solomon constants and variables ****************/
+  #define mm 8                  /* the code symbol size in bits; RS code over GF(2**4) - change to suit */
+  #define nn 255                /* the block size in symbols, which is always (2**mm - 1) */
+  #define tt 16                 /* number of errors that can be corrected */
+  #define kk 223                /* kk = nn-2*tt; the number of data symbols per block, kk < nn */
+
+  // Specify irreducible polynomial coefficients
+  // If mm = 8
+  int pp[mm+1] = { 1, 0, 1, 1, 1, 0, 0, 0, 1 };
+
+  int alpha_to [nn+1], index_of [nn+1], gg [nn-kk+1] ;
+  int recd [nn], data [kk], bb [nn-kk] ;
+
   /***************** Prototypes ****************/
   task void send();
 
@@ -67,6 +80,11 @@ implementation {
 
   // declaration of packet_set function to generate packets for sending
   uint16_t * packet_set();
+
+  // Reed-Solomon functions
+  void generate_gf();
+  void gen_poly();
+  void encode_rs();
 
   /***************** Boot Events ****************/
   event void Boot.booted() {
@@ -80,13 +98,27 @@ implementation {
       // Initialize the ACK_set array with zeroes
       memset(ACK_set, 0, sizeof(ACK_set));
       // Get a new messages array
-      p = fetch(CAPACITY + 1);
+      p = fetch(CAPACITY);
 
       // Divide messages into packets using packet_set()
       pckt = packet_set();
 
       // Reset the loop variable
       i = 0;
+
+      /* generate the Galois Field GF(2**mm) */
+      generate_gf() ;
+      /* compute the generator polynomial for this RS code */
+      gen_poly() ;
+      // Initialize the data array with zeroes
+      memset(data, 0, sizeof(data));
+      /* encode data[] to produce parity in bb[].  Data input and parity output
+      is in polynomial form */
+      encode_rs() ;
+
+      /* put the transmitted codeword, made up of data plus parity, in recd[] */
+      for (i=0; i<nn-kk; i++)  recd[i] = bb[i] ;
+      for (i=0; i<kk; i++) recd[i+nn-kk] = data[i] ;
 
       post send();
     }
@@ -109,7 +141,7 @@ implementation {
 
       // Check if LastDeliveredIndex is equal to the current Alternating Index and
       // check if label lies in [1 10] interval
-      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < (CAPACITY + 2)) && (inMsg->nodeid == (TOS_NODE_ID + SENDNODES))) {
+      if ((inMsg->ldai == AltIndex) && (inMsg->lbl > 0) && (inMsg->lbl < (CAPACITY + 1)) && (inMsg->nodeid == (TOS_NODE_ID + SENDNODES))) {
         // Add incoming packet to ACK_set
         j = inMsg->lbl - 1;
         ACK_set[j].ldai = inMsg->ldai;
@@ -149,13 +181,13 @@ implementation {
 
       // Below is a check for when we increment the Alternating Index
       // and start transmitting a new message.
-      // As long as the ACK_set array is not full (checked by seeing if the lbl at position 11 is 0 or not),
+      // As long as the ACK_set array is not full (checked by seeing if the lbl at position CAPCACITY is 0 or not),
       // we keep the label. From the moment it's full, aka 11 (CAPACITY+1)
       // messages have been send, we put the label back at zero and increment
       // the alternating index in modulo 3.
 
       // If array is filled with 'CAPACITY' packets:
-      if ((ACK_set[CAPACITY].lbl != 0) && (ACK_set[CAPACITY].ldai == AltIndex)) {
+      if ((ACK_set[(CAPACITY -1)].lbl != 0) && (ACK_set[(CAPACITY - 1)].ldai == AltIndex)) {
 
         // Put variable msgLbl back to 1 (starting point)
         msgLbl = 1;
@@ -168,7 +200,7 @@ implementation {
         memset(ACK_set, 0, sizeof(ACK_set));
 
         // Get a new messages array
-        p = fetch(CAPACITY + 1);
+        p = fetch(CAPACITY);
 
         // TODO: ENCODE()
 
@@ -196,7 +228,7 @@ implementation {
   /***************** User-defined functions ****************/
   // function returning messages array
   uint16_t * fetch(uint8_t pl) {
-    static uint16_t messages[(CAPACITY + 1)];
+    static uint16_t messages[CAPACITY];
 
     for ( i = 0; i < pl; ++i) {
       messages[i] = counter;
@@ -263,4 +295,93 @@ implementation {
 
     return packets;
   }
+
+  // Reed-Solomon functions
+  void generate_gf()
+  /* generate GF(2**mm) from the irreducible polynomial p(X) in pp[0]..pp[mm]
+     lookup tables:  index->polynomial form   alpha_to[] contains j=alpha**i;
+                     polynomial form -> index form  index_of[j=alpha**i] = i
+     alpha=2 is the primitive element of GF(2**mm)
+  */
+  {
+    /*register int i, mask ;*/
+    register int mask ;
+
+    mask = 1 ;
+    alpha_to[mm] = 0 ;
+    for (i=0; i<mm; i++)
+    {
+      alpha_to[i] = mask ;
+      index_of[alpha_to[i]] = i ;
+      if (pp[i]!=0)
+        alpha_to[mm] ^= mask ;
+      mask <<= 1 ;
+    }
+    index_of[alpha_to[mm]] = mm ;
+    mask >>= 1 ;
+    for (i=mm+1; i<nn; i++)
+    {
+      if (alpha_to[i-1] >= mask)
+        alpha_to[i] = alpha_to[mm] ^ ((alpha_to[i-1]^mask)<<1) ;
+      else alpha_to[i] = alpha_to[i-1]<<1 ;
+        index_of[alpha_to[i]] = i ;
+    }
+    index_of[0] = -1 ;
+  }
+
+  void gen_poly()
+  /* Obtain the generator polynomial of the tt-error correcting, length
+    nn=(2**mm -1) Reed Solomon code  from the product of (X+alpha**i), i=1..2*tt
+  */
+  {
+    /*register int i,j ;*/
+
+    gg[0] = 2 ;    /* primitive element alpha = 2  for GF(2**mm)  */
+    gg[1] = 1 ;    /* g(x) = (X+alpha) initially */
+    for (i=2; i<=nn-kk; i++)
+    {
+      gg[i] = 1 ;
+      for (j=i-1; j>0; j--)
+        if (gg[j] != 0)  gg[j] = gg[j-1]^ alpha_to[(index_of[gg[j]]+i)%nn] ;
+        else gg[j] = gg[j-1] ;
+      gg[0] = alpha_to[(index_of[gg[0]]+i)%nn] ;     /* gg[0] can never be zero */
+    }
+    /* convert gg[] to index form for quicker encoding */
+    for (i=0; i<=nn-kk; i++)  gg[i] = index_of[gg[i]] ;
+  }
+
+  void encode_rs()
+  /* take the string of symbols in data[i], i=0..(k-1) and encode systematically
+     to produce 2*tt parity symbols in bb[0]..bb[2*tt-1]
+     data[] is input and bb[] is output in polynomial form.
+     Encoding is done by using a feedback shift register with appropriate
+     connections specified by the elements of gg[], which was generated above.
+     Codeword is   c(X) = data(X)*X**(nn-kk)+ b(X)          */
+  {
+    /*register int i,j ;*/
+    int feedback ;
+
+    for (i=0; i<nn-kk; i++)   bb[i] = 0 ;
+    for (i=kk-1; i>=0; i--)
+    {
+      feedback = index_of[data[i]^bb[nn-kk-1]] ;
+      if (feedback != -1)
+      {
+        for (j=nn-kk-1; j>0; j--)
+          if (gg[j] != -1)
+            bb[j] = bb[j-1]^alpha_to[(gg[j]+feedback)%nn] ;
+          else
+            bb[j] = bb[j-1] ;
+          bb[0] = alpha_to[(gg[0]+feedback)%nn] ;
+      }
+      else
+      {
+        for (j=nn-kk-1; j>0; j--)
+          bb[j] = bb[j-1] ;
+        bb[0] = 0 ;
+      } ;
+    } ;
+  } ;
+
+
 }
