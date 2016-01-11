@@ -28,8 +28,6 @@ module SECSendP {
 implementation {
 
   #define CAPACITY 15
-  #define ROWS (CAPACITY + 1)
-  #define COLUMNS 16
   #define SENDNODES 1
 
   /***************** Local variables ****************/
@@ -54,7 +52,6 @@ implementation {
 
   // Pointers to an int for the messages and packet_set arrays
   uint16_t *p;
-  uint16_t *pckt;
 
   // Message to transmit
   message_t myMsg;
@@ -64,9 +61,6 @@ implementation {
 
   // declaration of fetch function to get an array of new messages
   uint16_t * fetch(uint8_t pl);
-
-  // declaration of packet_set function to generate packets for sending
-  uint16_t * packet_set();
 
   /***************** Boot Events ****************/
   event void Boot.booted() {
@@ -81,9 +75,6 @@ implementation {
       memset(ACK_set, 0, sizeof(ACK_set));
       // Get a new messages array
       p = fetch(CAPACITY + 1);
-
-      // Divide messages into packets using packet_set()
-      pckt = packet_set();
 
       // Reset the loop variable
       i = 0;
@@ -170,11 +161,6 @@ implementation {
         // Get a new messages array
         p = fetch(CAPACITY + 1);
 
-        // TODO: ENCODE()
-
-        // Divide messages into packets using packet_set()
-        pckt = packet_set();
-
         // Reset the loop variable
         i = 0;
       }
@@ -182,7 +168,7 @@ implementation {
       // The message to send is filled with the appropriate data
       btrMsg->ai = AltIndex;
       btrMsg->lbl = msgLbl;
-      btrMsg->dat = *(pckt + i);
+      btrMsg->dat = *(p + i);
       btrMsg->nodeid = TOS_NODE_ID;
 
       if(call AMSend.send((TOS_NODE_ID + SENDNODES), &myMsg, sizeof(SECMsg)) != SUCCESS) {
@@ -204,63 +190,5 @@ implementation {
       ++counter;
     }
     return messages;
-  }
-
-  // function packet_set to generate packets for sending
-  uint16_t * packet_set() {
-    // Consider message array as bit matrix
-    // Transpose matrix: data[i].bit[j] = messages[j].bit[i]
-    // return array with <CAPACITY> amount of SECMsg
-    // SECMsg = <Ai; lbl; data(i)> with i € [1, n]
-
-    uint16_t x = 0;
-    uint16_t result[ROWS][COLUMNS];
-    uint16_t transpose[COLUMNS][ROWS];
-    static uint16_t packets[COLUMNS];
-
-    // Initalize 2D arrays with zeroes
-    for (i = 0; i < ROWS; ++i)
-    {
-      //packets[i] = 0;
-      for (j = 0; j < COLUMNS; ++j)
-      {
-        result[i][j] = 0;
-        transpose[j][i] = 0;
-      }
-    }
-
-    // Transfer 'ROWS' amount of counter values to bits
-    // The bits are stored in the 2D array 'result'
-    for (i = 0; i < ROWS; ++i)
-    {
-      x = *(p + i);
-      for (j = 0; j < COLUMNS; ++j)
-      {
-        result[i][j] = (x & 0x8000) >> 15;
-        x <<= 1;
-      }
-    }
-
-    // Transpose the 'result' array and put the result in 'transpose'
-    for (i = 0; i < COLUMNS; ++i)
-    {
-      for (j = 0; j < ROWS; ++j)
-      {
-        transpose[i][j] = result[j][i];
-      }
-    }
-
-    // Convert the transposed bit array into a decimal value array
-    x = 1;
-    for (i = 0; i < COLUMNS; ++i)
-    {
-      for (j = 0; j < ROWS; ++j)
-      {
-        if (transpose[i][j] == 1) packets[i] = packets[i] * 2 + 1;
-        else if (transpose[i][j] == 0) packets[i] *= 2;
-      }
-    }
-
-    return packets;
   }
 }

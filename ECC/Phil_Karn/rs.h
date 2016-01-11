@@ -15,7 +15,8 @@
 #ifdef	MSDOS
 #define	inline	/* broken MSC 5.0 */
 #endif
-#define MM  8		/* RS code over GF(2**MM) - change to suit */
+/*#define MM  8		/* RS code over GF(2**MM) - change to suit */
+#define MM  16
 #define KK 192 /* 223 */		/* KK = number of information symbols */
 
 #define	NN ((1 << MM) - 1)

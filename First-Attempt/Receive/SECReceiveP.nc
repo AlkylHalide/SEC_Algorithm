@@ -28,8 +28,6 @@ module SECReceiveP {
 implementation {
 
   #define CAPACITY 15
-  #define ROWS (CAPACITY + 1)
-  #define COLUMNS 16
   #define SENDNODES 1
 
   /***************** Local variables ****************/
@@ -64,9 +62,6 @@ implementation {
 
   // declaration of deliver function to deliver the received messages to the application layer
   void deliver();
-
-  // declaration of transpose function to transpose received packets
-  uint16_t * pckt();
 
   bool checkArray(uint8_t pcktAi, uint8_t pcktLbl);
 
@@ -125,9 +120,6 @@ implementation {
         // Update LastDeliveredIndex to AI of current message array
         LastDeliveredAltIndex = inMsg->ai;
 
-        // Transpose messages array
-        p = pckt();
-
         // Delive the messages to the application layer
         deliver();
 
@@ -171,67 +163,9 @@ implementation {
   // function returning messages array
   void deliver() {
     for ( i = 0; i < (CAPACITY + 1); ++i) {
-      printf("%u\n", *(p + i));
+      printf("%u\n", packet_set[i];
     }
     printfflush();
-  }
-
-  // function packet_set to transpose received packets
-  uint16_t * pckt() {
-    // Consider message array as bit matrix
-    // Transpose matrix: data[i].bit[j] = messages[j].bit[i]
-    // return array with <CAPACITY+1> amount of received messages
-
-    uint16_t x = 0;
-    uint16_t result[ROWS][COLUMNS];
-    uint16_t transpose[COLUMNS][ROWS];
-    static uint16_t packets[ROWS];
-
-    // Initalize 2D arrays with zeroes
-    for (i = 0; i < ROWS; ++i)
-    {
-      // packets[i] = 0;
-      for (j = 0; j < COLUMNS; ++j)
-      {
-        result[i][j] = 0;
-        transpose[j][i] = 0;
-      }
-    }
-
-    // Using the same int to bit array conversion as with the sender,
-    // the received 1D int array of decimals is converted to
-    // a 2D bit array
-    for (i = 0; i < COLUMNS; ++i)
-    {
-      x = packet_set[i].dat;
-      for (j = 0; j < ROWS; ++j)
-      {
-        transpose[i][j] = (x & 0x8000) >> 15;
-        x <<= 1;
-      }
-    }
-
-    // Transpose the 'transpose' array and put the result in 'result'
-    for (i = 0; i < ROWS; ++i)
-    {
-      for (j = 0; j < COLUMNS; ++j)
-      {
-        result[i][j] = transpose[j][i];
-      }
-    }
-
-    // Convert the transposed bit array into a decimal value array
-    x = 1;
-    for (i = 0; i < ROWS; ++i)
-    {
-      for (j = 0; j < COLUMNS; ++j)
-      {
-        if (result[i][j] == 1) packets[i] = packets[i] * 2 + 1;
-        else if (result[i][j] == 0) packets[i] *= 2;
-      }
-    }
-
-    return packets;
   }
 
   bool checkArray(uint8_t pcktAi, uint8_t pcktLbl){
