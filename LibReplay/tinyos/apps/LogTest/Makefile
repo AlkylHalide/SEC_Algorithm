@@ -1,5 +1,8 @@
 TOSMAKE_PATH=../../support/make/
 
+CFLAGS += -I$(TOSDIR)/lib/printf
+# CFLAGS += -DNEW_PRINTF_SEMANTICS
+
 COMPONENT=RadioCountToLedsAppC
 BUILD_EXTRA_DEPS = log/SerialLogplayMsg.class
 CLEAN_EXTRA = log/SerialLogplayMsg.class log/SerialLogplayMsg.java

@@ -27,17 +27,29 @@ module SECSendP {
 }
 
 implementation {
-  #define CAPACITY 16           // CAPACITY can't be higher than the value of kk! (see Reed-Solomon variables)
+
+  #define CAPACITY 31           // CAPACITY can't be higher than the value of kk! (see Reed-Solomon variables)
   #define ROWS CAPACITY
   #define COLUMNS 16
   #define SENDNODES 1
+
+  /***************** Reed-Solomon constants and variables ****************/
+  #define mm 8                  /* the code symbol size in bits; RS code over GF(2**4) - change to suit */
+  #define nn 255                /* the block size in symbols, which is always (2**mm - 1) */
+  #define tt 31                 /* number of errors that can be corrected */
+  #define kk 192                /* kk = nn-2*tt; the number of data symbols per block, kk < nn */
+
+  #define enclen (2 * tt + CAPACITY + 1)  // The length of the encoded data
+  // for tt = 31, CAPCACITY = 31: enclen = 94
 
   /***************** Local variables ****************/
   // Boolean to check if channel is busy
   bool busy = FALSE;
 
   // Array to hold the ACK messagess
-  nx_struct ACKMsg ACK_set[CAPACITY];
+  /*nx_struct ACKMsg ACK_set[CAPACITY];*/
+  nx_struct ACKMsg ACK_set[enclen];         // The above line is commented, since we're only executing RS once
+                                            // and then sending all packets from that one fetch() operation
 
   // Define some loop variables to go through arrays
   uint8_t i = 0;
@@ -60,23 +72,20 @@ implementation {
   message_t myMsg;
 
   /***************** Reed-Solomon constants and variables ****************/
-  #define mm 8                  /* the code symbol size in bits; RS code over GF(2**4) - change to suit */
-  #define nn 255                /* the block size in symbols, which is always (2**mm - 1) */
-  #define tt 16                 /* number of errors that can be corrected */
-  #define kk 223                /* kk = nn-2*tt; the number of data symbols per block, kk < nn */
-
   // Specify irreducible polynomial coefficients
   // If mm = 8
   int pp[mm+1] = { 1, 0, 1, 1, 1, 0, 0, 0, 1 };
 
-  int alpha_to [nn+1], index_of [nn+1], gg [nn-kk+1] ;
-  int recd [nn], data [kk], bb [nn-kk] ;
+  nx_uint16_t alpha_to [nn+1], index_of [nn+1], gg [nn-kk+1] ;
+  nx_uint16_t recd [nn], data [kk], bb [nn-kk] ;
+  // recd[255]; data[192]; bb[63]
 
   /***************** Prototypes ****************/
   task void send();
 
   // declaration of fetch function to get an array of new messages
-  uint16_t * fetch(uint8_t pl);
+  /*uint16_t * fetch(uint8_t pl);*/
+  void fetch();
 
   // declaration of packet_set function to generate packets for sending
   uint16_t * packet_set();
@@ -95,30 +104,48 @@ implementation {
   event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
 
+      printf("AMControl.startDone");
+      printfflush();
+
       // Initialize the ACK_set array with zeroes
       memset(ACK_set, 0, sizeof(ACK_set));
+
       // Get a new messages array
-      p = fetch(CAPACITY);
+      /*p = fetch(CAPACITY);*/
+      fetch();
+      printf("fetch");
+      printfflush();
+
+      /* generate the Galois Field GF(2**mm) */
+      printf("generate_gf()");
+      printfflush();
+      generate_gf() ;
+
+      /* compute the generator polynomial for this RS code */
+      printf("gen_poly");
+      printfflush();
+      gen_poly() ;
+
+      /* encode data[] to produce parity in bb[].  Data input and parity output
+      is in polynomial form */
+      printf("encode");
+      printfflush();
+      encode_rs() ;
+
+      /* put the transmitted codeword, made up of data plus parity, in recd[] */
+      printf("fill recd[]");
+      printfflush();
+      for (i=0; i<nn-kk; i++)  recd[i] = bb[i] ;
+      for (i=0; i<kk; i++) recd[i+nn-kk] = data[i] ;
 
       // Divide messages into packets using packet_set()
-      pckt = packet_set();
+      /*pckt = packet_set();*/
 
       // Reset the loop variable
       i = 0;
 
-      /* generate the Galois Field GF(2**mm) */
-      generate_gf() ;
-      /* compute the generator polynomial for this RS code */
-      gen_poly() ;
-      // Initialize the data array with zeroes
-      memset(data, 0, sizeof(data));
-      /* encode data[] to produce parity in bb[].  Data input and parity output
-      is in polynomial form */
-      encode_rs() ;
-
-      /* put the transmitted codeword, made up of data plus parity, in recd[] */
-      for (i=0; i<nn-kk; i++)  recd[i] = bb[i] ;
-      for (i=0; i<kk; i++) recd[i+nn-kk] = data[i] ;
+      printf("AMControl.startDone FINISHED");
+      printfflush();
 
       post send();
     }
@@ -187,7 +214,11 @@ implementation {
       // the alternating index in modulo 3.
 
       // If array is filled with 'CAPACITY' packets:
-      if ((ACK_set[(CAPACITY -1)].lbl != 0) && (ACK_set[(CAPACITY - 1)].ldai == AltIndex)) {
+      // TODO: CHECKEN OF ARRAY VOL IS, NIET ENKEL LAATSTE ELEMENT
+      /*if ((ACK_set[(CAPACITY -1)].lbl != 0) && (ACK_set[(CAPACITY - 1)].ldai == AltIndex)) {*/
+      if ((ACK_set[(enclen -1)].lbl != 0) && (ACK_set[(enclen - 1)].ldai == AltIndex)) {
+        // The above line (two lines up) is commented, since we're only executing RS once
+        // and then sending all packets from that one fetch() operation
 
         // Put variable msgLbl back to 1 (starting point)
         msgLbl = 1;
@@ -198,23 +229,32 @@ implementation {
 
         // Clear the ACK_set array
         memset(ACK_set, 0, sizeof(ACK_set));
+        // Clear the data array
+        memset(data, 0, sizeof(data));
 
         // Get a new messages array
-        p = fetch(CAPACITY);
-
-        // TODO: ENCODE()
+        /*p = fetch(CAPACITY);*/
+        fetch();
 
         // Divide messages into packets using packet_set()
-        pckt = packet_set();
+        /*pckt = packet_set();*/
+
+        /* encode data[] to produce parity in bb[].  Data input and parity output
+        is in polynomial form */
+        encode_rs() ;
+
+        /* put the transmitted codeword, made up of data plus parity, in recd[] */
+        for (i=0; i<nn-kk; i++)  recd[i] = bb[i] ;
+        for (i=0; i<kk; i++) recd[i+nn-kk] = data[i] ;
 
         // Reset the loop variable
         i = 0;
       }
-
       // The message to send is filled with the appropriate data
       btrMsg->ai = AltIndex;
       btrMsg->lbl = msgLbl;
-      btrMsg->dat = *(pckt + i);
+      /*btrMsg->dat = *(pckt + i);*/
+      btrMsg->dat = recd[i];
       btrMsg->nodeid = TOS_NODE_ID;
 
       if(call AMSend.send((TOS_NODE_ID + SENDNODES), &myMsg, sizeof(SECMsg)) != SUCCESS) {
@@ -227,15 +267,18 @@ implementation {
 
   /***************** User-defined functions ****************/
   // function returning messages array
-  uint16_t * fetch(uint8_t pl) {
-    static uint16_t messages[CAPACITY];
+  /*uint16_t * fetch(uint8_t pl) {*/
+  void fetch() {
+    /*static uint16_t messages[CAPACITY];*/
 
-    for ( i = 0; i < pl; ++i) {
-      messages[i] = counter;
+    for ( i = 0; i < CAPACITY; ++i) {
+    /*for ( i = 0; i < pl; ++i) {*/
+      /*messages[i] = counter;*/
+      data[i] = counter;
       // Increment the counter (for pl amount of messages)
       ++counter;
     }
-    return messages;
+    /*return messages;*/
   }
 
   // function packet_set to generate packets for sending
@@ -253,7 +296,6 @@ implementation {
     // Initalize 2D arrays with zeroes
     for (i = 0; i < ROWS; ++i)
     {
-      //packets[i] = 0;
       for (j = 0; j < COLUMNS; ++j)
       {
         result[i][j] = 0;

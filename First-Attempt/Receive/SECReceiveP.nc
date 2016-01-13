@@ -162,7 +162,7 @@ implementation {
   // function returning messages array
   void deliver() {
     for ( i = 0; i < CAPACITY; ++i) {
-      printf("%u\n", packet_set[i];
+      printf("%u\n", packet_set[i]);
     }
     printfflush();
   }

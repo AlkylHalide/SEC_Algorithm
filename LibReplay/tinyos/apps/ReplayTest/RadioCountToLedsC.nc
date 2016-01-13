@@ -1,7 +1,7 @@
 // $Id: RadioCountToLedsC.nc,v 1.7 2010-06-29 22:07:17 scipio Exp $
 
 /*									tab:4
- * Copyright (c) 2000-2005 The Regents of the University  of California.  
+ * Copyright (c) 2000-2005 The Regents of the University  of California.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,20 +34,21 @@
  * Copyright (c) 2002-2003 Intel Corporation
  * All rights reserved.
  *
- * This file is distributed under the terms in the attached INTEL-LICENSE     
+ * This file is distributed under the terms in the attached INTEL-LICENSE
  * file. If you do not find these files, copies can be found by writing to
- * Intel Research Berkeley, 2150 Shattuck Avenue, Suite 1300, Berkeley, CA, 
+ * Intel Research Berkeley, 2150 Shattuck Avenue, Suite 1300, Berkeley, CA,
  * 94704.  Attention:  Intel License Inquiry.
  */
- 
+
 #include "Timer.h"
 #include "RadioCountToLeds.h"
- 
+#include <printf.h>
+
 /**
- * Implementation of the RadioCountToLeds application. RadioCountToLeds 
- * maintains a 4Hz counter, broadcasting its value in an AM packet 
- * every time it gets updated. A RadioCountToLeds node that hears a counter 
- * displays the bottom three bits on its LEDs. This application is a useful 
+ * Implementation of the RadioCountToLeds application. RadioCountToLeds
+ * maintains a 4Hz counter, broadcasting its value in an AM packet
+ * every time it gets updated. A RadioCountToLeds node that hears a counter
+ * displays the bottom three bits on its LEDs. This application is a useful
  * test to show that basic AM communication and timers work.
  *
  * @author Philip Levis
@@ -71,7 +72,7 @@ implementation {
 
   bool locked;
   uint16_t counter = 0;
-  
+
   event void Boot.booted() {
     call AMControl.start();
   }
@@ -88,10 +89,13 @@ implementation {
   event void AMControl.stopDone(error_t err) {
     // do nothing
   }
-  
+
   event void MilliTimer.fired() {
     counter++;
-    dbg("RadioCountToLedsC", "RadioCountToLedsC: timer fired, counter is %hu.\n", counter);
+    /*dbg("RadioCountToLedsC", "RadioCountToLedsC: timer fired, counter is %hu.\n", counter);*/
+    printf("RadioCountToLedsC: timer fired, counter is %u.\n", counter);
+    printf("---------------------------------------------------------------\n");
+    printfflush();
     if (locked) {
       return;
     }
@@ -103,19 +107,25 @@ implementation {
 
       rcm->counter = counter;
       if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_count_msg_t)) == SUCCESS) {
-	dbg("RadioCountToLedsC", "RadioCountToLedsC: packet sent.\n", counter);	
+	/*dbg("RadioCountToLedsC", "RadioCountToLedsC: packet sent.\n", counter);*/
+  printf("RadioCountToLedsC: packet sent. Counter: %u\n", counter);
+  printfflush();
 	locked = TRUE;
       }
     }
   }
 
-  event message_t* Receive.receive(message_t* bufPtr, 
+  event message_t* Receive.receive(message_t* bufPtr,
 				   void* payload, uint8_t len) {
     call Leds.led2Toggle();
-    dbg("RadioCountToLedsC", "Received packet of length %hhu.\n", len);
+    /*dbg("RadioCountToLedsC", "Received packet of length %hhu.\n", len);*/
+    printf("Received packet of length %u.\n", len);
+    printfflush();
     if (len != sizeof(radio_count_msg_t)) {return bufPtr;}
     else {
- //      radio_count_msg_t* rcm = (radio_count_msg_t*)payload;
+       radio_count_msg_t* rcm = (radio_count_msg_t*)payload;
+       printf("Counter value = %u", rcm->counter);
+       printfflush();
  //      if (rcm->counter & 0x1) {
 	// call Leds.led0On();
  //      }
@@ -145,7 +155,3 @@ implementation {
   }
 
 }
-
-
-
-

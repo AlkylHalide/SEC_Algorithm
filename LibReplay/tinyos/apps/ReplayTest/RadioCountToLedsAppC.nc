@@ -41,6 +41,7 @@
  */
 
 #include "RadioCountToLeds.h"
+#include <printf.h>
 
 /**
  * Configuration for the RadioCountToLeds application. RadioCountToLeds
@@ -61,6 +62,8 @@ implementation {
   components new TimerMilliC();
   components new PacketReplayC(100) as Replay;
   components ActiveMessageC;
+  components PrintfC;
+  components SerialStartC;
 
   App.Boot -> MainC.Boot;
 

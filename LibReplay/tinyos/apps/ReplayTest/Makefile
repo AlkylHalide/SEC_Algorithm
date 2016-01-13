@@ -1,10 +1,12 @@
 TOSMAKE_PATH=../../support/make/
 
+CFLAGS += -I$(TOSDIR)/lib/printf
+
 COMPONENT=RadioCountToLedsAppC
 BUILD_EXTRA_DEPS = replay/SerialLogplayMsg.class
 CLEAN_EXTRA = replay/SerialLogplayMsg.class replay/SerialLogplayMsg.java
 
-CFLAGS += -DPRINTF_BUFFER_SIZE=1000 
+CFLAGS += -DPRINTF_BUFFER_SIZE=1000
 CFLAGS += -I$(TOSDIR)/lib/printf
 
 # SerialLogplayMsg.py: ../../tos/lib/logplay/LogPLay.h

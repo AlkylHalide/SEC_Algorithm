@@ -48,13 +48,15 @@
 
 #include <math.h>
 #include <stdio.h>
-// #define mm  4             /* RS code over GF(2**4) - change to suit */
-#define mm 8                 /* RS code over GF(2**4) - change to suit */
+// #define mm  4             /* the code symbol size in bits; RS code over GF(2**4) - change to suit */
+#define mm 8
 // #define nn  15            /* nn=2**mm -1   length of codeword */
 #define nn 255               /* the block size in symbols, which is always (2**mm - 1) */
-#define tt 16                /* number of errors that can be corrected */
-#define kk 223              /* kk = nn-2*tt */
-#define CAPACITY 224        // CAPACITY can't be higher than the value of kk!
+#define tt 31                /* number of errors that can be corrected */
+#define kk 192               /* kk = nn-2*tt */
+#define CAPACITY 31          // CAPACITY can't be higher than the value of kk!
+                             // CAPACITY and tt should be the same value, so that the code
+                             // can bear up to <capacity> mistakes
 
 // int pp [mm+1] = { 1, 1, 0, 0, 1} ; /* specify irreducible polynomial coeffts */
 // IF mm = 8
@@ -63,7 +65,6 @@ int pp[mm+1] = { 1, 0, 1, 1, 1, 0, 0, 0, 1 };
 // int pp[mm+1] = { 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1 };
 int alpha_to [nn+1], index_of [nn+1], gg [nn-kk+1] ;
 int recd [nn], data [kk], bb [nn-kk] ;
-
 
 void generate_gf()
 /* generate GF(2**mm) from the irreducible polynomial p(X) in pp[0]..pp[mm]
@@ -402,7 +403,9 @@ for (i=0; i<CAPACITY; i++) {
 /* if you want to test the program, corrupt some of the elements of recd[]
    here. This can also be done easily in a debugger. */
 /* Again, lets say that a middle element is changed */
-  data[nn-nn/2] = 3 ;
+  // data[nn-nn/2] = 3 ;
+  for (i = 0; i < CAPACITY; i++)
+    data[i] = (CAPACITY - i);
 
 
   for (i=0; i<nn; i++)
@@ -412,12 +415,20 @@ for (i=0; i<CAPACITY; i++) {
   decode_rs() ;         /* recd[] is returned in polynomial form */
 
 /* print out the relevant stuff - initial and decoded {parity and message} */
-  printf("Results for Reed-Solomon code (n=%3d, k=%3d, t= %3d)\n\n",nn,kk,tt) ;
+  printf("Results for Reed-Solomon code (n=%3d, k=%3d, t=%3d)\n\n",nn,kk,tt) ;
   printf("  i  data[i]   recd[i](decoded)   (data, recd in polynomial form)\n");
   // PRINT PARITY
-  // for (i=0; i<nn-kk; i++)
-  //   printf("%3d    %3d      %3d\n",i, bb[i], recd[i]) ;
+  for (i=0; i<nn-kk; i++)
+    printf("%3d    %3d      %3d\n",i, bb[i], recd[i]) ;
+  printf("\n");
   // PRINT MESSAGE
-  for (i=nn-kk; i<(nn-kk+CAPACITY); i++)
-    printf("%3d    %3d      %3d\n",i, data[i-nn+kk], recd[i]) ;
+  // for (i=0; i<(nn-kk+CAPACITY); i++)
+  for (i=0; i<(nn); i++){
+    if (i > kk) {
+      printf("%3d    %3d      %3d\n",i, 0, recd[i]) ;
+    } else {
+      // printf("%3d    %3d      %3d\n",i, data[i-nn+kk], recd[i]) ;
+      printf("%3d    %3d      %3d\n",i, data[i], recd[i]) ;
+    }
+  }
 }

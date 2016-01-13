@@ -1,0 +1,22 @@
+cd apps/LogTest/ && make telosb logplay
+make[1]: Entering directory `/home/evert/tinyos-main/apps/SEC/LibReplay/tinyos/apps/LogTest'
+mkdir -p build/telosb
+    compiling RadioCountToLedsAppC to a telosb binary
+ncc -o build/telosb/main.exe  -Os -I../../tos/lib/logplay/ -I../../tos/lib/logplay/log -I../../tos/lib/logplay/log/interfaces -I../../tos/lib/logplay/log/base -I../../tos/lib/logplay/log/custom -I../../tos/lib/logplay/replay -I../../tos/lib/logplay/replay/interfaces -I../../tos/lib/logplay/replay/base -I../../tos/lib/logplay/replay/custom  -I../../tos/lib/logplay/ -I../../tos/lib/logplay/log -I../../tos/lib/logplay/log/interfaces -I../../tos/lib/logplay/log/base -I../../tos/lib/logplay/log/custom -I../../tos/lib/logplay/replay -I../../tos/lib/logplay/replay/interfaces -I../../tos/lib/logplay/replay/base -I../../tos/lib/logplay/replay/custom  -fnesc-separator=__ -Wall -Wshadow -Wnesc-all -target=telosb -fnesc-cfile=build/telosb/app.c -board= -DDEFINED_TOS_AM_GROUP=0x22 -I/home/evert/tinyos-main/tos/lib/printf -DCUSTOM_BUFFER_ENTRIES=10 -DIDENT_APPNAME=\"RadioCountToLed\" -DIDENT_USERNAME=\"evert\" -DIDENT_HOSTNAME=\"evert-PC\" -DIDENT_USERHASH=0x8ed234e0L -DIDENT_TIMESTAMP=0x56954143L -DIDENT_UIDHASH=0xb8c4e7baL  RadioCountToLedsAppC.nc -lm 
+    compiled RadioCountToLedsAppC to build/telosb/main.exe
+           18404 bytes in ROM
+            1476 bytes in RAM
+msp430-objcopy --output-target=ihex build/telosb/main.exe build/telosb/main.ihex
+    writing TOS image
+make[1]: Leaving directory `/home/evert/tinyos-main/apps/SEC/LibReplay/tinyos/apps/LogTest'
+cd apps/ReplayTest/ && make telosb logplay
+make[1]: Entering directory `/home/evert/tinyos-main/apps/SEC/LibReplay/tinyos/apps/ReplayTest'
+mkdir -p build/telosb
+    compiling RadioCountToLedsAppC to a telosb binary
+ncc -o build/telosb/main.exe  -Os -I../../tos/lib/logplay/ -I../../tos/lib/logplay/log -I../../tos/lib/logplay/log/interfaces -I../../tos/lib/logplay/log/base -I../../tos/lib/logplay/log/custom -I../../tos/lib/logplay/replay -I../../tos/lib/logplay/replay/interfaces -I../../tos/lib/logplay/replay/base -I../../tos/lib/logplay/replay/custom  -I../../tos/lib/logplay/ -I../../tos/lib/logplay/log -I../../tos/lib/logplay/log/interfaces -I../../tos/lib/logplay/log/base -I../../tos/lib/logplay/log/custom -I../../tos/lib/logplay/replay -I../../tos/lib/logplay/replay/interfaces -I../../tos/lib/logplay/replay/base -I../../tos/lib/logplay/replay/custom  -fnesc-separator=__ -Wall -Wshadow -Wnesc-all -target=telosb -fnesc-cfile=build/telosb/app.c -board= -DDEFINED_TOS_AM_GROUP=0x22 -I/home/evert/tinyos-main/tos/lib/printf -DPRINTF_BUFFER_SIZE=1000 -I/home/evert/tinyos-main/tos/lib/printf -DIDENT_APPNAME=\"RadioCountToLed\" -DIDENT_USERNAME=\"evert\" -DIDENT_HOSTNAME=\"evert-PC\" -DIDENT_USERHASH=0x8ed234e0L -DIDENT_TIMESTAMP=0x56954145L -DIDENT_UIDHASH=0x12cc066bL  RadioCountToLedsAppC.nc -lm 
+    compiled RadioCountToLedsAppC to build/telosb/main.exe
+           17858 bytes in ROM
+            1712 bytes in RAM
+msp430-objcopy --output-target=ihex build/telosb/main.exe build/telosb/main.ihex
+    writing TOS image
+make[1]: Leaving directory `/home/evert/tinyos-main/apps/SEC/LibReplay/tinyos/apps/ReplayTest'

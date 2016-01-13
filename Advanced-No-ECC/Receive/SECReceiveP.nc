@@ -69,6 +69,12 @@ implementation {
 
   bool checkArray(uint8_t pcktAi, uint8_t pcktLbl);
 
+  // ***** ALTERING PACKET ***** //
+  uint8_t n = 0;
+  uint8_t m = 0;
+  uint8_t o = 0;
+  // *************************** //
+
   /***************** Boot Events ****************/
   event void Boot.booted() {
     call AMControl.start();
@@ -97,6 +103,45 @@ implementation {
     }
     else {
       SECMsg* inMsg = (SECMsg*)payload;
+
+      // ***** ITERATION TRACKER ***** //
+      printf("%u  ", n);
+      // *************************** //
+
+      /*// ***** DUPLICATING PACKETS ***** //
+      if((n)%6 == 0 && n < 50) {
+        m = rand();
+        m %= CAPACITY;
+        o = inMsg->lbl + m;
+        if(o < CAPACITY) {
+          inMsg->lbl = o;
+        }
+      }
+      printf("%u  \n", o);
+      // *************************** //*/
+
+      /*// ***** INSERTING PACKETS ***** //
+      if((n)%4 != 0 && n < 50 && (inMsg->lbl < CAPACITY)) {
+        m = rand();
+        m %= (CAPACITY-(inMsg->lbl));
+        m += inMsg->lbl;
+        inMsg->lbl = m;
+      }
+      printf("%u\n", m);
+      // *************************** //*/
+
+      // ***** REORDERING PACKETS ***** //
+      if((n)%4 == 0 && n < 50) {
+        m = rand();
+        m %= CAPACITY;
+        if(m == 0) { m = 1;}
+        inMsg->lbl = m;
+      }
+      printf("%u\n", m);
+      printfflush();
+      n++;
+      // *************************** //
+
 
       if (checkArray(inMsg->ai, inMsg->lbl) && (inMsg->nodeid == (TOS_NODE_ID - SENDNODES)))
       {
@@ -169,10 +214,11 @@ implementation {
   /***************** User-defined functions ****************/
   // function returning messages array
   void deliver() {
+    printf("\n");
     for ( i = 0; i < (CAPACITY + 1); ++i) {
-      printf("%u\n", *(p + i));
+      printf("%u  %u\n", *(p + i), packet_set[i].lbl);
+      printfflush();
     }
-    printfflush();
   }
 
   // function packet_set to transpose received packets
