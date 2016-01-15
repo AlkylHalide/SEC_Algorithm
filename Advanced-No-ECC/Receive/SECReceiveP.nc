@@ -13,10 +13,10 @@
 #include <printf.h>
 #include "SECReceive.h"
 
-#define CAPACITY 15
-#define ROWS (CAPACITY + 1)
+#define CAPACITY 16
+#define ROWS CAPACITY
 #define COLUMNS 16
-#define SENDNODES 1
+#define SENDNODES 10
 
 module SECReceiveP {
   uses {
@@ -43,7 +43,7 @@ implementation {
   uint16_t recLbl = 0;
 
   // Array to contain all the received packages
-  nx_struct SECMsg packet_set[(CAPACITY + 1)];
+  nx_struct SECMsg packet_set[CAPACITY];
 
   // Define some loop variables to go through arrays
   uint8_t i = 0;
@@ -68,12 +68,6 @@ implementation {
   uint16_t * pckt();
 
   bool checkArray(uint8_t pcktAi, uint8_t pcktLbl);
-
-  // ***** ALTERING PACKET ***** //
-  uint8_t n = 0;
-  uint8_t m = 0;
-  uint8_t o = 0;
-  // *************************** //
 
   /***************** Boot Events ****************/
   event void Boot.booted() {
@@ -104,45 +98,6 @@ implementation {
     else {
       SECMsg* inMsg = (SECMsg*)payload;
 
-      // ***** ITERATION TRACKER ***** //
-      printf("%u  ", n);
-      // *************************** //
-
-      /*// ***** DUPLICATING PACKETS ***** //
-      if((n)%6 == 0 && n < 50) {
-        m = rand();
-        m %= CAPACITY;
-        o = inMsg->lbl + m;
-        if(o < CAPACITY) {
-          inMsg->lbl = o;
-        }
-      }
-      printf("%u  \n", o);
-      // *************************** //*/
-
-      /*// ***** INSERTING PACKETS ***** //
-      if((n)%4 != 0 && n < 50 && (inMsg->lbl < CAPACITY)) {
-        m = rand();
-        m %= (CAPACITY-(inMsg->lbl));
-        m += inMsg->lbl;
-        inMsg->lbl = m;
-      }
-      printf("%u\n", m);
-      // *************************** //*/
-
-      // ***** REORDERING PACKETS ***** //
-      if((n)%4 == 0 && n < 50) {
-        m = rand();
-        m %= CAPACITY;
-        if(m == 0) { m = 1;}
-        inMsg->lbl = m;
-      }
-      printf("%u\n", m);
-      printfflush();
-      n++;
-      // *************************** //
-
-
       if (checkArray(inMsg->ai, inMsg->lbl) && (inMsg->nodeid == (TOS_NODE_ID - SENDNODES)))
       {
         ldai = inMsg->ai;
@@ -165,7 +120,7 @@ implementation {
       // Check if the label at position 'CAPACITY' in the packet_set array is filled in or not
       // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
       // NO: continue normal operation.
-      if (packet_set[CAPACITY].lbl != 0 ) {
+      if (packet_set[(CAPACITY-1)].lbl != 0 ) {
         // Update LastDeliveredIndex to AI of current message array
         LastDeliveredAltIndex = inMsg->ai;
 
@@ -214,8 +169,8 @@ implementation {
   /***************** User-defined functions ****************/
   // function returning messages array
   void deliver() {
-    printf("\n");
-    for ( i = 0; i < (CAPACITY + 1); ++i) {
+    /*printf("\n");*/
+    for ( i = 0; i < CAPACITY; ++i) {
       printf("%u  %u\n", *(p + i), packet_set[i].lbl);
       printfflush();
     }
@@ -225,7 +180,7 @@ implementation {
   uint16_t * pckt() {
     // Consider message array as bit matrix
     // Transpose matrix: data[i].bit[j] = messages[j].bit[i]
-    // return array with <CAPACITY+1> amount of received messages
+    // return array with <CAPACITY> amount of received messages
 
     uint16_t x = 0;
     uint16_t result[ROWS][COLUMNS];
@@ -280,9 +235,9 @@ implementation {
   }
 
   bool checkArray(uint8_t pcktAi, uint8_t pcktLbl){
-    if ((pcktAi != LastDeliveredAltIndex) && (pcktAi < 3) && (pcktAi > -1) && (pcktLbl > 0) && (pcktLbl < (CAPACITY+2)))
+    if ((pcktAi != LastDeliveredAltIndex) && (pcktAi < 3) && (pcktAi > -1) && (pcktLbl > 0) && (pcktLbl < (CAPACITY)))
     {
-      for (i = 0; i < (CAPACITY + 1); ++i)
+      for (i = 0; i < CAPACITY; ++i)
       {
         if ((pcktAi == packet_set[i].ai) && (pcktLbl == packet_set[i].lbl))
         {

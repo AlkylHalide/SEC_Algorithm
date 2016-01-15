@@ -13,9 +13,6 @@
 #include <printf.h>
 #include "SECReceive.h"
 
-#define CAPACITY 16
-#define SENDNODES 1
-
 module SECReceiveP {
   uses {
     interface Boot;
@@ -38,14 +35,15 @@ implementation {
   uint8_t ldai = 0;
 
   // Label variable
-  uint16_t recLbl = 0;
+  uint16_t receiveLbl = 0;
 
   // Array to contain all the received packages
-  nx_struct SECMsg packet_set[CAPACITY];
+  nx_struct SECMsg packet_set[(capacity + 1)];
 
   // Define some loop variables to go through arrays
   uint8_t i = 0;
   uint8_t j = 0;
+  uint8_t ackLbl = 0;
 
   // Message to transmit
   message_t ackMsg;
@@ -72,8 +70,12 @@ implementation {
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
-      // Initialize the ACK_set array with zeroes
-      memset(packet_set, 0, sizeof(packet_set));
+      atomic {
+        // Initialize the ACK_set array with zeroes
+        memset(packet_set, 0, sizeof(packet_set));
+
+        post send();
+      }
     }
     else {
       call AMControl.start();
@@ -86,47 +88,45 @@ implementation {
 
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-
     if(call AMPacket.type(msg) != AM_SECMSG) {
       return msg;
     }
     else {
-      SECMsg* inMsg = (SECMsg*)payload;
+      atomic {
+        SECMsg* inMsg = (SECMsg*)payload;
 
-      if (checkArray(inMsg->ai, inMsg->lbl) && (inMsg->nodeid == (TOS_NODE_ID - SENDNODES)))
-      {
-        ldai = inMsg->ai;
-        recLbl = inMsg->lbl;
-        inNodeID = inMsg->nodeid;
+        if (checkArray(inMsg->ai, inMsg->lbl) && (inMsg->nodeid == (TOS_NODE_ID - sendnodes)))
+        {
+          ldai = inMsg->ai;
+          receiveLbl = inMsg->lbl;
+          inNodeID = inMsg->nodeid;
 
-        // Add incoming packet to packet_set[]
-        // The packets in the receiving packet_set[] array should always be in order
-        // This means replacing, inserting and appending packets at the right point in the array
-        // according to their label value. This is solved very easily by making the array loop variable 'j'
-        // equal to the label of the incoming message, minus 1 (because labels start at 1 where the array
-        // index starts at 0).
-        j = inMsg->lbl - 1;
-        packet_set[j].ai = inMsg->ai;
-        packet_set[j].lbl = inMsg->lbl;
-        packet_set[j].dat = inMsg->dat;
-        packet_set[j].nodeid = inMsg->nodeid;
+          // Add incoming packet to packet_set[]
+          // The packets in the receiving packet_set[] array should always be in order
+          // This means replacing, inserting and appending packets at the right point in the array
+          // according to their label value. This is solved very easily by making the array loop variable 'j'
+          // equal to the label of the incoming message, minus 1 (because labels start at 1 where the array
+          // index starts at 0).
+          packet_set[(inMsg->lbl - 1)].ai = inMsg->ai;
+          packet_set[(inMsg->lbl - 1)].lbl = inMsg->lbl;
+          packet_set[(inMsg->lbl - 1)].dat = inMsg->dat;
+          packet_set[(inMsg->lbl - 1)].nodeid = inMsg->nodeid;
+        }
+
+        // Check if the label at position 'capacity' in the packet_set array is filled in or not
+        // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
+        // NO: continue normal operation.
+        if (packet_set[(capacity)].lbl != 0 ) {
+          // Update LastDeliveredIndex to AI of current message array
+          LastDeliveredAltIndex = inMsg->ai;
+
+          // Delive the messages to the application layer
+          deliver();
+
+          // Clear the packet_set array
+          memset(packet_set, 0, sizeof(packet_set));
+        }
       }
-
-      // Check if the label at position 'CAPACITY' in the packet_set array is filled in or not
-      // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
-      // NO: continue normal operation.
-      if (packet_set[(CAPACITY-1)].lbl != 0 ) {
-        // Update LastDeliveredIndex to AI of current message array
-        LastDeliveredAltIndex = inMsg->ai;
-
-        // Delive the messages to the application layer
-        deliver();
-
-        // Clear the packet_set array
-        memset(packet_set, 0, sizeof(packet_set));
-      }
-
-      post send();
 
       return msg;
     }
@@ -134,23 +134,40 @@ implementation {
 
   /***************** AMSend Events ****************/
   event void AMSend.sendDone(message_t *msg, error_t error) {
-    busy = FALSE;
+    atomic {
+      busy = FALSE;
+
+      // Increment the label
+      ++ackLbl;
+      if ( (ackLbl % (capacity + 2)) == 0 ) {
+        ++ackLbl;
+      }
+      ackLbl %= (capacity + 2);
+
+      if(DELAY_BETWEEN_MESSAGES > 0) {
+        call Timer0.startOneShot(DELAY_BETWEEN_MESSAGES);
+      } else {
+        post send();
+      }
+    }
   }
 
   /***************** Timer Events ****************/
   event void Timer0.fired() {
-    // do nothing
+    post send();
   }
 
   /***************** Tasks ****************/
   task void send() {
     if(!busy){
-      ACKMsg* outMsg = (ACKMsg*)(call Packet.getPayload(&ackMsg, sizeof(ACKMsg)));
-      outMsg->ldai = ldai;
-      outMsg->lbl = recLbl;
-      outMsg->nodeid = TOS_NODE_ID;
+      atomic {
+        ACKMsg* outMsg = (ACKMsg*)(call Packet.getPayload(&ackMsg, sizeof(ACKMsg)));
+        outMsg->ldai = ldai;
+        outMsg->lbl = ackLbl;
+        outMsg->nodeid = TOS_NODE_ID;
+      }
 
-      if(call AMSend.send((TOS_NODE_ID - SENDNODES), &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
+      if(call AMSend.send((TOS_NODE_ID - sendnodes), &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
         post send();
       } else {
         busy = TRUE;
@@ -161,16 +178,16 @@ implementation {
   /***************** User-defined functions ****************/
   // function returning messages array
   void deliver() {
-    for ( i = 0; i < CAPACITY; ++i) {
-      printf("%u\n", packet_set[i]);
+    for ( i = 0; i < (capacity+1); ++i) {
+      printf("%u    %u    %u\n", packet_set[i].ai, packet_set[i].lbl, packet_set[i].dat);
     }
     printfflush();
   }
 
   bool checkArray(uint8_t pcktAi, uint8_t pcktLbl){
-    if ((pcktAi != LastDeliveredAltIndex) && (pcktAi < 3) && (pcktAi > -1) && (pcktLbl > 0) && (pcktLbl < (CAPACITY+1)))
+    if ((pcktAi != LastDeliveredAltIndex) && (pcktAi < 3) && (pcktAi > -1) && (pcktLbl > 0) && (pcktLbl < (capacity+2)))
     {
-      for (i = 0; i < CAPACITY; ++i)
+      for (i = 0; i < capacity; ++i)
       {
         if ((pcktAi == packet_set[i].ai) && (pcktLbl == packet_set[i].lbl))
         {

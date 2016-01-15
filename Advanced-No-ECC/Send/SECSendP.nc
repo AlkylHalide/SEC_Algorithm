@@ -16,7 +16,7 @@
 #define CAPACITY 16
 #define ROWS CAPACITY
 #define COLUMNS 16
-#define SENDNODES 1
+#define SENDNODES 10
 
 module SECSendP {
   uses {

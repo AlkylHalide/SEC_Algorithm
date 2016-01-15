@@ -52,9 +52,9 @@
 #define mm 8
 // #define nn  15            /* nn=2**mm -1   length of codeword */
 #define nn 255               /* the block size in symbols, which is always (2**mm - 1) */
-#define tt 31                /* number of errors that can be corrected */
-#define kk 192               /* kk = nn-2*tt */
-#define CAPACITY 31          // CAPACITY can't be higher than the value of kk!
+#define tt 16                /* number of errors that can be corrected */
+#define kk 223               /* kk = nn-2*tt */
+#define CAPACITY 16          // CAPACITY can't be higher than the value of kk!
                              // CAPACITY and tt should be the same value, so that the code
                              // can bear up to <capacity> mistakes
 
@@ -405,7 +405,7 @@ for (i=0; i<CAPACITY; i++) {
 /* Again, lets say that a middle element is changed */
   // data[nn-nn/2] = 3 ;
   for (i = 0; i < CAPACITY; i++)
-    data[i] = (CAPACITY - i);
+    data[i] = i;
 
 
   for (i=0; i<nn; i++)
@@ -416,7 +416,7 @@ for (i=0; i<CAPACITY; i++) {
 
 /* print out the relevant stuff - initial and decoded {parity and message} */
   printf("Results for Reed-Solomon code (n=%3d, k=%3d, t=%3d)\n\n",nn,kk,tt) ;
-  printf("  i  data[i]   recd[i](decoded)   (data, recd in polynomial form)\n");
+  printf("  lbl  data[i]   recd[i](decoded)   (data, recd in polynomial form)\n");
   // PRINT PARITY
   for (i=0; i<nn-kk; i++)
     printf("%3d    %3d      %3d\n",i, bb[i], recd[i]) ;
@@ -425,10 +425,10 @@ for (i=0; i<CAPACITY; i++) {
   // for (i=0; i<(nn-kk+CAPACITY); i++)
   for (i=0; i<(nn); i++){
     if (i > kk) {
-      printf("%3d    %3d      %3d\n",i, 0, recd[i]) ;
+      printf("%3d    %3d      %3d\n",(i+1), 0, recd[i]) ;
     } else {
       // printf("%3d    %3d      %3d\n",i, data[i-nn+kk], recd[i]) ;
-      printf("%3d    %3d      %3d\n",i, data[i], recd[i]) ;
+      printf("%3d    %3d      %3d\n",(i+1), data[i], recd[i]) ;
     }
   }
 }
