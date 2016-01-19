@@ -114,7 +114,7 @@ implementation {
   /***************** AMSend Events ****************/
   event void AMSend.sendDone(message_t *msg, error_t error) {
     atomic {
-      
+
     }
     busy = FALSE;
 
@@ -180,8 +180,8 @@ implementation {
         btrMsg->dat = *(messages + msgIndex);
         btrMsg->nodeid = TOS_NODE_ID;
 
-        printf("%u    %u    %u\n", btrMsg->ai, btrMsg->lbl, btrMsg->dat);
-        printfflush();
+        /*printf("%u    %u    %u\n", btrMsg->ai, btrMsg->lbl, btrMsg->dat);
+        printfflush();*/
       }
 
       if(call AMSend.send((TOS_NODE_ID + sendnodes), &myMsg, sizeof(SECMsg)) != SUCCESS) {

@@ -43,7 +43,7 @@ if [ (
     |                                          lbl between [1, n]                                                   |
     |                                          data of size pl                                                      |
     |                                                                                                               |
-    |  (2) packet_set holds at most ONE group of ai that has n packets (distinctly labeled)                         |
+    | (2) packet_set holds at most ONE group of ai that has n packets (distinctly labeled)                          |
 
   ) == FALSE ]
 

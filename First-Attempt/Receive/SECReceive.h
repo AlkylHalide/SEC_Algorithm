@@ -23,7 +23,9 @@
 // #define capacity (n-1)
 #define capacity (pl-1)
 
-#define sendnodes 1
+#define sendnodes 10
+
+#define arraySize(x)  (sizeof(x) / sizeof((x)[0]))
 
 #ifndef SECRECEIVE_H
 #define SECRECEIVE_H

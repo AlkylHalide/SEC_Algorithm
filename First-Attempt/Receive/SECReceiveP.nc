@@ -44,6 +44,7 @@ implementation {
   uint8_t i = 0;
   uint8_t j = 0;
   uint8_t ackLbl = 0;
+  uint8_t random = 0;
 
   // Message to transmit
   message_t ackMsg;
@@ -54,13 +55,26 @@ implementation {
   // Pointers to an int for the messages array
   uint16_t *p;
 
+  ////************PACKET MODIFICATION************////
+  uint16_t iteration = 0;
+  uint16_t iterationCycles = 0;
+  uint16_t probability = 6;
+  ////*******************************************////
+
   /***************** Prototypes ****************/
   task void send();
 
   // declaration of deliver function to deliver the received messages to the application layer
   void deliver();
 
-  bool checkArray(uint8_t pcktAi, uint8_t pcktLbl);
+  // boolean function to check if the incoming packet is valid
+  bool checkIncoming(uint8_t pcktAi, uint8_t pcktLbl);
+
+  // boolean function to check if the contents of packet_set are valid
+  bool checkValid();
+
+  // boolean function to check if ready for delivery
+  bool checkPacketSet();
 
   /***************** Boot Events ****************/
   event void Boot.booted() {
@@ -95,7 +109,15 @@ implementation {
       atomic {
         SECMsg* inMsg = (SECMsg*)payload;
 
-        if (checkArray(inMsg->ai, inMsg->lbl) && (inMsg->nodeid == (TOS_NODE_ID - sendnodes)))
+        ////************PACKET MODIFICATION************////
+        // Omitting a packet every 5 packets (out of 16 packets so probability +/- 30%)
+        /*if (inMsg->lbl == 5 || inMsg->lbl == 10 || inMsg->lbl == 15) {*/
+        if (iteration == probability){
+          return msg;
+        }
+        ////*******************************************////
+
+        if (checkIncoming(inMsg->ai, inMsg->lbl) && (inMsg->nodeid == (TOS_NODE_ID - sendnodes)))
         {
           ldai = inMsg->ai;
           receiveLbl = inMsg->lbl;
@@ -112,20 +134,6 @@ implementation {
           packet_set[(inMsg->lbl - 1)].dat = inMsg->dat;
           packet_set[(inMsg->lbl - 1)].nodeid = inMsg->nodeid;
         }
-
-        // Check if the label at position 'capacity' in the packet_set array is filled in or not
-        // YES: change the LastDeliveredAltIndex value to the Alternating Index value of the incoming packet.
-        // NO: continue normal operation.
-        if (packet_set[(capacity)].lbl != 0 ) {
-          // Update LastDeliveredIndex to AI of current message array
-          LastDeliveredAltIndex = inMsg->ai;
-
-          // Delive the messages to the application layer
-          deliver();
-
-          // Clear the packet_set array
-          memset(packet_set, 0, sizeof(packet_set));
-        }
       }
 
       return msg;
@@ -136,6 +144,13 @@ implementation {
   event void AMSend.sendDone(message_t *msg, error_t error) {
     atomic {
       busy = FALSE;
+
+      ////************PACKET MODIFICATION************////
+      ++iteration;
+      if(iteration == 0) {
+        iterationCycles = 1;
+      }
+      ////*******************************************////
 
       // Increment the label
       ++ackLbl;
@@ -162,6 +177,25 @@ implementation {
     if(!busy){
       atomic {
         ACKMsg* outMsg = (ACKMsg*)(call Packet.getPayload(&ackMsg, sizeof(ACKMsg)));
+
+        // Check if packet_set holds valid contents
+        // If not, reset packet_set
+        /*if (checkValid()) {
+          memset(packet_set, 0, sizeof(packet_set));
+        }*/
+
+        if (checkPacketSet()) {
+        /*if (packet_set[4].lbl != 0) {*/
+          // Update LastDeliveredIndex to AI of current message array
+          LastDeliveredAltIndex = ldai;
+
+          // Delive the messages to the application layer
+          deliver();
+
+          // Clear the packet_set array
+          memset(packet_set, 0, sizeof(packet_set));
+        }
+
         outMsg->ldai = ldai;
         outMsg->lbl = ackLbl;
         outMsg->nodeid = TOS_NODE_ID;
@@ -178,13 +212,15 @@ implementation {
   /***************** User-defined functions ****************/
   // function returning messages array
   void deliver() {
-    for ( i = 0; i < (capacity+1); ++i) {
+    /*for ( i = 0; i < arraySize(packet_set); ++i) {
       printf("%u    %u    %u\n", packet_set[i].ai, packet_set[i].lbl, packet_set[i].dat);
-    }
+    }*/
+    printf("%u\n", iteration);
     printfflush();
   }
 
-  bool checkArray(uint8_t pcktAi, uint8_t pcktLbl){
+  // boolean function to check if the incoming packet is valid
+  bool checkIncoming(uint8_t pcktAi, uint8_t pcktLbl){
     if ((pcktAi != LastDeliveredAltIndex) && (pcktAi < 3) && (pcktAi > -1) && (pcktLbl > 0) && (pcktLbl < (capacity+2)))
     {
       for (i = 0; i < capacity; ++i)
@@ -198,5 +234,39 @@ implementation {
     } else {
       return FALSE;
     }
+  }
+
+  // boolean function to check if the contents of packet_set are valid
+  bool checkValid () {
+    for (i = 0; i < arraySize(packet_set); i++) {
+      if( (packet_set[i].ai == LastDeliveredAltIndex) || (packet_set[i].ai > 2) || (packet_set[i].ai < 0) ) {
+        return TRUE;
+      } else if ((packet_set[i].lbl < 1) || (packet_set[i].lbl > (capacity + 1))) {
+        return TRUE;
+      } else if (sizeof(packet_set[i].dat) != 2) {
+        return TRUE;
+      } else {
+        return FALSE;
+      }
+    }
+    return FALSE;
+  }
+
+  // Boolean return function to check if packet_set is complete
+  // Check if packet_set holds at most ONE group of ai
+  // that has n (distinctly labeled) packets
+  bool checkPacketSet() {
+    uint16_t firstAi = packet_set[0].ai;
+    // go through packet_set
+    for (i = 0; i < arraySize(packet_set); i++) {
+      // The fullfillment requirement is that packet_set contains
+      // n distinct labeled packets with identical 'ai'
+      if( (packet_set[i].ai == firstAi) && (packet_set[i].lbl == (i+1)) ) {
+        // do nothing
+      } else {
+        return FALSE;
+      }
+    }
+    return TRUE;
   }
 }
