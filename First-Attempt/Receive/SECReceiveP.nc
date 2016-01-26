@@ -31,7 +31,8 @@ implementation {
   bool busy = FALSE;
 
   // Variable to keep track of the last delivered alternating index in the ABP protocol
-  uint16_t LastDeliveredAltIndex = 2;
+  /*uint16_t LastDeliveredAltIndex = 2;*/
+  uint16_t LastDeliveredAltIndex = 0;
   uint8_t ldai = 0;
 
   // Label variable
@@ -43,7 +44,7 @@ implementation {
   // Define some loop variables to go through arrays
   uint8_t i = 0;
   uint8_t j = 0;
-  uint8_t ackLbl = 0;
+  uint8_t ackLbl = 1;
   uint8_t random = 0;
 
   // Message to transmit
@@ -58,7 +59,8 @@ implementation {
   ////************PACKET MODIFICATION************////
   uint16_t iteration = 0;
   uint16_t iterationCycles = 0;
-  uint16_t probability = 6;
+  uint16_t probability = 100;
+  uint16_t deliverCounter = 0;
   ////*******************************************////
 
   /***************** Prototypes ****************/
@@ -112,9 +114,9 @@ implementation {
         ////************PACKET MODIFICATION************////
         // Omitting a packet every 5 packets (out of 16 packets so probability +/- 30%)
         /*if (inMsg->lbl == 5 || inMsg->lbl == 10 || inMsg->lbl == 15) {*/
-        if (iteration == probability){
+        /*if ((iteration % probability) == 0){
           return msg;
-        }
+        }*/
         ////*******************************************////
 
         if (checkIncoming(inMsg->ai, inMsg->lbl) && (inMsg->nodeid == (TOS_NODE_ID - sendnodes)))
@@ -133,6 +135,9 @@ implementation {
           packet_set[(inMsg->lbl - 1)].lbl = inMsg->lbl;
           packet_set[(inMsg->lbl - 1)].dat = inMsg->dat;
           packet_set[(inMsg->lbl - 1)].nodeid = inMsg->nodeid;
+
+          /*printf("IN   %u    %u    %u\n", packet_set[(inMsg->lbl - 1)].ai, packet_set[(inMsg->lbl - 1)].lbl, packet_set[(inMsg->lbl - 1)].dat);
+          printfflush();*/
         }
       }
 
@@ -180,12 +185,12 @@ implementation {
 
         // Check if packet_set holds valid contents
         // If not, reset packet_set
+        // TODO --> NEEDS FIXING
         /*if (checkValid()) {
           memset(packet_set, 0, sizeof(packet_set));
         }*/
 
         if (checkPacketSet()) {
-        /*if (packet_set[4].lbl != 0) {*/
           // Update LastDeliveredIndex to AI of current message array
           LastDeliveredAltIndex = ldai;
 
@@ -196,9 +201,13 @@ implementation {
           memset(packet_set, 0, sizeof(packet_set));
         }
 
-        outMsg->ldai = ldai;
+        /*outMsg->ldai = ldai;*/
+        outMsg->ldai = LastDeliveredAltIndex;
         outMsg->lbl = ackLbl;
         outMsg->nodeid = TOS_NODE_ID;
+
+        /*printf("OUT   %u    %u\n", outMsg->ldai, outMsg->lbl);
+        printfflush();*/
       }
 
       if(call AMSend.send((TOS_NODE_ID - sendnodes), &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
@@ -215,7 +224,9 @@ implementation {
     /*for ( i = 0; i < arraySize(packet_set); ++i) {
       printf("%u    %u    %u\n", packet_set[i].ai, packet_set[i].lbl, packet_set[i].dat);
     }*/
-    printf("%u\n", iteration);
+    ++deliverCounter;
+    /*printf("ITERATION %u\n", deliverCounter);*/
+    printf("ITERATION %u\n", iteration);
     printfflush();
   }
 

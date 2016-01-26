@@ -1,0 +1,7 @@
+Naming conventions for the data files and graphs:
+
+E.g.: SF_O = Singe Fault Omission
+      SF_D = Singe Fault Duplication
+
+E.g.: MS_OD = MixedSimple_OmissionDuplication
+      MS_OR = MixedSimple_OmissionReordering

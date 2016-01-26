@@ -26,7 +26,7 @@
 // #define capacity (n-1)
 #define capacity (pl-1)
 
-#define sendnodes 10
+#define sendnodes 1
 
 enum {
   DELAY_BETWEEN_MESSAGES = 50,

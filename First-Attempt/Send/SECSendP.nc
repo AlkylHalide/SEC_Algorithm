@@ -213,6 +213,8 @@ implementation {
       // <capacity> + 1 ACK messages from the receiver,
       // each with ldai = AltIndex and every value of the labels
       // represented
+      /*printf("ACK_SET:  %u    %u    %u\n", i, ACK_set[i].ldai, ACK_set[i].lbl);
+      printfflush();*/
       if( (ACK_set[i].ldai == AltIndex) && (ACK_set[i].lbl == (i+1)) ) {
         // do nothing
       } else {
