@@ -76,7 +76,6 @@ implementation {
 
   nx_uint16_t alpha_to [nn+1], index_of [nn+1], gg [nn-kk+1] ;
   nx_uint16_t recd [nn], data [kk], bb [nn-kk] ;
-  // recd[255]; data[192]; bb[63]
 
   /***************** Prototypes ****************/
   task void send();
@@ -134,11 +133,6 @@ implementation {
           recd[i+nn-kk] = data[i];
         }
 
-        /*printf("RECD\n");
-        for (i = 0; i < (nn-kk+pl); i++) {
-          printf("%d    %d\n", (i+1), recd[i]);
-        }*/
-
         // Execute the send task next
         post send();
       }
@@ -178,21 +172,20 @@ implementation {
   /***************** AMSend Events ****************/
   event void AMSend.sendDone(message_t *msg, error_t error) {
     atomic {
+      busy = FALSE;
 
-    }
-    busy = FALSE;
-
-    // Increment the label
-    ++msgLbl;
-    if ( (msgLbl % (capacity + 2)) == 0 ) {
+      // Increment the label
       ++msgLbl;
-    }
-    msgLbl %= (capacity + 2);
+      if ( (msgLbl % (capacity + 2)) == 0 ) {
+        ++msgLbl;
+      }
+      msgLbl %= (capacity + 2);
 
-    // Increment the index for the data sent
-    ++msgIndex;
-    /*msgIndex %= pl;*/
-    msgIndex %= (nn-kk+pl);
+      // Increment the index for the data sent
+      ++msgIndex;
+      /*msgIndex %= pl;*/
+      msgIndex %= (nn-kk+pl);
+    }
 
     if(DELAY_BETWEEN_MESSAGES > 0) {
       call Timer0.startOneShot(DELAY_BETWEEN_MESSAGES);
@@ -236,6 +229,27 @@ implementation {
 
           // Reset the loop variable
           msgIndex = 0;
+
+          // zero all data[] entries
+          for  (i=0; i<kk; i++)   data[i] = 0;
+          // put messages in data array
+          /*printf("DATA\n");*/
+          for  (i=0; i<pl; i++) {
+            data[i] = *(messages + i);
+            /*printf("%u\n", data[i]);*/
+            /*printfflush();*/
+          }
+
+          // encode data
+          encode_rs();
+
+          // put the transmitted codeword, made up of data plus parity, in recd[]
+          for (i=0; i<nn-kk; i++) {
+            recd[i] = bb[i];
+          }
+          for (i=0; i<kk; i++) {
+            recd[i+nn-kk] = data[i];
+          }
         }
 
         // The message to send is filled with the appropriate data
@@ -266,6 +280,7 @@ implementation {
       M[i] = counter;
       // Increment the counter (for pl amount of messages)
       ++counter;
+      counter %= 256;
     }
     return M;
   }
