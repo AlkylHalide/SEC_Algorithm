@@ -398,18 +398,32 @@ for (i=0; i<CAPACITY; i++) {
 
 /* put the transmitted codeword, made up of data plus parity, in recd[] */
   for (i=0; i<nn-kk; i++)  recd[i] = bb[i] ;
-  for (i=0; i<kk; i++) recd[i+nn-kk] = data[i] ;
+  for (i=0; i<kk; i++) {
+    recd[i+nn-kk] = data[i] ;
+  }
+
+
 
 /* if you want to test the program, corrupt some of the elements of recd[]
    here. This can also be done easily in a debugger. */
 /* Again, lets say that a middle element is changed */
   // data[nn-nn/2] = 3 ;
-  for (i = 0; i < CAPACITY; i++)
-    data[i] = i;
+  data[5] = 3 ;
+  recd[5] = 3;
+  // for (i = 0; i < CAPACITY; i++)
+  //   data[i] = i;
 
 
-  for (i=0; i<nn; i++)
-     recd[i] = index_of[recd[i]] ;          /* put recd[i] into index form */
+  // printf("RECD\n");
+  for (i=0; i<nn; i++) {
+    // printf("%d\n", recd[i]);
+    recd[i] = index_of[recd[i]] ;          /* put recd[i] into index form */
+   }
+
+   printf("RECD\n");
+   for (i = 0; i < (nn-kk+CAPACITY); i++) {
+     printf("%d    %d\n", (i+1), recd[i]);
+   }
 
 /* decode recv[] */
   decode_rs() ;         /* recd[] is returned in polynomial form */
@@ -422,8 +436,8 @@ for (i=0; i<CAPACITY; i++) {
     printf("%3d    %3d      %3d\n",i, bb[i], recd[i]) ;
   printf("\n");
   // PRINT MESSAGE
-  // for (i=0; i<(nn-kk+CAPACITY); i++)
-  for (i=0; i<(nn); i++){
+  for (i=0; i<(nn-kk+CAPACITY); i++) {
+  // for (i=0; i<(nn); i++){
     if (i > kk) {
       printf("%3d    %3d      %3d\n",(i+1), 0, recd[i]) ;
     } else {

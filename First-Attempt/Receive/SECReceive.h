@@ -10,25 +10,10 @@
 // dat = data (message)
 // ldai = Last Delivered Alternating Index
 
-// Reed-Solomon encoding variables
-// #define mm 8                 /* length of codeword */
-// #define nn 255               /* nn=2**mm - 1 --> the block size in symbols */
-// #define tt 16                /* number of errors that can be corrected */
-// #define kk 223               /* kk = nn-2*tt */
-
-// Packet generation variables
-#define pl 16               // amount of messages to get from application layer
-/*#define n (pl+2*tt)         // amount of labels for packages*/
-                            // calculated with encryption parameters
-// #define capacity (n-1)
-#define capacity (pl-1)
-
+// define amount of sending nodes in the network
+// there should be an equal amount of receiver nodes
+// for end-to-end communication
 #define sendnodes 1
-
-#define arraySize(x)  (sizeof(x) / sizeof((x)[0]))
-
-#ifndef SECRECEIVE_H
-#define SECRECEIVE_H
 
 enum {
 	DELAY_BETWEEN_MESSAGES = 50,
@@ -48,5 +33,3 @@ typedef nx_struct ACKMsg {
 	nx_uint16_t lbl;
 	nx_uint16_t nodeid;
 } ACKMsg;
-
-#endif

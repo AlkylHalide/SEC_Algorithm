@@ -12,6 +12,7 @@
 
 #include <stdlib.h>
 #include <printf.h>
+#include <math.h>
 #include "SECReceive.h"
 
 module SECReceiveP {
@@ -27,12 +28,26 @@ module SECReceiveP {
 }
 
 implementation {
+  /***************** Reed-Solomon constants and variables ****************/
+  #define mm 8                 /* length of codeword */
+  #define nn 255               /* nn=2**mm - 1 --> the block size in symbols */
+  #define tt 16                /* number of errors that can be corrected */
+  #define kk 223               /* kk = nn-2*tt */
+
+  // Packet generation variables
+  #define pl 16               // amount of messages to get from application layer
+  #define n (pl+2*tt)         // amount of labels for packages
+                              // calculated with encryption parameters
+  #define capacity (n-1)
+  //#define capacity (pl-1)
+
+  #define arraySize(x)  (sizeof(x) / sizeof((x)[0]))
+
   /***************** Local variables ****************/
   // Boolean to check if channel is busy
   bool busy = FALSE;
 
   // Variable to keep track of the last delivered alternating index in the ABP protocol
-  /*uint16_t LastDeliveredAltIndex = 2;*/
   uint16_t LastDeliveredAltIndex = 0;
   uint8_t ldai = 0;
 
