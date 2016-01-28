@@ -3,7 +3,7 @@
 
 // Sender mote broadcasts packets <Ai, lbl, dat>
 // Receiver receives packets and puts them into arrays packet_set[] according to NMote ID.
-// Receiver acknowledges packets by sending ACK <ldai, lbl> messages back to Sender.
+// Receiver then acknowledges packets by sending ACK <ldai, lbl> messages back to Sender.
 
 // Ai = Alternating Index
 // lbl = Label
@@ -12,24 +12,24 @@
 
 #include <printf.h>
 
-configuration SendAppC {
+configuration SECSendC {
 }
 
 implementation {
-  components SendC;
+  components SECSendP;
   components MainC;
   components PrintfC;
   components SerialStartC;
   components ActiveMessageC;
-  components new AMSenderC(AM_MSG);
-  components new AMReceiverC(AM_ACK);
+  components new AMSenderC(AM_SECMSG);
+  components new AMReceiverC(AM_ACKMSG);
   components new TimerMilliC() as Timer0;
 
-  SendC.Boot -> MainC;
-  SendC.AMControl -> ActiveMessageC;
-  SendC.AMSend -> AMSenderC;
-  SendC.Receive -> AMReceiverC;
-  SendC.Timer0 -> Timer0;
-  SendC.Packet -> AMSenderC;
-  SendC.AMPacket -> AMSenderC;
+  SECSendP.Boot -> MainC;
+  SECSendP.AMControl -> ActiveMessageC;
+  SECSendP.AMSend -> AMSenderC;
+  SECSendP.Receive -> AMReceiverC;
+  SECSendP.Timer0 -> Timer0;
+  SECSendP.Packet -> AMSenderC;
+  SECSendP.AMPacket -> AMSenderC;
 }
