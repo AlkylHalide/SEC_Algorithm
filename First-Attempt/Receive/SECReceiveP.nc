@@ -10,6 +10,7 @@
 // dat = data (message)
 // ldai = Last Delivered Alternating Index
 
+#include <stdlib.h>
 #include <printf.h>
 #include "SECReceive.h"
 
@@ -57,13 +58,21 @@ implementation {
   uint16_t *p;
 
   ////************PACKET MODIFICATION************////
-  uint16_t iteration = 0;
-  uint16_t iterationCycles = 0;
-  uint16_t probability = 100;
+  // Variable to keep track of the amount of iterations
+  uint32_t iteration = 0;
+  // Variable to keep track of wrong packages
+  uint32_t missed = 0;
+  // probability is a number between 0 and 100, defined as a percentage
+  // Example: probability = 50 --> 50% chance
+  uint16_t probability = 50;
+  // Variable to count the amount of message deliveries (see deliver() function)
+  // This can be used to count only the amount of times a batch of messages is
+  // actually delivered, instead of all the iterations
   uint16_t deliverCounter = 0;
   ////*******************************************////
 
   /***************** Prototypes ****************/
+  // task to encompass all sending operations
   task void send();
 
   // declaration of deliver function to deliver the received messages to the application layer
@@ -87,13 +96,18 @@ implementation {
   event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
       atomic {
+        // Initialize the random seed
+        srand(abs(rand() % 100 + 1));
+
         // Initialize the ACK_set array with zeroes
         memset(packet_set, 0, sizeof(packet_set));
 
+        // Immediately start sending ACK messages at startup
         post send();
       }
     }
     else {
+      // If AMControl didn't start successfully, call it again
       call AMControl.start();
     }
   }
@@ -104,21 +118,59 @@ implementation {
 
   /***************** Receive Events ****************/
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
+    // Check the received packet's AM type. If it's not a valid message
+    // type (AM_SECMSG), return it
     if(call AMPacket.type(msg) != AM_SECMSG) {
       return msg;
     }
     else {
       atomic {
+        // Put the payload in a pointer
         SECMsg* inMsg = (SECMsg*)payload;
 
         ////************PACKET MODIFICATION************////
-        // Omitting a packet every 5 packets (out of 16 packets so probability +/- 30%)
-        /*if (inMsg->lbl == 5 || inMsg->lbl == 10 || inMsg->lbl == 15) {*/
-        /*if ((iteration % probability) == 0){
-          return msg;
-        }*/
+        // This section modifies packet reception.
+        // Depending on a probability, errors can be inserted in the communication
+        // channel by means of packet manipulation. We can omit, duplicate, or
+        // reorder packets.
+
+        // An iteration counter is incremented every time the receive function
+        // completes. This is in accordance with the definition of one iteration
+        // in the theoretical paper.
+        ++iteration;
+
+        // Calculating the probability
+        if ( abs(rand() % 100 + 1) <= ((probability))) {
+          // Increment the 'missed' variable, the probability was hit
+          missed++;
+
+          // Switch case based on a rand value in the range of [0 2]
+          // Depending on possibility insert different error
+          switch(abs(rand() % 2 + 1)) {
+            case 0 :
+              // Omit the package
+              /*printf("OMIT\n");*/
+              return msg;
+              break;
+
+            case 1 :
+              // Duplicate package
+              inMsg->lbl = (inMsg->lbl + 2) % capacity;
+              /*printf("DUPLICATE\n");*/
+              break;
+
+            case 2 :
+              // Reorder package
+              inMsg->lbl = abs(rand() % (capacity) + 1);
+              /*printf("REORDER\n");*/
+              break;
+          }
+        }
         ////*******************************************////
 
+        // Check the incoming packet for validity
+        // If the packet passes, add it to packet_set[]
+        // If it fails, return the message
         if (checkIncoming(inMsg->ai, inMsg->lbl) && (inMsg->nodeid == (TOS_NODE_ID - sendnodes)))
         {
           ldai = inMsg->ai;
@@ -128,7 +180,7 @@ implementation {
           // Add incoming packet to packet_set[]
           // The packets in the receiving packet_set[] array should always be in order
           // This means replacing, inserting and appending packets at the right point in the array
-          // according to their label value. This is solved very easily by making the array loop variable 'j'
+          // according to their label value. This is solved very easily by making the array index variable
           // equal to the label of the incoming message, minus 1 (because labels start at 1 where the array
           // index starts at 0).
           packet_set[(inMsg->lbl - 1)].ai = inMsg->ai;
@@ -149,13 +201,6 @@ implementation {
   event void AMSend.sendDone(message_t *msg, error_t error) {
     atomic {
       busy = FALSE;
-
-      ////************PACKET MODIFICATION************////
-      ++iteration;
-      if(iteration == 0) {
-        iterationCycles = 1;
-      }
-      ////*******************************************////
 
       // Increment the label
       ++ackLbl;
@@ -221,12 +266,11 @@ implementation {
   /***************** User-defined functions ****************/
   // function returning messages array
   void deliver() {
-    /*for ( i = 0; i < arraySize(packet_set); ++i) {
-      printf("%u    %u    %u\n", packet_set[i].ai, packet_set[i].lbl, packet_set[i].dat);
-    }*/
+    for ( i = 0; i < arraySize(packet_set); ++i) {
+      /*printf("%u    %u    %u\n", packet_set[i].ai, packet_set[i].lbl, packet_set[i].dat);*/
+    }
     ++deliverCounter;
-    /*printf("ITERATION %u\n", deliverCounter);*/
-    printf("ITERATION %u\n", iteration);
+    printf("%u    %lu   %lu\n", deliverCounter, iteration, missed);
     printfflush();
   }
 

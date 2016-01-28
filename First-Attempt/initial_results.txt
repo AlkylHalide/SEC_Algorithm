@@ -31,3 +31,30 @@ probability          #iterations(fault)        percentage           probability 
 50                    18300                     85.91                 0.02
 
 100                   19560                     91.83                 0.01
+
+
+--------------------------------------------------------------------------------------------
+SEE EXCEL FILE INITAL_RESULTS --> EASIER TO CALCULATE MANUALLY
+
+Runtime = 30 sec
+Improved probability (using rand() en srand())
+
+probability          #iterations          missed          percentage           probability (relative requency) = probability / 10
+
+10                     5813                                   0                     1
+
+20                     4140                                 19.44                 0.5
+
+30                     13920                                65.35                 0.33
+
+40                     4380                                 20.56                 0.25
+
+50                     14220                                66.76                 0.2
+
+60                     14160                                66.48                 0.17
+
+70                     15300                                71.83                 0.14
+
+80                     4260                                 20                    0.125
+
+90                     14640                                68.73                 0.11

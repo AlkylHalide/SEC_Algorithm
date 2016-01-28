@@ -1,13 +1,13 @@
 <tos_image>
   <ident>
-    <uidhash>601EAB90L</uidhash>
-    <platform>telosb</platform>
-    <appname>SECSendC</appname>
-    <userhash>8ED234E0L</userhash>
-    <hostname>evert-PC</hostname>
-    <username>evert</username>
     <deluge_support>no</deluge_support>
-    <timestamp>56A702CAL</timestamp>
+    <appname>SECSendC</appname>
+    <username>evert</username>
+    <hostname>evert-PC</hostname>
+    <uidhash>0A89DE16L</uidhash>
+    <platform>telosb</platform>
+    <timestamp>56A95F72L</timestamp>
+    <userhash>8ED234E0L</userhash>
   </ident>
   <image format="ihex">
 :104000005542200135D0085A8245121531400039F9
