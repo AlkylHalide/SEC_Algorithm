@@ -18,18 +18,32 @@ configuration SECReceiveC {
 implementation {
   components SECReceiveP;
   components MainC;
+  components new TimerMilliC() as Timer0;
+  components RPLRankC;
+  components RPLRoutingEngineC;
+  components IPDispatchC;
+  components RPLDAORoutingEngineC;
+  components IPStackC;
+  components IPProtocolsP;
+
+  SECReceiveP.Boot -> MainC.Boot;
+  SECReceiveP.AMControl -> IPStackC;
+  SECReceiveP.RPLRoute -> RPLRoutingEngineC;
+  SECReceiveP.RootControl -> RPLRoutingEngineC;
+  SECReceiveP.RoutingControl -> RPLRoutingEngineC;
+
+  components new UdpSocketC() as RPLUDP;
+  SECReceiveP.RPLUDP -> RPLUDP;
+
+  SECReceiveP.RPLDAO -> RPLDAORoutingEngineC;
+  SECReceiveP.Timer0 -> Timer0;
+
+#ifdef RPL_ROUTING
+  components RPLRoutingC;
+#endif
+
+#ifdef PRINTFUART_ENABLED
   components PrintfC;
   components SerialStartC;
-  components ActiveMessageC;
-  components new AMSenderC(AM_ACKMSG);
-  components new AMReceiverC(AM_SECMSG);
-  components new TimerMilliC() as Timer0;
-
-  SECReceiveP.Boot -> MainC;
-  SECReceiveP.AMControl -> ActiveMessageC;
-  SECReceiveP.AMSend -> AMSenderC;
-  SECReceiveP.Receive -> AMReceiverC;
-  SECReceiveP.Timer0 -> Timer0;
-  SECReceiveP.Packet -> AMSenderC;
-  SECReceiveP.AMPacket -> AMSenderC;
+#endif
 }

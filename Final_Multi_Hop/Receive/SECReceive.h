@@ -13,7 +13,7 @@
 // define amount of sending nodes in the network
 // there should be an equal amount of receiver nodes
 // for end-to-end communication
-#define sendnodes 1
+#define sendnodes 10
 
 enum {
 	DELAY_BETWEEN_MESSAGES = 50,

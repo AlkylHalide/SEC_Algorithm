@@ -13,21 +13,31 @@
 #include <stdlib.h>
 #include <printf.h>
 #include <math.h>
+#include <Timer.h>
+#include <lib6lowpan/ip.h>
 #include "SECReceive.h"
 
 module SECReceiveP {
   uses {
     interface Boot;
     interface SplitControl as AMControl;
-    interface AMSend;
-    interface Packet;
-    interface AMPacket;
-    interface Receive;
     interface Timer<TMilli> as Timer0;
+    interface RPLRoutingEngine as RPLRoute;
+    interface RootControl;
+    interface StdControl as RoutingControl;
+    interface UDP as RPLUDP;
+    interface RPLDAORoutingEngine as RPLDAO;
   }
 }
 
 implementation {
+  /********* RPL constants *********/
+  #ifndef RPL_ROOT_ADDR
+  #define RPL_ROOT_ADDR 1
+  #endif
+
+  #define UDP_PORT 5678
+
   /***************** Reed-Solomon constants and variables ****************/
   #define mm 8                 /* length of codeword */
   #define nn 255               /* nn=2**mm - 1 --> the block size in symbols */
@@ -71,6 +81,9 @@ implementation {
   // Pointers to an int for the messages array
   uint16_t *p;
 
+  struct sockaddr_in6 dest;
+  nx_struct ACKMsg* outMsg;
+
   /***************** Reed-Solomon constants and variables ****************/
   // Specify irreducible polynomial coefficients
   // If mm = 8
@@ -96,6 +109,7 @@ implementation {
   /***************** Prototypes ****************/
   // task to encompass all sending operations
   task void send();
+  task void sendDone();
 
   // declaration of deliver function to deliver the received messages to the application layer
   void deliver();
@@ -117,13 +131,21 @@ implementation {
 
   /***************** Boot Events ****************/
   event void Boot.booted() {
+    if(TOS_NODE_ID == RPL_ROOT_ADDR){
+      call RootControl.setRoot();
+    }
+    call RoutingControl.start();
     call AMControl.start();
+
+    call RPLUDP.bind(UDP_PORT);
   }
 
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
       atomic {
+        while( call RPLDAO.startDAO() != SUCCESS );
+
         // Initialize the random seed
         srand(abs(rand() % 100 + 1));
 
@@ -137,7 +159,11 @@ implementation {
         gen_poly();
 
         // Immediately start sending ACK messages at startup
-        post send();
+        if(TOS_NODE_ID != RPL_ROOT_ADDR){
+          // Execute the send task next
+          // Only if this node is not the root node
+          post send();
+        }
       }
     }
     else {
@@ -151,11 +177,11 @@ implementation {
   }
 
   /***************** Receive Events ****************/
-  event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
+  event void RPLUDP.recvfrom(struct sockaddr_in6 *from, void *payload, uint16_t len, struct ip6_metadata *meta) {
     // Check the received packet's AM type. If it's not a valid message
     // type (AM_SECMSG), return it
-    if(call AMPacket.type(msg) != AM_SECMSG) {
-      return msg;
+    if (len != sizeof(SECMsg)) {
+      return;
     }
     else {
       atomic {
@@ -183,7 +209,7 @@ implementation {
           switch(abs(rand() % 2 + 1)) {
             case 0 :
               // Omit the package
-              return msg;
+              return;
               break;
 
             case 1 :
@@ -221,12 +247,17 @@ implementation {
         }
       }
 
-      return msg;
+      return;
     }
   }
 
-  /***************** AMSend Events ****************/
-  event void AMSend.sendDone(message_t *msg, error_t error) {
+  /***************** Timer Events ****************/
+  event void Timer0.fired() {
+    post send();
+  }
+
+  /***************** Tasks ****************/
+  task void sendDone() {
     atomic {
       busy = FALSE;
 
@@ -245,17 +276,9 @@ implementation {
     }
   }
 
-  /***************** Timer Events ****************/
-  event void Timer0.fired() {
-    post send();
-  }
-
-  /***************** Tasks ****************/
   task void send() {
     if(!busy){
       atomic {
-        ACKMsg* outMsg = (ACKMsg*)(call Packet.getPayload(&ackMsg, sizeof(ACKMsg)));
-
         // Check if packet_set holds valid contents
         // If not, reset packet_set
         if (checkValid()) {
@@ -277,13 +300,17 @@ implementation {
         outMsg->ldai = LastDeliveredAltIndex;
         outMsg->lbl = ackLbl;
         outMsg->nodeid = TOS_NODE_ID;
+
+        // DIRECT ADDRESSING WITHOUT STRING PARSE OVERHEAD
+        memset(&dest, 0, sizeof(struct sockaddr_in6));
+        dest.sin6_addr.s6_addr16[0] = htons(0xfec0);
+        dest.sin6_addr.s6_addr[15] = (TOS_NODE_ID - sendnodes);
+        dest.sin6_port = htons(UDP_PORT);
       }
 
-      if(call AMSend.send((TOS_NODE_ID - sendnodes), &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
-        post send();
-      } else {
-        busy = TRUE;
-      }
+      call RPLUDP.sendto(&dest, &outMsg, sizeof(ACKMsg));
+      busy = TRUE;
+      post sendDone();
     }
   }
 

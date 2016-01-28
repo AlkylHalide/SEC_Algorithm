@@ -18,18 +18,32 @@ configuration SECSendC {
 implementation {
   components SECSendP;
   components MainC;
+  components new TimerMilliC() as Timer0;
+  components RPLRankC;
+  components RPLRoutingEngineC;
+  components IPDispatchC;
+  components RPLDAORoutingEngineC;
+  components IPStackC;
+  components IPProtocolsP;
+
+  SECSendP.Boot -> MainC.Boot;
+  SECSendP.AMControl -> IPStackC;
+  SECSendP.RPLRoute -> RPLRoutingEngineC;
+  SECSendP.RootControl -> RPLRoutingEngineC;
+  SECSendP.RoutingControl -> RPLRoutingEngineC;
+
+  components new UdpSocketC() as RPLUDP;
+  SECSendP.RPLUDP -> RPLUDP;
+
+  SECSendP.RPLDAO -> RPLDAORoutingEngineC;
+  SECSendP.Timer0 -> Timer0;
+
+#ifdef RPL_ROUTING
+  components RPLRoutingC;
+#endif
+
+#ifdef PRINTFUART_ENABLED
   components PrintfC;
   components SerialStartC;
-  components ActiveMessageC;
-  components new AMSenderC(AM_SECMSG);
-  components new AMReceiverC(AM_ACKMSG);
-  components new TimerMilliC() as Timer0;
-
-  SECSendP.Boot -> MainC;
-  SECSendP.AMControl -> ActiveMessageC;
-  SECSendP.AMSend -> AMSenderC;
-  SECSendP.Receive -> AMReceiverC;
-  SECSendP.Timer0 -> Timer0;
-  SECSendP.Packet -> AMSenderC;
-  SECSendP.AMPacket -> AMSenderC;
+#endif
 }

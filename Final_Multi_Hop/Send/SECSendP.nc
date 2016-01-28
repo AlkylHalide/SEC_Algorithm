@@ -12,21 +12,31 @@
 
 #include <printf.h>
 #include <math.h>
+#include <Timer.h>
+#include <lib6lowpan/ip.h>
 #include "SECSend.h"
 
 module SECSendP {
   uses {
     interface Boot;
     interface SplitControl as AMControl;
-    interface AMSend;
-    interface Packet;
-    interface AMPacket;
-    interface Receive;
     interface Timer<TMilli> as Timer0;
+    interface RPLRoutingEngine as RPLRoute;
+    interface RootControl;
+    interface StdControl as RoutingControl;
+    interface UDP as RPLUDP;
+    interface RPLDAORoutingEngine as RPLDAO;
   }
 }
 
 implementation {
+  /********* RPL constants *********/
+  #ifndef RPL_ROOT_ADDR
+  #define RPL_ROOT_ADDR 1
+  #endif
+
+  #define UDP_PORT 5678
+
   /***************** Reed-Solomon constants and variables ****************/
   #define mm 8                 /* length of codeword */
   #define nn 255               /* nn=2**mm - 1 --> the block size in symbols */
@@ -65,8 +75,8 @@ implementation {
   // Pointers to an int for the messages and packet_set arrays
   uint16_t *messages;
 
-  // Message to transmit
-  message_t myMsg;
+  struct sockaddr_in6 dest;
+  nx_struct SECMsg* btrMsg;
 
   /***************** Reed-Solomon constants and variables ****************/
   // Specify irreducible polynomial coefficients
@@ -78,6 +88,7 @@ implementation {
 
   /***************** Prototypes ****************/
   task void send();
+  task void sendDone();
 
   // declaration of fetch function to get an array of new messages
   uint16_t * fetch(uint8_t NumOfMessages);
@@ -89,21 +100,27 @@ implementation {
   void generate_gf();
   void gen_poly();
   void encode_rs();
+  void reedSolomon();
 
   /***************** Boot Events ****************/
   event void Boot.booted() {
+    if(TOS_NODE_ID == RPL_ROOT_ADDR){
+      call RootControl.setRoot();
+    }
+    call RoutingControl.start();
     call AMControl.start();
+
+    call RPLUDP.bind(UDP_PORT);
   }
 
   /***************** SplitControl Events ****************/
   event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
       atomic {
+        while( call RPLDAO.startDAO() != SUCCESS );
+
         // Initialize the ACK_set array with zeroes
         memset(ACK_set, 0, sizeof(ACK_set));
-
-        // Get a new messages array
-        messages = fetch(pl);
 
         // Initalize Reed-Solomon functions
         // generate the Galois Field GF(2**mm)
@@ -111,26 +128,13 @@ implementation {
         // compute the generator polynomial for this RS code
         gen_poly();
 
-        // zero all data[] entries
-        for  (i=0; i<kk; i++)   data[i] = 0;
-        // put messages in data array
-        for  (i=0; i<pl; i++) {
-          data[i] = *(messages + i);
-        }
+        reedSolomon();
 
-        // encode data
-        encode_rs();
-
-        // put the transmitted codeword, made up of data plus parity, in recd[]
-        for (i=0; i<nn-kk; i++) {
-          recd[i] = bb[i];
+        if(TOS_NODE_ID != RPL_ROOT_ADDR){
+          // Execute the send task next
+          // Only if this node is not the root node
+          post send();
         }
-        for (i=0; i<kk; i++) {
-          recd[i+nn-kk] = data[i];
-        }
-
-        // Execute the send task next
-        post send();
       }
     }
     else {
@@ -143,9 +147,9 @@ implementation {
   }
 
   /***************** Receive Events ****************/
-  event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    if(call AMPacket.type(msg) != AM_ACKMSG) {
-      return msg;
+  event void RPLUDP.recvfrom(struct sockaddr_in6 *from, void *payload, uint16_t len, struct ip6_metadata *meta){
+    if (len != sizeof(ACKMsg)) {
+      return;
     }
     else {
       atomic {
@@ -161,12 +165,17 @@ implementation {
         }
       }
 
-      return msg;
+      return;
     }
   }
 
-  /***************** AMSend Events ****************/
-  event void AMSend.sendDone(message_t *msg, error_t error) {
+  /***************** Timer Events ****************/
+  event void Timer0.fired() {
+    post send();
+  }
+
+  /***************** Tasks ****************/
+  task void sendDone() {
     atomic {
       busy = FALSE;
 
@@ -189,17 +198,9 @@ implementation {
     }
   }
 
-  /***************** Timer Events ****************/
-  event void Timer0.fired() {
-    post send();
-  }
-
-  /***************** Tasks ****************/
   task void send() {
-    if(!busy){
+    if(!busy) {
       atomic {
-        SECMsg* btrMsg = (SECMsg*)(call Packet.getPayload(&myMsg, sizeof(SECMsg)));
-
         // Below is a check for when we increment the Alternating Index
         // and start transmitting a new message.
         // As long as the ACK_set array is not full (checked by seeing if the lbl at position 11 is 0 or not),
@@ -219,29 +220,10 @@ implementation {
           // Clear the ACK_set array
           memset(ACK_set, 0, sizeof(ACK_set));
 
-          // Get a new messages array
-          messages = fetch(pl);
-
           // Reset the loop variable
           msgIndex = 0;
 
-          // zero all data[] entries
-          for  (i=0; i<kk; i++)   data[i] = 0;
-          // put messages in data array
-          for  (i=0; i<pl; i++) {
-            data[i] = *(messages + i);
-          }
-
-          // encode data
-          encode_rs();
-
-          // put the transmitted codeword, made up of data plus parity, in recd[]
-          for (i=0; i<nn-kk; i++) {
-            recd[i] = bb[i];
-          }
-          for (i=0; i<kk; i++) {
-            recd[i+nn-kk] = data[i];
-          }
+          reedSolomon();
         }
 
         // The message to send is filled with the appropriate data
@@ -249,17 +231,44 @@ implementation {
         btrMsg->lbl = msgLbl;
         btrMsg->dat = recd[msgIndex];
         btrMsg->nodeid = TOS_NODE_ID;
+
+        // DIRECT ADDRESSING WITHOUT STRING PARSE OVERHEAD
+        memset(&dest, 0, sizeof(struct sockaddr_in6));
+        dest.sin6_addr.s6_addr16[0] = htons(0xfec0);
+        dest.sin6_addr.s6_addr[15] = (TOS_NODE_ID + sendnodes);
+        dest.sin6_port = htons(UDP_PORT);
       }
 
-      if(call AMSend.send((TOS_NODE_ID + sendnodes), &myMsg, sizeof(SECMsg)) != SUCCESS) {
-        post send();
-      } else {
-        busy = TRUE;
-      }
+      call RPLUDP.sendto(&dest, &btrMsg, sizeof(SECMsg));
+      busy = TRUE;
+      post sendDone();
     }
   }
 
   /***************** User-defined functions ****************/
+  void reedSolomon(){
+    // Get a new messages array
+    messages = fetch(pl);
+
+    // zero all data[] entries
+    for  (i=0; i<kk; i++)   data[i] = 0;
+    // put messages in data array
+    for  (i=0; i<pl; i++) {
+      data[i] = *(messages + i);
+    }
+
+    // encode data
+    encode_rs();
+
+    // put the transmitted codeword, made up of data plus parity, in recd[]
+    for (i=0; i<nn-kk; i++) {
+      recd[i] = bb[i];
+    }
+    for (i=0; i<kk; i++) {
+      recd[i+nn-kk] = data[i];
+    }
+  }
+
   // function returning messages array M
   uint16_t * fetch(uint8_t NumOfMessages) {
     static uint16_t M[pl];
