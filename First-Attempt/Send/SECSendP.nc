@@ -40,7 +40,6 @@ implementation {
 
   // <capacity> amount of messages
   #define capacity (n-1)
-  /*#define capacity (pl-1)*/
 
   /***************** Local variables ****************/
   // Boolean to check if channel is busy
@@ -115,11 +114,8 @@ implementation {
         // zero all data[] entries
         for  (i=0; i<kk; i++)   data[i] = 0;
         // put messages in data array
-        /*printf("DATA\n");*/
         for  (i=0; i<pl; i++) {
           data[i] = *(messages + i);
-          /*printf("%u\n", data[i]);*/
-          /*printfflush();*/
         }
 
         // encode data
@@ -183,7 +179,6 @@ implementation {
 
       // Increment the index for the data sent
       ++msgIndex;
-      /*msgIndex %= pl;*/
       msgIndex %= (nn-kk+pl);
     }
 
@@ -233,11 +228,8 @@ implementation {
           // zero all data[] entries
           for  (i=0; i<kk; i++)   data[i] = 0;
           // put messages in data array
-          /*printf("DATA\n");*/
           for  (i=0; i<pl; i++) {
             data[i] = *(messages + i);
-            /*printf("%u\n", data[i]);*/
-            /*printfflush();*/
           }
 
           // encode data
@@ -255,12 +247,8 @@ implementation {
         // The message to send is filled with the appropriate data
         btrMsg->ai = AltIndex;
         btrMsg->lbl = msgLbl;
-        /*btrMsg->dat = *(messages + msgIndex);*/
         btrMsg->dat = recd[msgIndex];
         btrMsg->nodeid = TOS_NODE_ID;
-
-        printf("%u    %u    %u\n", btrMsg->ai, btrMsg->lbl, btrMsg->dat);
-        printfflush();
       }
 
       if(call AMSend.send((TOS_NODE_ID + sendnodes), &myMsg, sizeof(SECMsg)) != SUCCESS) {
@@ -280,6 +268,8 @@ implementation {
       M[i] = counter;
       // Increment the counter (for pl amount of messages)
       ++counter;
+      // The Reed-Solomon functions take a maximum integer
+      // value of 255 [(2^8)-1]
       counter %= 256;
     }
     return M;
@@ -293,8 +283,6 @@ implementation {
       // <capacity> + 1 ACK messages from the receiver,
       // each with ldai = AltIndex and every value of the labels
       // represented
-      /*printf("ACK_SET:  %u    %u    %u\n", i, ACK_set[i].ldai, ACK_set[i].lbl);
-      printfflush();*/
       if( (ACK_set[i].ldai == AltIndex) && (ACK_set[i].lbl == (i+1)) ) {
         // do nothing
       } else {

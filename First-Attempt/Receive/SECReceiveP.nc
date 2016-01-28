@@ -39,7 +39,6 @@ implementation {
   #define n (pl+2*tt)         // amount of labels for packages
                               // calculated with encryption parameters
   #define capacity (n-1)
-  //#define capacity (pl-1)
 
   #define arraySize(x)  (sizeof(x) / sizeof((x)[0]))
 
@@ -87,7 +86,7 @@ implementation {
   uint32_t missed = 0;
   // probability is a number between 0 and 100, defined as a percentage
   // Example: probability = 50 --> 50% chance
-  uint16_t probability = 40;
+  uint16_t probability = 10;
   // Variable to count the amount of message deliveries (see deliver() function)
   // This can be used to count only the amount of times a batch of messages is
   // actually delivered, instead of all the iterations
@@ -181,22 +180,22 @@ implementation {
 
           // Switch case based on a rand value in the range of [0 2]
           // Depending on possibility insert different error
-          //switch(abs(rand() % 2 + 1)) {
-            //case 0 :
+          switch(abs(rand() % 2 + 1)) {
+            case 0 :
               // Omit the package
               return msg;
-              /*break;*/
+              break;
 
-            /*case 1 :*/
+            case 1 :
               // Duplicate package
-              /*inMsg->lbl = (inMsg->lbl + 2) % capacity;*/
-              /*break;*/
+              inMsg->lbl = (inMsg->lbl + abs(rand() % (capacity) + 1)) % capacity;
+              break;
 
-            /*case 2 :*/
+            case 2 :
               // Reorder package
-              /*inMsg->lbl = abs(rand() % (capacity) + 1);*/
-              /*break;*/
-          /*}*/
+              inMsg->lbl = abs(rand() % (capacity) + 1);
+              break;
+          }
         }
         ////*******************************************////
 
@@ -219,9 +218,6 @@ implementation {
           packet_set[(inMsg->lbl - 1)].lbl = inMsg->lbl;
           packet_set[(inMsg->lbl - 1)].dat = inMsg->dat;
           packet_set[(inMsg->lbl - 1)].nodeid = inMsg->nodeid;
-
-          /*printf("IN   %u    %u    %u\n", packet_set[(inMsg->lbl - 1)].ai, packet_set[(inMsg->lbl - 1)].lbl, packet_set[(inMsg->lbl - 1)].dat);
-          printfflush();*/
         }
       }
 
@@ -262,19 +258,14 @@ implementation {
 
         // Check if packet_set holds valid contents
         // If not, reset packet_set
-        // TODO --> NEEDS FIXING
-        /*if (checkValid()) {
+        if (checkValid()) {
           memset(packet_set, 0, sizeof(packet_set));
-        }*/
+        }
 
         if (checkPacketSet()) {
           // Update LastDeliveredIndex to AI of current message array
           LastDeliveredAltIndex = ldai;
           ackLbl = 1;
-
-          for (i=0; i<(capacity+1); i++) {
-            recd[i] = packet_set[i].dat;
-          }
 
           // Deliver the messages to the application layer
           deliver();
@@ -283,13 +274,9 @@ implementation {
           memset(packet_set, 0, sizeof(packet_set));
         }
 
-        /*outMsg->ldai = ldai;*/
         outMsg->ldai = LastDeliveredAltIndex;
         outMsg->lbl = ackLbl;
         outMsg->nodeid = TOS_NODE_ID;
-
-        /*printf("OUT   %u    %u\n", outMsg->ldai, outMsg->lbl);
-        printfflush();*/
       }
 
       if(call AMSend.send((TOS_NODE_ID - sendnodes), &ackMsg, sizeof(ACKMsg)) != SUCCESS) {
@@ -303,6 +290,11 @@ implementation {
   /***************** User-defined functions ****************/
   // function returning messages array
   void deliver() {
+    // put packet_set[] contents in recd[] for decoding
+    for (i=0; i<(capacity+1); i++) {
+      recd[i] = packet_set[i].dat;
+    }
+
     //put recd[i] into index form
     for (i=0; i<nn; i++) {
       recd[i] = index_of[recd[i]];
@@ -312,15 +304,13 @@ implementation {
     // recd[] is returned in polynomial form
     decode_rs();
 
-    printf("DELIVER MESSAGES\n");
-    /*for ( i = 0; i < (capacity+1); i++) {
-      printf("%u    %u    %u\n", packet_set[i].ai, packet_set[i].lbl, packet_set[i].dat);
-    }*/
+    // Uncomment this to print data instead of measurements
+    /*printf("DELIVER MESSAGES\n");
     for ( i = (2*tt); i < (2*tt+pl); i++) {
       printf("%u\n", recd[i]);
-    }
+    }*/
     ++deliverCounter;
-    /*printf("%u    %lu   %lu\n", deliverCounter, iteration, missed);*/
+    printf("%u    %lu   %lu\n", deliverCounter, iteration, missed);
     printfflush();
   }
 
