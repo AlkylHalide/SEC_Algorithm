@@ -3,7 +3,7 @@
 > /home/evert/tinyos-main/apps/SEC/logTest.txt
 BULLSEYE=false
 until [[ $BULLSEYE == true ]]; do
-  if [[ $(grep 'Test script activated' /home/evert/tinyos-main/apps/SEC/output.txt) ]]; then
+  if [[ $(grep 'Test script activated' /home/evert/tinyos-main/apps/SEC/Scripts/sim_output.txt) ]]; then
     BULLSEYE=true
     # tosprint cooja 60002 > /home/evert/tinyos-main/apps/SEC/logTest.txt
     tosprint cooja 60002 | {

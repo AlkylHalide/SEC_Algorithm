@@ -1,9 +1,10 @@
 #!/bin/bash
 
-> /home/evert/tinyos-main/apps/SEC/output.txt
-excooja /home/evert/tinyos-main/apps/SEC/First-Attempt/Simulations/FirstAttempt.csc nogui | {
+# dir=`pwd`
+> $1/sim_output.txt
+. $1/excooja.sh /home/evert/tinyos-main/apps/SEC/First_Attempt/Simulations/FirstAttempt.csc nogui $1 | {
   while IFS= read -r line
   do
-    echo "$line" >> /home/evert/tinyos-main/apps/SEC/output.txt
+    echo "$line" >> $1/sim_output.txt
   done
 }
